@@ -9,7 +9,7 @@
     git clone https://github.com/OfficeDev/microsoft-teams-template-bot.git
     ```
 
-* Launch Visual Studio as an administrator
+* Install Visual Studio and launch it as an administrator
 
 * Build the solution to download all configured NuGet packages
 
@@ -23,11 +23,11 @@ Install the Bot Emulator - click on "Bot Framework Emulator (Mac and Windows)": 
 ## Steps to see the bot running in the Bot Emulator<br>
 NOTE: Teams does not work nor render things exactly like the Bot Emulator - this method is meant as just a slightly easier way to see the project's bot running
 
-1. Open the template-bot-master-csharp directory with Visual Studio
+1. Open the template-bot-master-csharp.sln solution with Visual Studio
 
 2. In Visual Studio click the play button (should be defaulted to running the Microsoft Edge configuration) 
 
-3. Once the code is running (bar at the bottom will be orange), connect with the Bot Emulator to the default endpoint, "http://localhost:3979/api/messages", leaving "Microsoft App ID" and "Microsoft App Password" blank
+3. Once the code is running, connect with the Bot Emulator to the default endpoint, "http://localhost:3979/api/messages", leaving "Microsoft App ID" and "Microsoft App Password" blank
 
 Congratulations!!! You can now chat with the bot in the Bot Emulator!
 
@@ -35,11 +35,14 @@ Congratulations!!! You can now chat with the bot in the Bot Emulator!
 
 1. Begin your tunnelling service to get an https endpoint. 
 
-	*  Open a new **Command Prompt** window. 
+	* Open a new **Command Prompt** window. 
 
 	* Change to the directory that contains the ngrok.exe application. 
 
-	* Run the command `ngrok http [port] -host-header=localhost:[port]` e.g ngrok http 3979 --host-header=localhost (you'll need the https endpoint for the bot registration)
+	* Run the command `ngrok http [port] --host-header=localhost` (you'll need the https endpoint for the bot registration) e.g.<br>
+		```
+		ngrok http 3979 --host-header=localhost
+		```
 
 	* The ngrok application will fill the entire prompt window. Make note of the Forwarding address using https. This address is required in the next step. 
 
@@ -51,19 +54,19 @@ Congratulations!!! You can now chat with the bot in the Bot Emulator!
 
     > **NOTE**: When you create your bot you will create an App ID and App password - make sure you keep these for later.
 
-3. Open the whole project, the template-bot-master-csharp directory, with Visual Studio - open the web.config file - here you will need to set below configuration keys:
+3. You project needs to run with a configuration that matches your registered bot's configuration. To do this, you will need to update the web.config file:
 
 	* In Visual Studio, open the Web.config file. Locate the `<appSettings>` section. 
  
-	* Enter the BotId value. the BotId is the **Bot handle** from the **Configuration** section of the registration. 
+	* Enter the BotId value. The BotId is the **Bot handle** from the **Configuration** section of the bot registration. 
  
-	* Enter the MicrosoftAppId. The MicrosoftAppId is the app ID from the **Configuration** section of the registration. 
+	* Enter the MicrosoftAppId. The MicrosoftAppId is the app ID from the **Configuration** section of the bot registration. 
  
-	* Enter the MicrosoftAppPassword. The MicrosoftAppPassword is the auto-generated app password displayed in the pop-up during registration.
+	* Enter the MicrosoftAppPassword. The MicrosoftAppPassword is the auto-generated app password displayed in the pop-up during bot registration.
 	
 	* Enter the BaseUri. The BaseUri is the https endpoint generated from ngrok.
 
-	Here the example for reference
+	Here is an example for reference:
 	
 		<add key="BotId" value="Bot_Handle_Here" />
 		<add key="MicrosoftAppId" value="88888888-8888-8888-8888-888888888888" />
