@@ -6,7 +6,7 @@
 
 * Clone this repo:<br>
     ```
-    git clone https://github.com/OfficeDev/microsoft-teams-template-bot.git
+    git clone https://github.com/OfficeDev/microsoft-teams-template-bot-CSharp.git
     ```
 
 * Install Visual Studio and launch it as an administrator
