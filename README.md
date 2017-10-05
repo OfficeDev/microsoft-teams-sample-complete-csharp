@@ -21,7 +21,7 @@ Install the Bot Emulator - click on "Bot Framework Emulator (Mac and Windows)": 
     * NOTE: make sure to pin the emulator to your task bar because it can sometimes be difficult to find again 
 
 ## Steps to see the bot running in the Bot Emulator<br>
-NOTE: Teams does not work nor render things exactly like the Bot Emulator - this method is meant as just a slightly easier way to see the project's bot running
+NOTE: Teams does not work nor render things exactly like the Bot Emulator, but it is a quick way to see if your bot is running and functioning correctly.
 
 1. Open the template-bot-master-csharp.sln solution with Visual Studio
 
