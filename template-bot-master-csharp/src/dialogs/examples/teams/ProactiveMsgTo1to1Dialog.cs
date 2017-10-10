@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Teams.TemplateBotCSharp.Properties;
+using Microsoft.Bot.Connector.Teams.Models;
 
 namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
 {
@@ -29,25 +30,19 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
             var botId = context.Activity.Recipient.Id;
             var botName = context.Activity.Recipient.Name;
 
-            string tenantId = null;
-            string channelId = null;
-
-            if (context.Activity.ChannelData != null)
-            {
-                if (context.Activity.ChannelData["tenant"] != null)
-                {
-                    tenantId = context.Activity.ChannelData["tenant"]["id"];
-                }
-                channelId = context.Activity.ChannelData["teamsChannelId"];
-            }
-
+            var channelData = context.Activity.GetChannelData<TeamsChannelData>();
             var connectorClient = new ConnectorClient(new Uri(context.Activity.ServiceUrl));
+
             var parameters = new ConversationParameters
             {
                 Bot = new ChannelAccount(botId, botName),
                 Members = new ChannelAccount[] { new ChannelAccount(userId) },
-                ChannelData = new ChannelData { Tenant = new Tenant { tenantId = tenantId } }
+                ChannelData = new TeamsChannelData
+                {
+                    Tenant = channelData.Tenant
+                }
             };
+
             try
             {
                 var conversationResource = await connectorClient.Conversations.CreateConversationAsync(parameters);
@@ -71,17 +66,4 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
             context.Done<object>(null);
         }
     }
-
-    public class ChannelData
-    {
-        public string teamsChannelId { get; set; }
-        public string TeamsTeamId { get; set; }
-        public Tenant Tenant { get; set; }
-    }
-
-    public class Tenant
-    {
-        public string tenantId { get; set; }
-    }
-
 }
