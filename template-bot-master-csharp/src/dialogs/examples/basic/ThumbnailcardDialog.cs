@@ -9,8 +9,7 @@ using Microsoft.Teams.TemplateBotCSharp.Utility;
 namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
 {
     /// <summary>
-    /// This is Begin Dialog Class. Main purpose of this class is to notify users that Child dialog has been called 
-    /// and its a Basic example to call Child dialog from Root Dialog.
+    /// This is Thumbnail Card Dialog Class. Main purpose of this class is to display the Thumbnail Card example
     /// </summary>
 
     [Serializable]
@@ -30,7 +29,6 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
             var attachment = GetThumbnailCard();
 
             message.Attachments.Add(attachment);
-            message.Attachments.Add(TemplateUtility.GetChoiceOptionCard());
 
             await context.PostAsync((message));
 

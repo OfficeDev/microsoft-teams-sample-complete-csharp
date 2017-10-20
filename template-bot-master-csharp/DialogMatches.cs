@@ -56,5 +56,17 @@
         public const string MessageBack = "msgback";
 
         public const string LocalTime = "localtime";
+
+        public const string HeroCard = "hero card";
+        public const string ThumbnailCard = "thumbnail card";
+
+        public const string ConnectorCardV1 = "connectorcardv1";
+        public const string ConnectorCardV2 = "connectorcardv2";
+        public const string ConnectorCardV3 = "connectorcardv3";
+
+        public const string ActionableCard = "actionablecard";
+        public const string ActionableCardV2 = "actionablecardv2";
+
+        public const string PopUpSignIn = "signin";
     }
 }

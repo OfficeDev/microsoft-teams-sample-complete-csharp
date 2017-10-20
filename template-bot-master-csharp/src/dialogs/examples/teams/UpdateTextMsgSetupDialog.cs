@@ -9,8 +9,7 @@ using Microsoft.Teams.TemplateBotCSharp.Properties;
 namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
 {
     /// <summary>
-    /// This is Fetch Roster Dialog Class. Main purpose of this dialog class is to Call the Roster Api and Post the 
-    /// members information (Name and Id) in Teams. This Dialog is using Thumbnail Card to show the member information in teams.
+    /// This is Update Setup Text Dialog Class. Main purpose of this class is to Setup the Card in Bot example
     /// </summary>
     [Serializable]
     public class UpdateTextMsgSetupDialog : IDialog<object>

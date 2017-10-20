@@ -10,8 +10,7 @@ using System.Configuration;
 namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
 {
     /// <summary>
-    /// This is Begin Dialog Class. Main purpose of this class is to notify users that Child dialog has been called 
-    /// and its a Basic example to call Child dialog from Root Dialog.
+    /// This is DeepLink Dialog Class. Main purpose of this class is to show Depp link from Bot to Tab example
     /// </summary>
 
     [Serializable]

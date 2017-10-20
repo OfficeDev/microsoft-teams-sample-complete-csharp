@@ -28,6 +28,22 @@ namespace Microsoft.Teams.TemplateBotCSharp
                 activity.Locale = TemplateUtility.GetLocale(activity);
 
                 var messageActivity = StripBotAtMentions.StripAtMentionText(activity);
+
+                //UnComment the below code to restrict the Bot for Specific Tenant
+                //Set the OFFICE_365_TENANT_FILTER key in web.config file with Tenant Information
+
+                //Restrict the bot for specific teams tenant
+                //if(!Middleware.RestrictBotForTenant(activity))
+                //{
+                //    var connectorClient = new ConnectorClient(new Uri("https://smba.trafficmanager.net/amer-client-ss.msg/"));
+
+                //    Activity replyActivity = activity.CreateReply();
+                //    replyActivity.Text = Strings.TenantLevelDeniedAccess;
+
+                //    await connectorClient.Conversations.ReplyToActivityAsync(replyActivity);
+                //    return null;
+                //}
+
                 try
                 {
                     await Conversation.SendAsync(messageActivity, () => new Dialogs.RootDialog());
@@ -56,6 +72,10 @@ namespace Microsoft.Teams.TemplateBotCSharp
                     if (activity.Name == "actionableMessage/executeAction")
                     {
                         messageActivity = ParseInvokeActivityRequest.ParseO365ConnectorCardInvokeRequest(activity);
+                    }
+                    else if (activity.Name == "signin/verifyState")
+                    {
+                        return await PopUpSignInSuccessResponse(activity);
                     }
                     else
                     {
@@ -291,6 +311,19 @@ namespace Microsoft.Teams.TemplateBotCSharp
             <pre>{o365CardQuery.Body}</pre>
 
         ";
+
+            await connectorClient.Conversations.ReplyToActivityWithRetriesAsync(replyActivity);
+
+            return new HttpResponseMessage(HttpStatusCode.OK);
+        }
+
+        private static async Task<HttpResponseMessage> PopUpSignInSuccessResponse(Activity activity)
+        {
+            var connectorClient = new ConnectorClient(new Uri("https://smba.trafficmanager.net/amer-client-ss.msg/"));
+
+            Activity replyActivity = activity.CreateReply();
+
+            replyActivity.Text = $@"Authentication Successful";
 
             await connectorClient.Conversations.ReplyToActivityWithRetriesAsync(replyActivity);
 

@@ -1,0 +1,27 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://statics.teams.microsoft.com/sdk/v1.0/js/MicrosoftTeams.min.js"></script>
+</head>
+
+<body>
+    <script>
+          microsoftTeams.initialize();
+          function execute()
+          {
+              microsoftTeams.authentication.notifySuccess('PopUpSignInAuthenticationSuccess');
+          }
+    </script>
+
+    <div>
+        User Name : <input type="text" />
+    </div>
+
+    <br />
+    <div>
+        Password : <input type="text" />
+    </div>
+
+    <button onClick="execute()">Login</button> 
+</body>
+</html>

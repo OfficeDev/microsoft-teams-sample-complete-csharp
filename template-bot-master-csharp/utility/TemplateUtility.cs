@@ -38,20 +38,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
                     }
                 }
             }
-
             return activity.Locale;
-        }
-
-        public static Attachment GetChoiceOptionCard()
-        {
-            return new HeroCard(Strings.DisplayCardsPromptChoiceTitle)
-            {
-                Buttons = new List<CardAction>
-                    {
-                        new CardAction(ActionTypes.ImBack, Strings.OptionYes, value: Strings.cmdDisplayCards),
-                        new CardAction(ActionTypes.ImBack, Strings.OptionNo, value: Strings.cmdNoDisplayCards)
-                    }
-            }.ToAttachment();
         }
 
         public static ComposeExtensionAttachment CreateComposeExtensionCardsAttachments(string title,string text,string imageUrl, string state)
@@ -87,7 +74,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
             }
         }
 
-        public static Attachment GetComposeExtensionPreviewAttachment(string title,string text, string imageUrl, string state)
+        public static Attachment GetComposeExtensionPreviewAttachment(string title, string text, string imageUrl, string state)
         {
             if (string.Equals(state.ToLower(), "hero"))
             {
@@ -126,5 +113,6 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
 
             return null;
         }
+
     }
 }

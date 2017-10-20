@@ -10,8 +10,7 @@ using Microsoft.Bot.Connector.Teams.Models;
 namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
 {
     /// <summary>
-    /// This is Fetch Roster Dialog Class. Main purpose of this dialog class is to Call the Roster Api and Post the 
-    /// members information (Name and Id) in Teams. This Dialog is using Thumbnail Card to show the member information in teams.
+    /// This is Proactive Message Dialog Class. Main purpose of this class is to show the Send Proactive Message Example
     /// </summary>
     [Serializable]
     public class ProactiveMsgTo1to1Dialog : IDialog<object>
