@@ -10,6 +10,7 @@ using Microsoft.Bot.Connector.Teams.Models;
 using Microsoft.Teams.TemplateBotCSharp.Utility;
 using System.Collections.Generic;
 using Microsoft.Teams.TemplateBotCSharp.Properties;
+using System.Configuration;
 
 namespace Microsoft.Teams.TemplateBotCSharp
 {
@@ -29,20 +30,22 @@ namespace Microsoft.Teams.TemplateBotCSharp
 
                 var messageActivity = StripBotAtMentions.StripAtMentionText(activity);
 
-                //UnComment the below code to restrict the Bot for Specific Tenant
                 //Set the OFFICE_365_TENANT_FILTER key in web.config file with Tenant Information
 
-                //Restrict the bot for specific teams tenant
-                //if(!Middleware.RestrictBotForTenant(activity))
-                //{
-                //    var connectorClient = new ConnectorClient(new Uri("https://smba.trafficmanager.net/amer-client-ss.msg/"));
+                if (ConfigurationManager.AppSettings["OFFICE_365_TENANT_FILTER"] != null && !String.Equals(Convert.ToString(ConfigurationManager.AppSettings["OFFICE_365_TENANT_FILTER"]), Strings.TenantConfigStaticValue))
+                {
+                    //Restrict the bot for specific teams tenant
+                    if (!Middleware.RestrictBotForTenant(activity))
+                    {
+                        var connectorClient = new ConnectorClient(new Uri(activity.ServiceUrl));
 
-                //    Activity replyActivity = activity.CreateReply();
-                //    replyActivity.Text = Strings.TenantLevelDeniedAccess;
+                        Activity replyActivity = activity.CreateReply();
+                        replyActivity.Text = Strings.TenantLevelDeniedAccess;
 
-                //    await connectorClient.Conversations.ReplyToActivityAsync(replyActivity);
-                //    return null;
-                //}
+                        await connectorClient.Conversations.ReplyToActivityAsync(replyActivity);
+                        return null;
+                    }
+                }
 
                 try
                 {
@@ -288,7 +291,7 @@ namespace Microsoft.Teams.TemplateBotCSharp
 
         private static async Task<HttpResponseMessage> HandleO365ConnectorCardActionQuery(Activity activity)
         {
-            var connectorClient = new ConnectorClient(new Uri("https://smba.trafficmanager.net/amer-client-ss.msg/"));
+            var connectorClient = new ConnectorClient(new Uri(activity.ServiceUrl));
 
             // Get O365 connector card query data.
             O365ConnectorCardActionQuery o365CardQuery = activity.GetO365ConnectorCardActionQueryData();
@@ -319,7 +322,7 @@ namespace Microsoft.Teams.TemplateBotCSharp
 
         private static async Task<HttpResponseMessage> PopUpSignInSuccessResponse(Activity activity)
         {
-            var connectorClient = new ConnectorClient(new Uri("https://smba.trafficmanager.net/amer-client-ss.msg/"));
+            var connectorClient = new ConnectorClient(new Uri(activity.ServiceUrl));
 
             Activity replyActivity = activity.CreateReply();
 

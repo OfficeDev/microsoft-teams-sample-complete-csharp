@@ -742,7 +742,7 @@
     <value>composeextension/querysettingurl</value>
   </data>
   <data name="DisplayCardO365ConnectorActionableCard" xml:space="preserve">
-    <value>ActionableCard</value>
+    <value>Connector Card Actions</value>
   </data>
   <data name="cmdO365ConnectorCardActionableMessages" xml:space="preserve">
     <value>Actionable Card</value>
@@ -763,7 +763,7 @@
     <value>MS Teams: Attempted access from a different Office 365 tenant: message rejected</value>
   </data>
   <data name="DisplayCardO365ConnectorActionableCardV2" xml:space="preserve">
-    <value>ActionableCardV2</value>
+    <value>Connector Card Actions V2</value>
   </data>
   <data name="LastDialogPopUpSignIn" xml:space="preserve">
     <value>PopUpSignInDialog</value>
@@ -788,5 +788,8 @@
   </data>
   <data name="MessageBackTitleMsg" xml:space="preserve">
     <value>This is Message Back example</value>
+  </data>
+  <data name="TenantConfigStaticValue" xml:space="preserve">
+    <value>#PleaseSetTenantInformation</value>
   </data>
 </root>

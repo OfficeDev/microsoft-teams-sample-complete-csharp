@@ -64,8 +64,8 @@
         public const string ConnectorCardV2 = "connectorcardv2";
         public const string ConnectorCardV3 = "connectorcardv3";
 
-        public const string ActionableCard = "actionablecard";
-        public const string ActionableCardV2 = "actionablecardv2";
+        public const string ActionableCard = "connector card actions";
+        public const string ActionableCardV2 = "connector card actions v2";
 
         public const string PopUpSignIn = "signin";
     }

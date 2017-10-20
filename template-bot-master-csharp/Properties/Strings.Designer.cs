@@ -475,7 +475,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ActionableCard.
+        ///   Looks up a localized string similar to Connector Card Actions.
         /// </summary>
         internal static string DisplayCardO365ConnectorActionableCard {
             get {
@@ -484,7 +484,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ActionableCardV2.
+        ///   Looks up a localized string similar to Connector Card Actions V2.
         /// </summary>
         internal static string DisplayCardO365ConnectorActionableCardV2 {
             get {
@@ -1821,6 +1821,15 @@ namespace Microsoft.Teams.TemplateBotCSharp.Properties {
         internal static string SetUpMsgKey {
             get {
                 return ResourceManager.GetString("SetUpMsgKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to #PleaseSetTenantInformation.
+        /// </summary>
+        internal static string TenantConfigStaticValue {
+            get {
+                return ResourceManager.GetString("TenantConfigStaticValue", resourceCulture);
             }
         }
         
