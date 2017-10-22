@@ -139,6 +139,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="default.htm" />
+    <Content Include="Global.asax" />
     <Content Include="manifest\bot_blue.png" />
     <Content Include="public\assets\computer.jpg" />
     <Content Include="public\assets\computer_people.jpg" />
@@ -161,6 +162,15 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="bot\dialogs\DefaultDialog.cs" />
+    <Compile Include="bot\dialogs\HelloDialog.cs" />
+    <Compile Include="bot\dialogs\RootDialog.cs" />
+    <Compile Include="controllers\MessagesController.cs" />
+    <Compile Include="bot\middleware\StripBotAtMentions.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
     <Compile Include="Properties\Strings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
