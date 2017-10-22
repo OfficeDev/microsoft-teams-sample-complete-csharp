@@ -24,15 +24,19 @@
     <p>In the manifest replace all instances of '&lt;&lt;BASE_URI_DOMAIN&gt;&gt;' with the https BASE_URI endpoint you received from ngrok <b>WITHOUT</b> the 'https://' part e.g. ####abcd.ngrok.io</p>
     <p>In the manifest replace all instances of '&lt;&lt;REGISTERED_BOT_ID&gt;&gt;' with the temporary REGISTERED_BOT_ID - 197ad85c-1111-2222-3333-62448d8d3912</p>
     <p>Once you have made these changes, take a look at the 'staticTabs' section of the manifest. This is the new section that has been added, which describes the static tab you will add.</p>
-    <p>Once you have looked over the changes, it is time to sideload the manifest (which adds your app to Teams). Directions on how to do this can be found here <a href="https://msdn.microsoft.com/en-us/microsoft-teams/sideload">Sideloading a Manifest</a>.</p>
+    <p>Once you have looked over the changes, it is time to sideload the manifest (which adds your app to Teams). First, you must zip the manifest/manifest.json and manifest/bot_blue.png into the same file. Select both and choose to zip these files (do not add a new directory - just zip the two files - the manifest.json must stay named 'manifest.json'). Once you have the zip file (name of the zip file does not matter), follow the directions on how to sideload - <a href="https://msdn.microsoft.com/en-us/microsoft-teams/sideload">Sideloading a Manifest</a>.</p>
     <br />
 
     <h1>Features added</h1>
     <p>Change made to manifest/manifest.json in order to add a static tab.</p>
     <br />
 
-    <h1>Changes</h1>
+    <h1>File Changes</h1>
     <p>Section added to manifest/manifest.json in order to add a static tab.</p>
+    <br />
+
+    <h1>To See the New Feature</h1>
+    <p>Navigate to the '...' on the side. Navigate to your tutorial app.</p>
     <br />
 
     <h1>Next Feature to Add</h1>
