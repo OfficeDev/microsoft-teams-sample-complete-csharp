@@ -147,6 +147,8 @@
     <Content Include="tutorialDirections\assets\buildAndRunSolution.png" />
     <Content Include="tutorialDirections\assets\changes.png" />
     <Content Include="tutorialDirections\assets\commitChanges.png" />
+    <Content Include="tutorialDirections\assets\ngrokCommand.png" />
+    <Content Include="tutorialDirections\assets\ngrokHttps.png" />
     <Content Include="tutorialDirections\assets\remoteBranches.png" />
     <Content Include="tutorialDirections\assets\stageChanges1.png" />
     <Content Include="tutorialDirections\assets\stageChanges2.png" />

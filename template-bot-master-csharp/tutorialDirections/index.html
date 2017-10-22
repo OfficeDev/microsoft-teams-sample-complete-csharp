@@ -5,15 +5,48 @@
     <title></title>
 </head>
 <body>
+    <h1>Directions</h1>
+    <p>As the first section of the tutorial, this section will cover a few things that you will have to do over and over throughout this tutorial - namely updating and sideloading the manifest/manifest.json file (henceforth known as simply 'the manifest'). These two terms 'the manifest' and 'sideloading' will be used/done often. The manifest is a key part of integrating your app in Microsoft Teams because it is the place where you define for Teams what your app can do. Sideloading the manifest is the actual process of adding your app to Teams.</p>
+    <p>First, although the app is currently running locally, all endpoints within Teams need to pass through an https endpoint. In order to get your local endpoint to pass through an https endpoint, you can use a tunnelling service such as ngrok (<a href="https://ngrok.com/">download ngrok</a>). The rest of this tutorial will assume you are using ngrok, but you can use whatever means you wish as long as your content is hosted on an https endpoint.</p>
+    <p>To begin ngrok, open a cmd window and navigate to the location where you installed ngrok. There, make the call 'ngrok http 3979 --host-header=localhost'.</p>
+    <br />
+    <img style="width: 298.5px; height: 26.625px" src="/tutorialDirections/assets/ngrokCommand.png" />
+    <br />
+    <br />
+    <p>Once ngrok is running keep it running and take note of the https endpoint it provides you. It should look something like: https://####abcd.ngrok.io NOTE: while ngrok is running, you can also navigate a browser to <a href="http://localhost:4040">http://localhost:4040</a> to see every request and response that passes through it.</p>
+    <br />
+    <img style="width: 578.25px; height: 192.75px" src="/tutorialDirections/assets/ngrokHttps.png" />
+    <br />
+    <br />
+    <p>This https endpoint is what is known in this tutorial as your 'BASE_URI'. Although it will not do anything quite yet, in your Web.config file set your 'BaseUri' to this https endpoint by replacing the word 'NeedToSetThis'.</p>
+    <p>The last part that is needed for your manifest is a 'REGISTERED_BOT_ID' or 'MicrosoftAppId'. You may not have a registered one yet, but that is ok - you can use 197ad85c-1111-2222-3333-62448d8d3912 as a temporary example.</p>
+    <p>In the manifest replace all instances of '&lt;&lt;BASE_URI&gt;&gt;' with the https BASE_URI endpoint you received from ngrok.</p>
+    <p>In the manifest replace all instances of '&lt;&lt;BASE_URI_DOMAIN&gt;&gt;' with the https BASE_URI endpoint you received from ngrok <b>WITHOUT</b> the 'https://' part e.g. ####abcd.ngrok.io</p>
+    <p>In the manifest replace all instances of '&lt;&lt;REGISTERED_BOT_ID&gt;&gt;' with the temporary REGISTERED_BOT_ID - 197ad85c-1111-2222-3333-62448d8d3912</p>
+    <p>Once you have made these changes, take a look at the 'staticTabs' section of the manifest. This is the new section that has been added, which describes the static tab you will add.</p>
+    <p>Once you have looked over the changes, it is time to sideload the manifest (which adds your app to Teams). Directions on how to do this can be found here <a href="https://msdn.microsoft.com/en-us/microsoft-teams/sideload">Sideloading a Manifest</a>.</p>
+    <br />
+
     <h1>Features added</h1>
-    <p>This is simply the start of the tutorial. A content page has been added at <a href="http://localhost:3979/tab/content/content.html">Content</a>.</p>
+    <p>Change made to manifest/manifest.json in order to add a static tab.</p>
     <br />
+
     <h1>Changes</h1>
-    <p>None - this is the start of the tutorial</p>
+    <p>Section added to manifest/manifest.json in order to add a static tab.</p>
     <br />
+
     <h1>Next Feature to Add</h1>
-    <p>Static Tab in a 'personal' scope</p>
+    <p>Using the Microsoft Teams Javascript SDK within a tab.</p>
     <br />
+
+    <h1>Setup and Sideload the Manifest</h1>
+    <ul>
+        <li>In the manifest replace all instances of '&lt;&lt;BASE_URI&gt;&gt;' with the https BASE_URI endpoint you received from ngrok.<br /><br /></li>
+        <li>In the manifest replace all instances of '&lt;&lt;BASE_URI_DOMAIN&gt;&gt;' with the https BASE_URI endpoint you received from ngrok <b>WITHOUT</b> the 'https://' part e.g. ####abcd.ngrok.io<br /><br /></li>
+        <li>In the manifest replace all instances of '&lt;&lt;REGISTERED_BOT_ID&gt;&gt;' with the your REGISTERED_BOT_ID (MicrosoftAppId in Web.config)</li>
+    </ul>
+    <br />
+
     <h1>To Progress to the Next Step</h1>
     <ul>
         <li>
