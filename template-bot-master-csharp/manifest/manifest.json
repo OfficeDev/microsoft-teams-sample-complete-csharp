@@ -42,6 +42,15 @@
       ]
     }
   ],
+  "bots": [
+    {
+      "botId": "<<REGISTERED_BOT_ID>>",
+      "scopes": [
+        "team",
+        "personal"
+      ]
+    }
+  ],
   "permissions": [
     "identity",
     "messageTeamMembers"
