@@ -143,6 +143,7 @@
     <Content Include="public\assets\computer.jpg" />
     <Content Include="public\assets\computer_people.jpg" />
     <Content Include="public\assets\computer_person.jpg" />
+    <Content Include="tab\config\config.html" />
     <Content Include="tab\content\content.html" />
     <Content Include="tutorialDirections\assets\buildAndRunSolution.png" />
     <Content Include="tutorialDirections\assets\changes.png" />

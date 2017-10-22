@@ -23,6 +23,15 @@
     "color": "bot_blue.png"
   },
   "accentColor": "#0078D7",
+  "configurableTabs": [
+    {
+      "configurationUrl": "<<BASE_URI>>/tab/config/config.html",
+      "canUpdateConfiguration": false,
+      "scopes": [
+        "team"
+      ]
+    }
+  ],
   "staticTabs": [
     {
       "contentUrl": "<<BASE_URI>>/tab/content/content.html",
