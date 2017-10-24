@@ -358,7 +358,7 @@
     <value>1:1 Message sent</value>
   </data>
   <data name="Send1on1Prompt" xml:space="preserve">
-    <value>Hey! I am Bot, How's going!!</value>
+    <value>Hey! I'm a Bot. I sent this message.</value>
   </data>
   <data name="SetupMessagePrompt" xml:space="preserve">
     <value>Message set to be updated</value>

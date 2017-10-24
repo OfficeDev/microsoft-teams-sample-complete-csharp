@@ -55,6 +55,42 @@ namespace Microsoft.Teams.Tutorial.CSharp
             context.Call(new O365ConnectorCardActionsDialog(), this.EndDialog);
         }
 
+        // Must be called in a channel
+        [RegexPattern("at-mention")]
+        [ScorableGroup(1)]
+        public async Task RunAtMentionDialog(IDialogContext context, IActivity activity)
+        {
+            context.Call(new AtMentionDialog(), this.EndDialog);
+        }
+
+        [RegexPattern("send message to 1:1")]
+        [ScorableGroup(1)]
+        public async Task RunProactiveMsgTo1to1Dialog(IDialogContext context, IActivity activity)
+        {
+            context.Call(new ProactiveMsgTo1to1Dialog(), this.EndDialog);
+        }
+
+        [RegexPattern("fetch roster")]
+        [ScorableGroup(1)]
+        public async Task RunFetchRosterDialog(IDialogContext context, IActivity activity)
+        {
+            context.Call(new FetchRosterDialog(), this.EndDialog);
+        }
+
+        [RegexPattern("setup text message")]
+        [ScorableGroup(1)]
+        public async Task RunUpdateTextMsgSetupDialog(IDialogContext context, IActivity activity)
+        {
+            context.Call(new UpdateTextMsgSetupDialog(), this.EndDialog);
+        }
+
+        [RegexPattern("update text message")]
+        [ScorableGroup(1)]
+        public async Task RunUpdateTextMsgDialog(IDialogContext context, IActivity activity)
+        {
+            context.Call(new UpdateTextMsgDialog(), this.EndDialog);
+        }
+
         [MethodBind]
         [ScorableGroup(2)]
         public async Task Default(IDialogContext context, IActivity activity)

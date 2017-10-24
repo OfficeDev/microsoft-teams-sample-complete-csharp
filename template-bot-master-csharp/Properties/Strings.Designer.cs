@@ -19,7 +19,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Strings {
@@ -1681,7 +1681,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Hey! I am Bot, How&apos;s going!!.
+        ///   Looks up a localized string similar to Hey! I&apos;m a Bot. I sent this message..
         /// </summary>
         internal static string Send1on1Prompt {
             get {

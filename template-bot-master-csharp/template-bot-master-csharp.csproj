@@ -163,14 +163,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="bot\dialogs\AtMentionDialog.cs" />
     <Compile Include="bot\dialogs\DefaultDialog.cs" />
+    <Compile Include="bot\dialogs\FetchRosterDialog.cs" />
     <Compile Include="bot\dialogs\HelloDialog.cs" />
     <Compile Include="bot\dialogs\HeroCardDialog.cs" />
     <Compile Include="bot\dialogs\O365ConnectorCardActionsDialog.cs" />
     <Compile Include="bot\dialogs\O365ConnectorCard2Dialog.cs" />
     <Compile Include="bot\dialogs\O365ConnectorCard1Dialog.cs" />
+    <Compile Include="bot\dialogs\ProactiveMsgTo1to1Dialog.cs" />
     <Compile Include="bot\dialogs\RootDialog.cs" />
     <Compile Include="bot\dialogs\ThumbnailCardDialog.cs" />
+    <Compile Include="bot\dialogs\UpdateTextMsgDialog.cs" />
+    <Compile Include="bot\dialogs\UpdateTextMsgSetupDialog.cs" />
     <Compile Include="controllers\MessagesController.cs" />
     <Compile Include="bot\middleware\StripBotAtMentions.cs" />
     <Compile Include="Global.asax.cs">
