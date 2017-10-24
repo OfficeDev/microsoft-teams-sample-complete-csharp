@@ -48,6 +48,13 @@ namespace Microsoft.Teams.Tutorial.CSharp
             context.Call(new O365ConnectorCard2Dialog(), this.EndDialog);
         }
 
+        [RegexPattern("connector card actions")]
+        [ScorableGroup(1)]
+        public async Task RunO365ConnectorCardActionsDialog(IDialogContext context, IActivity activity)
+        {
+            context.Call(new O365ConnectorCardActionsDialog(), this.EndDialog);
+        }
+
         [MethodBind]
         [ScorableGroup(2)]
         public async Task Default(IDialogContext context, IActivity activity)
