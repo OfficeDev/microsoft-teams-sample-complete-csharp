@@ -187,6 +187,8 @@
       <DependentUpon>Strings.resx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="utilities\TemplateUtility.cs" />
+    <Compile Include="utilities\WikiHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
