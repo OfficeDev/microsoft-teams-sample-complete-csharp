@@ -6,34 +6,22 @@
 </head>
 <body>
     <h1>Directions</h1>
-    <p>Register a new bot (or update an existing one) with Bot Framework by using your BASE_URI + /api/messages (e.g. https://####abcd.ngrok.io/api/messages) as the bot's "Messaging endpoint". Bot registration is <a href="https://dev.botframework.com/bots">Bot Registration</a>. <b>NOTE:</b> When you create your bot you will create an App ID and App password - make sure you keep these for later.</p>
-    <p>Once registered, take your new App ID and App password and put these values into the Web.config file as the MicrosoftAppId and MicrosoftAppPassword respectively. Do this by replacing the 'NeedToSetThis' for each. All of your Web.config values should now be filled.</p>
-    <p>This App ID is now the value you should enter for 'REGISTERED_BOT_ID' in the manifest. It is also the value you should use at the top level 'id' value instead of the original temporary ID from before. Thus, all app.ids refer to this registered App ID.</p>
+    <p>Tell the bot 'thumbnail card'</p>
     <br />
 
     <h1>Features added</h1>
-    <p>A bot has been added to the app.</p>
+    <p>Bot can now return a thumbnail card.</p>
     <br />
 
     <h1>File Changes</h1>
-        <ul>
-            <li>controllers/MessagesController.cs - used to accept the incoming bot messages<br /><br /></li>
-            <li>bot/dialogs/RootDialog.cs - this file is used to accept all incoming messages and send them to the correct dialog<br /><br /></li>
-            <li>bot/dialogs/HelloDialog.cs - this dialog is used to respond with 'Hello!' when 'hello' is entered<br /><br /></li>
-            <li>bot/dialogs/DefaultDialog.cs - this dialog is used handle unrecognized commands<br /><br /></li>
-            <li>bot/middleware/StripBotAtMentions.cs - this middleware is used to strip the '@botName' from messages that come from channels so the commands can be parsed correctly<br /><br /></li>
-            <li>App_Start/WebApiConfig.cs - added to route the messages to the controller MessagesController<br /><br /></li>
-            <li>Global.asax - added to call App_Start/WebApiConfig.cs at startup<br /><br /></li>
-            <li>Changed the manifest to add the bot to the app.</li>
-        </ul>
     <br />
 
     <h1>To See the New Feature</h1>
-    <p>At-mention the bot's name in a channel and then type 'hello' e.g. @TestBot hello</p>
+    <p>Tell the bot 'thumbnail card'</p>
     <br />
 
     <h1>Next Feature to Add</h1>
-    <p>Additional bot features</p>
+    <p>Additional bot cards</p>
     <br />
 
     <h1>Setup and Sideload the Manifest</h1>
