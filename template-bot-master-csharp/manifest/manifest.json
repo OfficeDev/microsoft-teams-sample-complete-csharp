@@ -40,6 +40,14 @@
       "scopes": [
         "personal"
       ]
+    },
+    {
+      "contentUrl": "<<BASE_URI>>/authentication/simple.html",
+      "entityId": "simpleAuth",
+      "name": "Simple Auth",
+      "scopes": [
+        "personal"
+      ]
     }
   ],
   "bots": [
