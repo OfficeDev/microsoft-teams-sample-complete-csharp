@@ -51,6 +51,31 @@
       ]
     }
   ],
+  "composeExtensions": [
+    {
+      "botId": "<<REGISTERED_BOT_ID>>",
+      "scopes": [
+        "personal",
+        "team"
+      ],
+      "canUpdateConfiguration": true,
+      "commands": [
+        {
+          "id": "search123",
+          "description": "Find a card",
+          "title": "Search",
+          "initialRun": true,
+          "parameters": [
+            {
+              "title": "query123",
+              "name": "query",
+              "description": "Search string"
+            }
+          ]
+        }
+      ]
+    }
+  ],
   "permissions": [
     "identity",
     "messageTeamMembers"
