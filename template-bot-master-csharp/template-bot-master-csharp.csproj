@@ -166,6 +166,7 @@
     <Compile Include="bot\dialogs\DefaultDialog.cs" />
     <Compile Include="bot\dialogs\HelloDialog.cs" />
     <Compile Include="bot\dialogs\RootDialog.cs" />
+    <Compile Include="bot\dialogs\ThumbnailCardDialog.cs" />
     <Compile Include="controllers\MessagesController.cs" />
     <Compile Include="bot\middleware\StripBotAtMentions.cs" />
     <Compile Include="Global.asax.cs">

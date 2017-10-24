@@ -20,6 +20,13 @@ namespace Microsoft.Teams.Tutorial.CSharp
             context.Call(new HelloDialog(), this.EndDialog);
         }
 
+        [RegexPattern("thumbnail card")]
+        [ScorableGroup(1)]
+        public async Task RunThumbnailCardDialog(IDialogContext context, IActivity activity)
+        {
+            context.Call(new ThumbnailCardDialog(), this.EndDialog);
+        }
+
         [MethodBind]
         [ScorableGroup(2)]
         public async Task Default(IDialogContext context, IActivity activity)
