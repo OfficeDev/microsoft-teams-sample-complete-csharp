@@ -165,6 +165,9 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="bot\dialogs\DefaultDialog.cs" />
     <Compile Include="bot\dialogs\HelloDialog.cs" />
+    <Compile Include="bot\dialogs\HeroCardDialog.cs" />
+    <Compile Include="bot\dialogs\O365ConnectorCard2Dialog.cs" />
+    <Compile Include="bot\dialogs\O365ConnectorCard1Dialog.cs" />
     <Compile Include="bot\dialogs\RootDialog.cs" />
     <Compile Include="bot\dialogs\ThumbnailCardDialog.cs" />
     <Compile Include="controllers\MessagesController.cs" />

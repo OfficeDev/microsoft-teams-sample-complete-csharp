@@ -27,6 +27,27 @@ namespace Microsoft.Teams.Tutorial.CSharp
             context.Call(new ThumbnailCardDialog(), this.EndDialog);
         }
 
+        [RegexPattern("hero card")]
+        [ScorableGroup(1)]
+        public async Task RunHeroCardDialog(IDialogContext context, IActivity activity)
+        {
+            context.Call(new HeroCardDialog(), this.EndDialog);
+        }
+
+        [RegexPattern("connector card")]
+        [ScorableGroup(1)]
+        public async Task RunO365ConnectorCard1Dialog(IDialogContext context, IActivity activity)
+        {
+            context.Call(new O365ConnectorCard1Dialog(), this.EndDialog);
+        }
+
+        [RegexPattern("connector card 2")]
+        [ScorableGroup(1)]
+        public async Task RunO365ConnectorCard2Dialog(IDialogContext context, IActivity activity)
+        {
+            context.Call(new O365ConnectorCard2Dialog(), this.EndDialog);
+        }
+
         [MethodBind]
         [ScorableGroup(2)]
         public async Task Default(IDialogContext context, IActivity activity)
