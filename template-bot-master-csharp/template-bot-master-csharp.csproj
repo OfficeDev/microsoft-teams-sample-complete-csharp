@@ -139,7 +139,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="authentication\simple-end.html" />
-    <Content Include="authentication\simple-start.html" />
     <Content Include="authentication\simple.html" />
     <Content Include="authentication\simple-start.aspx" />
     <Content Include="default.htm" />
