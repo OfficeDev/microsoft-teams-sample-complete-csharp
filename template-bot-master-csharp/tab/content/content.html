@@ -1,0 +1,30 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Simple Tab</title>
+    <script src='https://statics.teams.microsoft.com/sdk/v1.0/js/MicrosoftTeams.min.js'></script>
+    <script src='https://code.jquery.com/jquery-1.11.3.min.js'></script>
+</head>
+<body>
+    <h1>This is some content</h1>
+    <img style="width: 225px; height: 149.625px;"src="/public/assets/computer_person.jpg" />
+    <br />
+    <br />
+    <button onclick="showContext()">Click to Show Tab's Context</button>
+    <p id="contextOutput"></p>
+    <script type="text/javascript">
+        var microsoftTeams;
+
+        $(document).ready(function () {
+            microsoftTeams.initialize();
+        });
+
+        function showContext() {
+            microsoftTeams.getContext((context) => {
+                document.getElementById('contextOutput').innerHTML = JSON.stringify(context);
+            });
+        }
+    </script>
+</body>
+</html>
