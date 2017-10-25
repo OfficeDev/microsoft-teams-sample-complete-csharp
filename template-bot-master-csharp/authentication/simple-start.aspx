@@ -8,12 +8,6 @@
     <script src="https://statics.teams.microsoft.com/sdk/v1.0/js/MicrosoftTeams.min.js" integrity="sha384-SNENyRfvDvybst1u0LawETYF6L5yMx5Ya1dIqWoG4UDTZ/5UAMB15h37ktdBbyFh" crossorigin="anonymous"></script>
 </head>
 <body>
-    <form id="form1" runat="server">
-        
-    </form>
-
-    <div id="hidden" style="display: none;"><asp:Label ID="appId" runat="server" /></div>
-
     <script type="text/javascript">
             microsoftTeams.initialize();
 
@@ -23,15 +17,15 @@
                 let state = _guid();
                 localStorage.setItem("simple.state", state);
                 localStorage.removeItem("simple.error");
-
+                
                 // See https://docs.microsoft.com/en-us/azure/active-directory/develop/active-directory-v2-protocols-implicit
                 // for documentation on these query parameters
                 let queryParams = {
-                    client_id: document.getElementById('hidden').innerHTML,
+                    client_id: "<% Response.Write(ConfigurationManager.AppSettings["MicrosoftAppId"].ToString()); %>",
                     response_type: "id_token token",
                     response_mode: "fragment",
                     resource: "https://graph.microsoft.com/",
-                    redirect_uri: window.location.origin + "/tab-auth/simple-end",
+                    redirect_uri: window.location.origin + "/authentication/simple-end.html",
                     nonce: _guid(),
                     state: state,
                     // login_hint pre-fills the username/email address field of the sign in page for the user, 
@@ -41,6 +35,7 @@
 
                 // Go to the AzureAD authorization endpoint
                 let authorizeEndpoint = "https://login.microsoftonline.com/common/oauth2/authorize?" + toQueryString(queryParams);
+
                 window.location.assign(authorizeEndpoint);
             });
 

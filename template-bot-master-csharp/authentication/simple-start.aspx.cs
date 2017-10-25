@@ -11,7 +11,6 @@ namespace Microsoft.Teams.TemplateBotCSharp.src.tab
         private bool IsValidFilePath { get; set; }
         protected void Page_Load(object sender, EventArgs e)
         {
-            appId.Text = ConfigurationManager.AppSettings["MicrosoftAppId"].ToString(); 
         }
     }
 }
