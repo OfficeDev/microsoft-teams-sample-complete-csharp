@@ -32,19 +32,16 @@ namespace Microsoft.Teams.TemplateBotCSharp
 
                 //Set the OFFICE_365_TENANT_FILTER key in web.config file with Tenant Information
 
-                if (ConfigurationManager.AppSettings["OFFICE_365_TENANT_FILTER"] != null && !String.Equals(Convert.ToString(ConfigurationManager.AppSettings["OFFICE_365_TENANT_FILTER"]), Strings.TenantConfigStaticValue))
+                //Validate bot for specific teams tenant if any
+                if (!Middleware.RestrictBotForTenant(activity))
                 {
-                    //Restrict the bot for specific teams tenant
-                    if (!Middleware.RestrictBotForTenant(activity))
-                    {
-                        var connectorClient = new ConnectorClient(new Uri(activity.ServiceUrl));
+                    var connectorClient = new ConnectorClient(new Uri(activity.ServiceUrl));
 
-                        Activity replyActivity = activity.CreateReply();
-                        replyActivity.Text = Strings.TenantLevelDeniedAccess;
+                    Activity replyActivity = activity.CreateReply();
+                    replyActivity.Text = Strings.TenantLevelDeniedAccess;
 
-                        await connectorClient.Conversations.ReplyToActivityAsync(replyActivity);
-                        return null;
-                    }
+                    await connectorClient.Conversations.ReplyToActivityAsync(replyActivity);
+                    return null;
                 }
 
                 try
