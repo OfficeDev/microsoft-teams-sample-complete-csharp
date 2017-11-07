@@ -48,6 +48,42 @@
       "scopes": [
         "team",
         "personal"
+      ],
+      "commandLists": [
+        {
+          "scopes": [
+            "team"
+          ],
+          "commands": [
+            {
+              "title": "send message to 1:1",
+              "description":  "Used to send a 1 to 1 message"
+            },
+            {
+              "title": "setup text message",
+              "description": "Sets up a message to be updated"
+            },
+            {
+              "title": "update text message",
+              "description": "Updates the message"
+            }
+          ]
+        },
+        {
+          "scopes": [
+            "personal"
+          ],
+          "commands": [
+            {
+              "title": "setup text message",
+              "description": "Sets up a message to be updated"
+            },
+            {
+              "title": "update text message",
+              "description": "Updates the message"
+            }
+          ]
+        }
       ]
     }
   ],
