@@ -69,7 +69,7 @@ namespace Microsoft.Teams.Tutorial.CSharp
 
         private static async Task<HttpResponseMessage> HandleO365ConnectorCardActionQuery(Activity activity)
         {
-            var connectorClient = new ConnectorClient(new Uri("https://smba.trafficmanager.net/amer-client-ss.msg/"));
+            var connectorClient = new ConnectorClient(new Uri(activity.ServiceUrl));
 
             // Get O365 connector card query data.
             O365ConnectorCardActionQuery o365CardQuery = activity.GetO365ConnectorCardActionQueryData();
