@@ -1,9 +1,9 @@
 ﻿using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Connector;
+using Microsoft.Teams.TemplateBotCSharp.Properties;
 using Newtonsoft.Json;
 using System;
 using System.Threading.Tasks;
-using Microsoft.Teams.TemplateBotCSharp.Properties;
 
 namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
 {

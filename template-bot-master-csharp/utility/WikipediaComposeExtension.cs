@@ -1,5 +1,7 @@
 ﻿using Microsoft.Bot.Connector;
+using Microsoft.Bot.Connector.Teams;
 using Microsoft.Bot.Connector.Teams.Models;
+using Microsoft.Teams.TemplateBotCSharp.Properties;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -10,10 +12,160 @@ using System.Text.RegularExpressions;
 
 namespace Microsoft.Teams.TemplateBotCSharp.Utility
 {
-    public static class WikiHelper
+    public static class WikipediaComposeExtension
     {
         const string searchApiUrlFormat = "https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=[keyword]&srlimit=[limit]&sroffset=[offset]&format=json";
         const string imageApiUrlFormat = "https://en.wikipedia.org/w/api.php?action=query&formatversion=2&format=json&prop=pageimages&piprop=thumbnail&pithumbsize=250&titles=[title]";
+
+        public static ComposeExtensionResponse GetComposeExtensionResponse(Activity activity)
+        {
+            ComposeExtensionResponse composeExtensionResponse = null;
+            ImageResult imageResult = null;
+            List<ComposeExtensionAttachment> lstComposeExtensionAttachment = new List<ComposeExtensionAttachment>();
+            StateClient stateClient = activity.GetStateClient();
+            BotData userData = stateClient.BotState.GetUserData(activity.ChannelId, activity.From.Id);
+
+            bool IsSettingUrl = false;
+
+            var composeExtensionQuery = activity.GetComposeExtensionQueryData();
+            if (string.Equals(activity.Name.ToLower(), Strings.ComposeExtensionQuerySettingUrl))
+            {
+                IsSettingUrl = true;
+            }
+
+
+            if (composeExtensionQuery.CommandId == null || composeExtensionQuery.Parameters == null)
+            {
+                return null;
+            }
+
+            var initialRunParameter = GetQueryParameterByName(composeExtensionQuery, Strings.manifestInitialRun);
+            var queryParameter = GetQueryParameterByName(composeExtensionQuery, Strings.manifestParameterName);
+
+            if (userData == null)
+            {
+                composeExtensionResponse = new ComposeExtensionResponse();
+                string message = Strings.ComposeExtensionNoUserData;
+                composeExtensionResponse.ComposeExtension = GetMessageResponseResult(message);
+                return composeExtensionResponse;
+            }
+
+            /**
+                * Below are the checks for various states that may occur
+                * Note that the order of many of these blocks of code do matter
+             */
+
+            // situation where the incoming payload was received from the config popup
+
+            if (!string.IsNullOrEmpty(composeExtensionQuery.State))
+            {
+                ParseSettingsAndSave(composeExtensionQuery.State, userData, stateClient, activity);
+                /**
+                //// need to keep going to return a response so do not return here
+                //// these variables are changed so if the word 'setting' kicked off the compose extension,
+                //// then the word setting will not retrigger the config experience
+                **/
+
+                queryParameter = "";
+                initialRunParameter = "true";
+            }
+
+            // this is a sitaution where the user's preferences have not been set up yet
+            if (string.IsNullOrEmpty(userData.GetProperty<string>(Strings.ComposeExtensionCardTypeKeyword)))
+            {
+                composeExtensionResponse = GetConfig(composeExtensionResponse);
+                return composeExtensionResponse;
+            }
+
+            /**
+            // this is the situation where the user has entered the word 'reset' and wants
+            // to clear his/her settings
+            // resetKeyword for English is "reset"
+            **/
+
+            if (string.Equals(queryParameter.ToLower(), Strings.ComposeExtensionResetKeyword))
+            {
+                //make the userData null
+                userData = null;
+                composeExtensionResponse = new ComposeExtensionResponse();
+                composeExtensionResponse.ComposeExtension = GetMessageResponseResult(Strings.ComposeExtensionResetText);
+                return composeExtensionResponse;
+            }
+
+            /**
+            // this is the situation where the user has entered "setting" or "settings" in order
+            // to repromt the config experience
+            // keywords for English are "setting" and "settings"
+            **/
+
+            if ((string.Equals(queryParameter.ToLower(), Strings.ComposeExtensionSettingKeyword) || string.Equals(queryParameter.ToLower(), Strings.ComposeExtensionSettingsKeyword)) || (IsSettingUrl))
+            {
+                composeExtensionResponse = GetConfig(composeExtensionResponse);
+                return composeExtensionResponse;
+            }
+
+
+            /**
+            // this is the situation where the user in on the initial run of the compose extension
+            // e.g. when the user first goes to the compose extension and the search bar is still blank
+            // in order to get the compose extension to run the initial run, the setting "initialRun": true
+            // must be set in the manifest for the compose extension
+            **/
+
+            if (initialRunParameter == "true")
+            {
+                //Signin Experience, please uncomment below code for Signin Experience
+                //composeExtensionResponse = WikiHelper.GetSignin(composeExtensionResponse);
+                //return composeExtensionResponse;
+
+                composeExtensionResponse = new ComposeExtensionResponse();
+                composeExtensionResponse.ComposeExtension = GetMessageResponseResult(Strings.ComposeExtensionInitialRunText);
+                return composeExtensionResponse;
+            }
+
+
+            /**
+
+            * Below here is simply the logic to call the Wikipedia API and create the response for
+
+            * a query; the general flow is to call the Wikipedia API for the query and then call the
+
+            * Wikipedia API for each entry for the query to see if that entry has an image; in order
+
+            * to get the asynchronous sections handled, an array of Promises for cards is used; each
+
+            * Promise is resolved when it is discovered if an image exists for that entry; once all
+
+            * of the Promises are resolved, the response is sent back to Teams
+
+            */
+
+            WikiResult wikiResult = SearchWiki(queryParameter, composeExtensionQuery);
+
+            // enumerate search results and build Promises for cards for response
+            foreach (var searchResult in wikiResult.query.search)
+            {
+                //Get the Image result on the basis of Image Title one by one
+                imageResult = SearchWikiImage(searchResult);
+
+                //Get the Image Url from imageResult
+                string imageUrl = GetImageURL(imageResult);
+
+                //Set the Highlighter title
+                string highlightedTitle = GetHighLightedTitle(searchResult.title, queryParameter);
+
+                string cardText = searchResult.snippet + " ...";
+
+                // create the card itself and the preview card based upon the information
+                // check user preference for which type of card to create
+
+                lstComposeExtensionAttachment.Add(TemplateUtility.CreateComposeExtensionCardsAttachments(highlightedTitle, cardText, imageUrl, userData.GetProperty<string>(Strings.ComposeExtensionCardTypeKeyword)));
+            }
+
+            composeExtensionResponse = GetComposeExtenionQueryResult(composeExtensionResponse, lstComposeExtensionAttachment);
+
+            return composeExtensionResponse;
+        }
 
         // return the value of the specified query parameter
         public static string GetQueryParameterByName(ComposeExtensionQuery query, string name)

@@ -1,34 +1,44 @@
-﻿using System;
-using Microsoft.Bot.Connector;
+﻿using Microsoft.Bot.Connector;
+using System;
 using System.Configuration;
-using Microsoft.Bot.Connector.Teams.Models;
 
 namespace Microsoft.Teams.TemplateBotCSharp.Utility
 {
-    public static class Middleware
+    public static partial class Middleware
     {
         public static string TenantFilterSettingAny = "#ANY#";
 
-        public static bool RestrictBotForTenant(IMessageActivity activity)
+        /// <summary>
+        /// Here are below scenarios - 
+        ///     #Scanerio 1 - Reject the Bot If Tenant is configured in web.config and doesn't match with Incoming request tenant
+        ///     #Scenario 2 - Allow Bot for every Tenant if Tenant is not configured in web.config file and deafult value is #ANY#             
+        /// </summary>
+        /// <param name="activity"></param>
+        /// <param name="currentTenant"></param>
+        /// <returns></returns>
+        public static bool RejectBotBasedOnTenant(IMessageActivity activity, string currentTenant)
         {
-            if (ConfigurationManager.AppSettings["OFFICE_365_TENANT_FILTER"] != null && !String.Equals(Convert.ToString(ConfigurationManager.AppSettings["OFFICE_365_TENANT_FILTER"]), TenantFilterSettingAny))
+            if (!String.Equals(ConfigurationManager.AppSettings["OFFICE_365_TENANT_FILTER"], TenantFilterSettingAny))
             {
-                string targetTenant = ConfigurationManager.AppSettings["OFFICE_365_TENANT_FILTER"] != null ? ConfigurationManager.AppSettings["OFFICE_365_TENANT_FILTER"].ToString() : null;
-                string currentTanent = (activity != null && activity.ChannelData != null && activity.ChannelData["tenant"] != null) ? Convert.ToString(activity.ChannelData["tenant"]["id"]) : null;
-
-                if (string.Equals(targetTenant, currentTanent))
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                //#Scanerio 1
+                return !string.Equals(ConfigurationManager.AppSettings["OFFICE_365_TENANT_FILTER"].ToString(), currentTenant);
             }
             else
             {
-                return true;
+                //Scenario 2
+                return false;
             }
+        }
+
+        public static IMessageActivity ConvertActivityTextToLower(IMessageActivity activity)
+        {
+            //Convert input command in lower case for 1To1 and Channel users
+            if (activity.Text != null)
+            {
+                activity.Text = activity.Text.ToLower();
+            }
+
+            return activity;
         }
     }
 }

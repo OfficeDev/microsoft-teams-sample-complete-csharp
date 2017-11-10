@@ -792,4 +792,7 @@
   <data name="TenantConfigStaticValue" xml:space="preserve">
     <value>#PleaseSetTenantInformation</value>
   </data>
+  <data name="InvokeRequestJsonKey" xml:space="preserve">
+    <value>invokeKey</value>
+  </data>
 </root>

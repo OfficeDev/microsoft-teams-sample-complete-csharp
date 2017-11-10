@@ -157,7 +157,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="middleware\ParseInvokeActivityRequest.cs" />
+    <Compile Include="utility\InvokeHandler.cs" />
     <Compile Include="middleware\Middleware.cs" />
     <Compile Include="Properties\Strings.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -214,7 +214,7 @@
       <DependentUpon>tab.aspx</DependentUpon>
     </Compile>
     <Compile Include="utility\TemplateUtility.cs" />
-    <Compile Include="utility\WikiHelper.cs" />
+    <Compile Include="utility\WikipediaComposeExtension.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

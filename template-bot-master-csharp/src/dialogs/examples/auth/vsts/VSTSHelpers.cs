@@ -1,16 +1,14 @@
-﻿using System;
+﻿using Microsoft.Bot.Connector;
+using Microsoft.Teams.TemplateBotCSharp.Properties;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
+using System.Configuration;
+using System.IO;
+using System.Net;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using System.Web;
-using Microsoft.Bot.Connector;
-using Newtonsoft.Json;
-using System.Net;
-using System.IO;
-using System.Configuration;
-using System.Collections.Generic;
-using Newtonsoft.Json.Linq;
-using Microsoft.Teams.TemplateBotCSharp.Properties;
 
 namespace Microsoft.Teams.TemplateBotCSharp
 {

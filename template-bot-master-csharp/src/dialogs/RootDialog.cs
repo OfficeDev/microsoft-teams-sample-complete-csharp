@@ -1,11 +1,10 @@
 ﻿using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Builder.Scorables;
 using Microsoft.Bot.Connector;
-using System;
-using System.Threading.Tasks;
 using Microsoft.Teams.TemplateBotCSharp.Properties;
-using System.Threading;
+using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
 {

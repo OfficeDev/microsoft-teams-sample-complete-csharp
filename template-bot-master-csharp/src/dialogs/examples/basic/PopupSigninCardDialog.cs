@@ -1,12 +1,10 @@
 ﻿using Microsoft.Bot.Builder.Dialogs;
-using System;
-using System.Threading.Tasks;
-using Microsoft.Teams.TemplateBotCSharp.Properties;
 using Microsoft.Bot.Connector;
+using Microsoft.Teams.TemplateBotCSharp.Properties;
+using System;
 using System.Collections.Generic;
-using Microsoft.Teams.TemplateBotCSharp.Utility;
-using System.Globalization;
 using System.Configuration;
+using System.Threading.Tasks;
 
 namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
 {
@@ -39,14 +37,14 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
 
         private static Attachment GetPopUpSignInCard()
         {
-            string popUpUrl = Convert.ToString(ConfigurationManager.AppSettings["BaseUri"]);
+            string baseUri = Convert.ToString(ConfigurationManager.AppSettings["BaseUri"]);
 
             var heroCard = new HeroCard
             {
                 Title = Strings.PopUpSignInCardTitle,
                 Buttons = new List<CardAction>
                 {
-                    new CardAction(ActionTypes.Signin, Strings.PopUpSignInCardButtonTitle, value: popUpUrl + "/popUpSignin.html"),
+                    new CardAction(ActionTypes.Signin, Strings.PopUpSignInCardButtonTitle, value: baseUri + "/popUpSignin.html?height=200&width=200"),
                 }
             };
 

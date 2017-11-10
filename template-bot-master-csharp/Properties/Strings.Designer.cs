@@ -925,6 +925,15 @@ namespace Microsoft.Teams.TemplateBotCSharp.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to invokeKey.
+        /// </summary>
+        internal static string InvokeRequestJsonKey {
+            get {
+                return ResourceManager.GetString("InvokeRequestJsonKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ActionableMessageCardDialog.
         /// </summary>
         internal static string LastDialogActionableMessageDialog {

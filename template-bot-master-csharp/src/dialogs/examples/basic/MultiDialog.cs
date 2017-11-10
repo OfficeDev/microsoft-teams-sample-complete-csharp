@@ -1,11 +1,10 @@
 ﻿using Microsoft.Bot.Builder.Dialogs;
-using System;
-using System.Threading.Tasks;
-using Microsoft.Teams.TemplateBotCSharp.Properties;
 using Microsoft.Bot.Connector;
+using Microsoft.Teams.TemplateBotCSharp.Properties;
+using System;
 using System.Collections.Generic;
-using Newtonsoft.Json.Linq;
 using System.Configuration;
+using System.Threading.Tasks;
 
 namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
 {
@@ -64,8 +63,8 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
                 Images = new List<CardImage> { new CardImage(ConfigurationManager.AppSettings["BaseUri"].ToString() + "/public/assets/computer_person.jpg") },
                 Buttons = new List<CardAction>
                 {
-                   new CardAction("invoke", Strings.CaptionInvokeHelloDailog, value: "{\"" + Strings.cmdHelloDialog + "\": \"" + Strings.cmdHelloDialog + "\"}"),
-                   new CardAction("invoke", Strings.CaptionInvokeMultiDailog, value: "{\"" + Strings.cmdMultiDialog1 + "\": \"" + Strings.cmdMultiDialog1 + "\"}"),
+                   new CardAction("invoke", Strings.CaptionInvokeHelloDailog, value: "{\"" + Strings.InvokeRequestJsonKey + "\": \"" + Strings.cmdHelloDialog + "\"}"),
+                   new CardAction("invoke", Strings.CaptionInvokeMultiDailog, value: "{\"" + Strings.InvokeRequestJsonKey+ "\": \"" + Strings.cmdMultiDialog1 + "\"}"),
                 }
             }.ToAttachment();
         }

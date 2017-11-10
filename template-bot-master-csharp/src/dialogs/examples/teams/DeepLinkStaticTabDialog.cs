@@ -1,16 +1,15 @@
 ﻿using Microsoft.Bot.Builder.Dialogs;
-using System;
-using System.Threading.Tasks;
-using Microsoft.Teams.TemplateBotCSharp.Properties;
 using Microsoft.Bot.Connector;
+using Microsoft.Teams.TemplateBotCSharp.Properties;
+using System;
 using System.Collections.Generic;
-using Microsoft.IdentityModel.Protocols;
 using System.Configuration;
+using System.Threading.Tasks;
 
 namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
 {
     /// <summary>
-    /// This is DeepLink Dialog Class. Main purpose of this class is to show Depp link from Bot to Tab example
+    /// This is DeepLink Dialog Class. Main purpose of this class is to show Deep link from Bot to Tab example
     /// </summary>
 
     [Serializable]

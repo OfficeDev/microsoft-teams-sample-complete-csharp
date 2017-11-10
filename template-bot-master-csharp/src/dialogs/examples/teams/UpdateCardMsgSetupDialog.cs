@@ -1,11 +1,10 @@
 ﻿using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Connector;
+using Microsoft.Teams.TemplateBotCSharp.Properties;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.Teams.TemplateBotCSharp.Properties;
 using System.Configuration;
+using System.Threading.Tasks;
 
 namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
 {
@@ -64,6 +63,8 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
                     await context.PostAsync(Strings.ErrorTextMessageUpdate);
                 }
             }
+
+            context.Done<object>(null);
         }
 
         #region Create Message to Setup Card

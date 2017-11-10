@@ -1,12 +1,11 @@
 ﻿using Microsoft.Bot.Builder.Dialogs;
-using System;
-using System.Threading.Tasks;
-using Microsoft.Teams.TemplateBotCSharp.Properties;
 using Microsoft.Bot.Connector;
-using System.Collections.Generic;
-using Microsoft.Teams.TemplateBotCSharp.Utility;
 using Microsoft.Bot.Connector.Teams.Models;
+using Microsoft.Teams.TemplateBotCSharp.Properties;
+using System;
+using System.Collections.Generic;
 using System.Configuration;
+using System.Threading.Tasks;
 
 namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
 {

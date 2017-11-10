@@ -1,15 +1,13 @@
 ﻿using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Connector;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.Teams.TemplateBotCSharp.Properties;
+using System;
+using System.Threading.Tasks;
 
 namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
 {
     /// <summary>
-    /// This is Update Setup Text Dialog Class. Main purpose of this class is to Setup the Card in Bot example
+    /// This is Update Setup Text Dialog Class. Main purpose of this class is to Setup the text message that will be update later in Bot example.
     /// </summary>
     [Serializable]
     public class UpdateTextMsgSetupDialog : IDialog<object>

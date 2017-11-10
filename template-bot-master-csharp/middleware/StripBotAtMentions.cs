@@ -1,9 +1,9 @@
-﻿using System;
-using Microsoft.Bot.Connector;
+﻿using Microsoft.Bot.Connector;
+using System;
 
 namespace Microsoft.Teams.TemplateBotCSharp.Utility
 {
-    public static class StripBotAtMentions
+    public static partial class Middleware
     {
         public static IMessageActivity StripAtMentionText(IMessageActivity activity)
         {
@@ -22,12 +22,6 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
                     if (m[i].Text != null)
                         activity.Text = activity.Text.Replace(m[i].Text, "").Trim();
                 }
-            }
-
-            //Convert input command in lower case for 1To1 and Channel users
-            if (activity.Text != null)
-            {
-                activity.Text = activity.Text.ToLower();
             }
 
             return activity;
