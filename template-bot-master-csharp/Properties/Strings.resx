@@ -772,13 +772,13 @@
     <value>signin</value>
   </data>
   <data name="HelpCaptionPopUpSignIn" xml:space="preserve">
-    <value>Popup Signin</value>
+    <value>Popup Sign-In</value>
   </data>
   <data name="PopUpSignInCardButtonTitle" xml:space="preserve">
-    <value>SignIn</value>
+    <value>Sign In</value>
   </data>
   <data name="PopUpSignInCardTitle" xml:space="preserve">
-    <value>Please click below for Popup SignIn experience</value>
+    <value>Please click below for Popup Sign-In experience</value>
   </data>
   <data name="cmdMessageBack" xml:space="preserve">
     <value>msgback</value>

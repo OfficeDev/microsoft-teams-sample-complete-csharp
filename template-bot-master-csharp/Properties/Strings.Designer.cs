@@ -799,7 +799,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Popup Signin.
+        ///   Looks up a localized string similar to Popup Sign-In.
         /// </summary>
         internal static string HelpCaptionPopUpSignIn {
             get {
@@ -1690,7 +1690,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SignIn.
+        ///   Looks up a localized string similar to Sign In.
         /// </summary>
         internal static string PopUpSignInCardButtonTitle {
             get {
@@ -1699,7 +1699,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Please click below for Popup SignIn experience.
+        ///   Looks up a localized string similar to Please click below for Popup Sign-In experience.
         /// </summary>
         internal static string PopUpSignInCardTitle {
             get {
