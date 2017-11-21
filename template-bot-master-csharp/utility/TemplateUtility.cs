@@ -1,13 +1,10 @@
-﻿using Microsoft.Bot.Builder.Dialogs;
-using Microsoft.Bot.Connector;
+﻿using Microsoft.Bot.Connector;
 using Microsoft.Bot.Connector.Teams;
 using Microsoft.Bot.Connector.Teams.Models;
 using Microsoft.Teams.TemplateBotCSharp.Properties;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.Threading;
 
 namespace Microsoft.Teams.TemplateBotCSharp.Utility
 {
@@ -38,20 +35,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
                     }
                 }
             }
-
             return activity.Locale;
-        }
-
-        public static Attachment GetChoiceOptionCard()
-        {
-            return new HeroCard(Strings.DisplayCardsPromptChoiceTitle)
-            {
-                Buttons = new List<CardAction>
-                    {
-                        new CardAction(ActionTypes.ImBack, Strings.OptionYes, value: Strings.cmdDisplayCards),
-                        new CardAction(ActionTypes.ImBack, Strings.OptionNo, value: Strings.cmdNoDisplayCards)
-                    }
-            }.ToAttachment();
         }
 
         public static ComposeExtensionAttachment CreateComposeExtensionCardsAttachments(string title,string text,string imageUrl, string state)
@@ -87,7 +71,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
             }
         }
 
-        public static Attachment GetComposeExtensionPreviewAttachment(string title,string text, string imageUrl, string state)
+        public static Attachment GetComposeExtensionPreviewAttachment(string title, string text, string imageUrl, string state)
         {
             if (string.Equals(state.ToLower(), "hero"))
             {
@@ -113,18 +97,22 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
             }
         }
 
-        public static string ParseJson(string inputString)
+        /// <summary>
+        /// Purpose of this method is to parse the invoke request json and returned the invoke value
+        /// </summary>
+        /// <param name="inputString"></param>
+        /// <returns></returns>
+        public static string ParseInvokeRequestJson(string inputString)
         {
             JObject invokeObjects = JObject.Parse(inputString);
+
             if (invokeObjects.Count > 0)
             {
-                foreach (var item in invokeObjects)
-                {
-                   return Convert.ToString(item.Value);
-                }
+                return invokeObjects[Strings.InvokeRequestJsonKey].Value<string>();
             }
 
             return null;
         }
+
     }
 }

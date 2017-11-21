@@ -2,7 +2,6 @@
 using Microsoft.Bot.Connector;
 using Microsoft.Bot.Connector.Teams.Models;
 using Microsoft.Teams.TemplateBotCSharp.Properties;
-using Microsoft.Teams.TemplateBotCSharp.Utility;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -10,15 +9,13 @@ using System.Threading.Tasks;
 namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
 {
     /// <summary>
-    /// This is Begin Dialog Class. Main purpose of this class is to notify users that Child dialog has been called 
-    /// and its a Basic example to call Child dialog from Root Dialog.
+    /// This is Actionable Card Dialog Class. Main purpose of this class is to show example of Actionable feature sample like 
+    /// MultiChoice, Date, Dropdown and Text
     /// </summary>
 
     [Serializable]
-    public class O365ConnectorCardDialog : IDialog<object>
+    public class ActionableMessageCardDialog : IDialog<object>
     {
-        public string O365ConnectorCardChoice = string.Empty;
-
         public async Task StartAsync(IDialogContext context)
         {
             if (context == null)
@@ -27,110 +24,15 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
             }
 
             //Set the Last Dialog in Conversation Data
-            context.UserData.SetValue(Strings.LastDialogKey, Strings.LastDialogConnectorCard);
+            context.UserData.SetValue(Strings.LastDialogKey, Strings.LastDialogActionableMessageDialog);
 
             var message = context.MakeMessage();
-            var attachment = GetO365ConnectorCardAttachment(context);
+            var attachment = CreateSampleO365ConnectorCard();
             message.Attachments.Add(attachment);
 
-            if (!O365ConnectorCardChoice.Equals(Strings.cmdO365ConnectorCardActionableMessages))
-            {
-                message.Attachments.Add(TemplateUtility.GetChoiceOptionCard());
-            }
-
-            await context.PostAsync((message)); 
+            await context.PostAsync((message));
 
             context.Done<object>(null);
-        }
-
-        private static Attachment GetO365ConnectorCardV1()
-        {
-            var o365connector = new O365ConnectorCard
-            {
-                Title = Strings.O365V1Title,
-                Sections = new List<O365ConnectorCardSection>
-                {
-                    new O365ConnectorCardSection{ Text= Strings.O365V1Section1 },
-                    new O365ConnectorCardSection{ Text= Strings.O365V1Section2 }
-                },
-            };
-
-            return o365connector.ToAttachment();
-        }
-
-        private static Attachment GetO365ConnectorCardV2()
-        {
-            var section = new O365ConnectorCardSection
-            {
-                Title = Strings.O365V2Title,
-                ActivityTitle = Strings.O365V2ActivityTitle,
-                Facts = new List<O365ConnectorCardFact>
-                {
-                    new O365ConnectorCardFact(Strings.O365V2Fact1Key,Strings.O365V2Fact1Value),
-                    new O365ConnectorCardFact(Strings.O365V2Fact2Key,Strings.O365V2Fact2Value),
-                    new O365ConnectorCardFact(Strings.O365V2Fact3Key,Strings.O365V2Fact3Value),
-                    new O365ConnectorCardFact(Strings.O365V2Fact4Key,Strings.O365V2Fact4Value)
-                }
-            };
-
-            var o365connector = new O365ConnectorCard
-            {
-                ThemeColor = Strings.O365V2themecolor,
-                Sections = new List<O365ConnectorCardSection> { section },
-            };
-
-            return o365connector.ToAttachment();
-        }
-
-        private static Attachment GetO365ConnectorCardV3()
-        {
-            var section = new O365ConnectorCardSection
-            {
-                ActivityTitle = Strings.O365V3ActivityTitle,
-                ActivitySubtitle = Strings.O365V3ActivitySubtitle,
-                ActivityImage = Strings.O365V3ImageUrl,
-                Facts = new List<O365ConnectorCardFact>
-                {
-                    new O365ConnectorCardFact(Strings.O365V3Fact1Key,Strings.O365V3Fact1Value),
-                    new O365ConnectorCardFact(Strings.O365V3Fact2Key,Strings.O365V3Fact2Value),
-                }
-            };
-
-            var o365connector = new O365ConnectorCard
-            {
-                ThemeColor = Strings.O365V3ThemeColor,
-                Summary = Strings.O365V3Summary,
-                Title = Strings.O365V3Title,
-                Sections = new List<O365ConnectorCardSection> { section },
-                Text = Strings.O365V3Text
-            };
-
-            return o365connector.ToAttachment();
-        }
-
-        private Attachment GetO365ConnectorCardAttachment(IDialogContext context)
-        {
-            if (context.UserData.TryGetValue("O365ConnectorCardChoice", out O365ConnectorCardChoice))
-            {
-                if (O365ConnectorCardChoice.Equals(Strings.DisplayCardO365ConnectorCardV1))
-                {
-                    return GetO365ConnectorCardV1();
-                }
-                else if (O365ConnectorCardChoice.Equals(Strings.DisplayCardO365ConnectorCardV2))
-                {
-                    return GetO365ConnectorCardV2();
-                }
-                else if (O365ConnectorCardChoice.Equals(Strings.DisplayCardO365ConnectorCardV3))
-                {
-                    return GetO365ConnectorCardV3();
-                }
-                else if (O365ConnectorCardChoice.Equals(Strings.cmdO365ConnectorCardActionableMessages))
-                {
-                    return CreateSampleO365ConnectorCard();
-                }
-            }
-
-            return GetO365ConnectorCardV1();
         }
 
         /// <summary>
@@ -138,7 +40,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
         /// </summary>
         /// <returns>The result card with actions.</returns>
         /// 
-        private static Attachment CreateSampleO365ConnectorCard()
+        public static Attachment CreateSampleO365ConnectorCard()
         {
             #region Multichoice Card
             var multichoiceCard = new O365ConnectorCardActionCard(

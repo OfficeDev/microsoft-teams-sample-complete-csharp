@@ -397,16 +397,16 @@
     <value>no</value>
   </data>
   <data name="DisplayCardHeroCard" xml:space="preserve">
-    <value>Hero</value>
+    <value>Hero Card</value>
   </data>
   <data name="DisplayCardO365ConnectorCardV1" xml:space="preserve">
-    <value>O365ConnectorCard V1</value>
+    <value>ConnectorCardV1</value>
   </data>
   <data name="DisplayCardO365ConnectorCardV2" xml:space="preserve">
-    <value>O365ConnectorCard V2</value>
+    <value>ConnectorCardV2</value>
   </data>
   <data name="DisplayCardO365ConnectorCardV3" xml:space="preserve">
-    <value>O365ConnectorCard V3</value>
+    <value>ConnectorCardV3</value>
   </data>
   <data name="DisplayCardPromptText" xml:space="preserve">
     <value>What card you would like to test?</value>
@@ -418,7 +418,7 @@
     <value>Hope you liked the Cards!!</value>
   </data>
   <data name="DisplayCardThumbnailCard" xml:space="preserve">
-    <value>Thumbnail</value>
+    <value>Thumbnail Card</value>
   </data>
   <data name="HelpCaptionDisplayCards" xml:space="preserve">
     <value>Choose Cards</value>
@@ -742,9 +742,57 @@
     <value>composeextension/querysettingurl</value>
   </data>
   <data name="DisplayCardO365ConnectorActionableCard" xml:space="preserve">
-    <value>Actionable Card</value>
+    <value>Connector Card Actions</value>
   </data>
   <data name="cmdO365ConnectorCardActionableMessages" xml:space="preserve">
     <value>Actionable Card</value>
+  </data>
+  <data name="LastDialogActionableMessageDialog" xml:space="preserve">
+    <value>ActionableMessageCardDialog</value>
+  </data>
+  <data name="LastDialogConnectorCardV1Dialog" xml:space="preserve">
+    <value>ConnectorCardV1Dialog</value>
+  </data>
+  <data name="LastDialogConnectorCardV2Dialog" xml:space="preserve">
+    <value>ConnectorCardV2Dialog</value>
+  </data>
+  <data name="LastDialogConnectorCardV3Dialog" xml:space="preserve">
+    <value>ConnectorCardV3Dialog</value>
+  </data>
+  <data name="TenantLevelDeniedAccess" xml:space="preserve">
+    <value>MS Teams: Attempted access from a different Office 365 tenant: message rejected</value>
+  </data>
+  <data name="DisplayCardO365ConnectorActionableCardV2" xml:space="preserve">
+    <value>Connector Card Actions V2</value>
+  </data>
+  <data name="LastDialogPopUpSignIn" xml:space="preserve">
+    <value>PopUpSignInDialog</value>
+  </data>
+  <data name="cmdPopUpSignIn" xml:space="preserve">
+    <value>signin</value>
+  </data>
+  <data name="HelpCaptionPopUpSignIn" xml:space="preserve">
+    <value>Popup Sign-In</value>
+  </data>
+  <data name="PopUpSignInCardButtonTitle" xml:space="preserve">
+    <value>Sign In</value>
+  </data>
+  <data name="PopUpSignInCardTitle" xml:space="preserve">
+    <value>Please click below for Popup Sign-In experience</value>
+  </data>
+  <data name="cmdMessageBack" xml:space="preserve">
+    <value>msgback</value>
+  </data>
+  <data name="HelpCaptionMessageBack" xml:space="preserve">
+    <value>Message Back</value>
+  </data>
+  <data name="MessageBackTitleMsg" xml:space="preserve">
+    <value>This is Message Back example</value>
+  </data>
+  <data name="TenantConfigStaticValue" xml:space="preserve">
+    <value>#PleaseSetTenantInformation</value>
+  </data>
+  <data name="InvokeRequestJsonKey" xml:space="preserve">
+    <value>invokeKey</value>
   </data>
 </root>

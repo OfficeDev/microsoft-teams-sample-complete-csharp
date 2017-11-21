@@ -1,12 +1,11 @@
 ﻿using Microsoft.Bot.Builder.Dialogs;
+using Microsoft.Teams.TemplateBotCSharp.Properties;
 using System;
 using System.Threading.Tasks;
-using Microsoft.Teams.TemplateBotCSharp.Properties;
 namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
 {
     /// <summary>
-    /// This is Begin Dialog Class. Main purpose of this class is to notify users that Child dialog has been called 
-    /// and its a Basic example to call Child dialog from Root Dialog.
+    /// This is get Last Dialog Class. Main purpose of this class is to set the Last Active dialog information
     /// </summary>
 
     [Serializable]

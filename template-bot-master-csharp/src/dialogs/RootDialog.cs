@@ -1,11 +1,10 @@
 ﻿using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Builder.Scorables;
 using Microsoft.Bot.Connector;
-using System;
-using System.Threading.Tasks;
 using Microsoft.Teams.TemplateBotCSharp.Properties;
-using System.Threading;
+using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
 {
@@ -371,6 +370,94 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
         public async Task VSTSAuthGetWorkItemDialog(IDialogContext context, IActivity activity)
         {
             context.Call(new VSTSGetworkItemDialog(), this.EndDialog);
+        }
+
+        #endregion
+
+        #region Load Hero Card Type
+
+        [RegexPattern(DialogMatches.HeroCard)]
+        [ScorableGroup(1)]
+        public async Task HeroCard(IDialogContext context, IActivity activity)
+        {
+            context.Call(new HeroCardDialog(), this.EndDialog);
+        }
+
+        #endregion
+
+        #region Load Thumbnail Card Type
+
+        [RegexPattern(DialogMatches.ThumbnailCard)]
+        [ScorableGroup(1)]
+        public async Task ThumbnailCard(IDialogContext context, IActivity activity)
+        {
+            context.Call(new ThumbnailcardDialog(), this.EndDialog);
+        }
+
+        #endregion
+
+        #region Load Connector Card V1
+
+        [RegexPattern(DialogMatches.ConnectorCardV1)]
+        [ScorableGroup(1)]
+        public async Task O365ConnectorCardV1(IDialogContext context, IActivity activity)
+        {
+            context.Call(new ConnectorCardV1Dialog(), this.EndDialog);
+        }
+
+        #endregion
+
+        #region Load Connector Card V2
+
+        [RegexPattern(DialogMatches.ConnectorCardV2)]
+        [ScorableGroup(1)]
+        public async Task O365ConnectorCardV2(IDialogContext context, IActivity activity)
+        {
+            context.Call(new ConnectorCardV2Dialog(), this.EndDialog);
+        }
+
+        #endregion
+
+        #region Load Connector Card V3
+
+        [RegexPattern(DialogMatches.ConnectorCardV3)]
+        [ScorableGroup(1)]
+        public async Task O365ConnectorCardV3(IDialogContext context, IActivity activity)
+        {
+            context.Call(new ConnectorCardV3Dialog(), this.EndDialog);
+        }
+
+        #endregion
+
+        #region Load Actionable Message Card
+
+        [RegexPattern(DialogMatches.ActionableCard)]
+        [ScorableGroup(1)]
+        public async Task O365ConnectorCardActionableMessage(IDialogContext context, IActivity activity)
+        {
+            context.Call(new ActionableMessageCardDialog(), this.EndDialog);
+        }
+
+        #endregion
+
+        #region Load Actionable Message Card V2
+
+        [RegexPattern(DialogMatches.ActionableCardV2)]
+        [ScorableGroup(1)]
+        public async Task O365ConnectorCardActionableMessageV2(IDialogContext context, IActivity activity)
+        {
+            context.Call(new ActionableMessageCardDialogV2(), this.EndDialog);
+        }
+
+        #endregion
+
+        #region PopUp SignIn
+
+        [RegexPattern(DialogMatches.PopUpSignIn)]
+        [ScorableGroup(1)]
+        public async Task PopUpSignIn(IDialogContext context, IActivity activity)
+        {
+            context.Call(new PopupSigninCardDialog(), this.EndDialog);
         }
 
         #endregion

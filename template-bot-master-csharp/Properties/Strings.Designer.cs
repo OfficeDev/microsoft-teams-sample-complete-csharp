@@ -187,6 +187,15 @@ namespace Microsoft.Teams.TemplateBotCSharp.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to msgback.
+        /// </summary>
+        internal static string cmdMessageBack {
+            get {
+                return ResourceManager.GetString("cmdMessageBack", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to multi dialog 1.
         /// </summary>
         internal static string cmdMultiDialog1 {
@@ -219,6 +228,15 @@ namespace Microsoft.Teams.TemplateBotCSharp.Properties {
         internal static string cmdO365ConnectorCardActionableMessages {
             get {
                 return ResourceManager.GetString("cmdO365ConnectorCardActionableMessages", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to signin.
+        /// </summary>
+        internal static string cmdPopUpSignIn {
+            get {
+                return ResourceManager.GetString("cmdPopUpSignIn", resourceCulture);
             }
         }
         
@@ -448,7 +466,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Hero.
+        ///   Looks up a localized string similar to Hero Card.
         /// </summary>
         internal static string DisplayCardHeroCard {
             get {
@@ -457,7 +475,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Actionable Card.
+        ///   Looks up a localized string similar to Connector Card Actions.
         /// </summary>
         internal static string DisplayCardO365ConnectorActionableCard {
             get {
@@ -466,7 +484,16 @@ namespace Microsoft.Teams.TemplateBotCSharp.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to O365ConnectorCard V1.
+        ///   Looks up a localized string similar to Connector Card Actions V2.
+        /// </summary>
+        internal static string DisplayCardO365ConnectorActionableCardV2 {
+            get {
+                return ResourceManager.GetString("DisplayCardO365ConnectorActionableCardV2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ConnectorCardV1.
         /// </summary>
         internal static string DisplayCardO365ConnectorCardV1 {
             get {
@@ -475,7 +502,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to O365ConnectorCard V2.
+        ///   Looks up a localized string similar to ConnectorCardV2.
         /// </summary>
         internal static string DisplayCardO365ConnectorCardV2 {
             get {
@@ -484,7 +511,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to O365ConnectorCard V3.
+        ///   Looks up a localized string similar to ConnectorCardV3.
         /// </summary>
         internal static string DisplayCardO365ConnectorCardV3 {
             get {
@@ -520,7 +547,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Thumbnail.
+        ///   Looks up a localized string similar to Thumbnail Card.
         /// </summary>
         internal static string DisplayCardThumbnailCard {
             get {
@@ -736,6 +763,15 @@ namespace Microsoft.Teams.TemplateBotCSharp.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Message Back.
+        /// </summary>
+        internal static string HelpCaptionMessageBack {
+            get {
+                return ResourceManager.GetString("HelpCaptionMessageBack", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Begin Multi Dailog 1.
         /// </summary>
         internal static string HelpCaptionMultiDialog1 {
@@ -759,6 +795,15 @@ namespace Microsoft.Teams.TemplateBotCSharp.Properties {
         internal static string HelpCaptionPlayGame {
             get {
                 return ResourceManager.GetString("HelpCaptionPlayGame", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Popup Sign-In.
+        /// </summary>
+        internal static string HelpCaptionPopUpSignIn {
+            get {
+                return ResourceManager.GetString("HelpCaptionPopUpSignIn", resourceCulture);
             }
         }
         
@@ -880,6 +925,24 @@ namespace Microsoft.Teams.TemplateBotCSharp.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to invokeKey.
+        /// </summary>
+        internal static string InvokeRequestJsonKey {
+            get {
+                return ResourceManager.GetString("InvokeRequestJsonKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ActionableMessageCardDialog.
+        /// </summary>
+        internal static string LastDialogActionableMessageDialog {
+            get {
+                return ResourceManager.GetString("LastDialogActionableMessageDialog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to AtMentionDialog.
         /// </summary>
         internal static string LastDialogAtMentionDialog {
@@ -903,6 +966,33 @@ namespace Microsoft.Teams.TemplateBotCSharp.Properties {
         internal static string LastDialogConnectorCard {
             get {
                 return ResourceManager.GetString("LastDialogConnectorCard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ConnectorCardV1Dialog.
+        /// </summary>
+        internal static string LastDialogConnectorCardV1Dialog {
+            get {
+                return ResourceManager.GetString("LastDialogConnectorCardV1Dialog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ConnectorCardV2Dialog.
+        /// </summary>
+        internal static string LastDialogConnectorCardV2Dialog {
+            get {
+                return ResourceManager.GetString("LastDialogConnectorCardV2Dialog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ConnectorCardV3Dialog.
+        /// </summary>
+        internal static string LastDialogConnectorCardV3Dialog {
+            get {
+                return ResourceManager.GetString("LastDialogConnectorCardV3Dialog", resourceCulture);
             }
         }
         
@@ -1038,6 +1128,15 @@ namespace Microsoft.Teams.TemplateBotCSharp.Properties {
         internal static string LastDialogMultiDialog2 {
             get {
                 return ResourceManager.GetString("LastDialogMultiDialog2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PopUpSignInDialog.
+        /// </summary>
+        internal static string LastDialogPopUpSignIn {
+            get {
+                return ResourceManager.GetString("LastDialogPopUpSignIn", resourceCulture);
             }
         }
         
@@ -1191,6 +1290,15 @@ namespace Microsoft.Teams.TemplateBotCSharp.Properties {
         internal static string MessageBackPayloadText {
             get {
                 return ResourceManager.GetString("MessageBackPayloadText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This is Message Back example.
+        /// </summary>
+        internal static string MessageBackTitleMsg {
+            get {
+                return ResourceManager.GetString("MessageBackTitleMsg", resourceCulture);
             }
         }
         
@@ -1582,6 +1690,24 @@ namespace Microsoft.Teams.TemplateBotCSharp.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sign In.
+        /// </summary>
+        internal static string PopUpSignInCardButtonTitle {
+            get {
+                return ResourceManager.GetString("PopUpSignInCardButtonTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please click below for Popup Sign-In experience.
+        /// </summary>
+        internal static string PopUpSignInCardTitle {
+            get {
+                return ResourceManager.GetString("PopUpSignInCardTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ooops, what you choose is not a valid option, please try again!!.
         /// </summary>
         internal static string PromptInvalidMsg {
@@ -1704,6 +1830,24 @@ namespace Microsoft.Teams.TemplateBotCSharp.Properties {
         internal static string SetUpMsgKey {
             get {
                 return ResourceManager.GetString("SetUpMsgKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to #PleaseSetTenantInformation.
+        /// </summary>
+        internal static string TenantConfigStaticValue {
+            get {
+                return ResourceManager.GetString("TenantConfigStaticValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MS Teams: Attempted access from a different Office 365 tenant: message rejected.
+        /// </summary>
+        internal static string TenantLevelDeniedAccess {
+            get {
+                return ResourceManager.GetString("TenantLevelDeniedAccess", resourceCulture);
             }
         }
         
