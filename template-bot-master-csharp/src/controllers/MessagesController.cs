@@ -28,14 +28,14 @@ namespace Microsoft.Teams.TemplateBotCSharp
                 activity.Locale = TemplateUtility.GetLocale(activity);
 
                 //Strip At mention from incoming request text
-                var messageActivity = Middleware.StripAtMentionText(activity);
+                activity = Middleware.StripAtMentionText(activity);
 
-                //Convert incoming activity text to lower case, to matches the intent irrespective of incoming text case
-                messageActivity = Middleware.ConvertActivityTextToLower(activity);
+                //Convert incoming activity text to lower case, to match the intent irrespective of incoming text case
+                activity = Middleware.ConvertActivityTextToLower(activity);
 
                 //Set the OFFICE_365_TENANT_FILTER key in web.config file with Tenant Information
                 //Validate bot for specific teams tenant if any
-                if (Middleware.RejectBotBasedOnTenant(activity, activity.GetTenantId()))
+                if (Middleware.RejectMessageBasedOnTenant(activity, activity.GetTenantId()))
                 {
                     var connectorClient = new ConnectorClient(new Uri(activity.ServiceUrl));
 
@@ -48,7 +48,7 @@ namespace Microsoft.Teams.TemplateBotCSharp
 
                 try
                 {
-                    await Conversation.SendAsync(messageActivity, () => new Dialogs.RootDialog());
+                    await Conversation.SendAsync(activity, () => new Dialogs.RootDialog());
                 }
                 catch (Exception ex)
                 {

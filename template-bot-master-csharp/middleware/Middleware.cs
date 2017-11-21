@@ -16,12 +16,12 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
         /// <param name="activity"></param>
         /// <param name="currentTenant"></param>
         /// <returns></returns>
-        public static bool RejectBotBasedOnTenant(IMessageActivity activity, string currentTenant)
+        public static bool RejectMessageBasedOnTenant(IMessageActivity activity, string currentTenant)
         {
             if (!String.Equals(ConfigurationManager.AppSettings["OFFICE_365_TENANT_FILTER"], TenantFilterSettingAny))
             {
                 //#Scenario 1
-                return !string.Equals(ConfigurationManager.AppSettings["OFFICE_365_TENANT_FILTER"].ToString(), currentTenant);
+                return !string.Equals(ConfigurationManager.AppSettings["OFFICE_365_TENANT_FILTER"], currentTenant);
             }
             else
             {
@@ -30,7 +30,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
             }
         }
 
-        public static IMessageActivity ConvertActivityTextToLower(IMessageActivity activity)
+        public static Activity ConvertActivityTextToLower(Activity activity)
         {
             //Convert input command in lower case for 1To1 and Channel users
             if (activity.Text != null)
