@@ -45,7 +45,8 @@ namespace Microsoft.Teams.Tutorial.CSharp
                 Buttons = new List<CardAction>
                 {
                     new CardAction(ActionTypes.OpenUrl, Strings.HeroCardButtonCaption, value: "https://docs.microsoft.com/en-us/bot-framework/dotnet/bot-builder-dotnet-add-rich-card-attachments"),
-                    new CardAction(ActionTypes.MessageBack, Strings.MessageBackCardButtonCaption, value: "{\"" + Strings.cmdValueMessageBack + "\": \"" + Strings.cmdValueMessageBack+ "\"}", text:"hello", displayText:"I clicked the button to send 'hello'")
+                    new CardAction(ActionTypes.MessageBack, Strings.MessageBackCardButtonCaption, value: "{\"" + Strings.cmdValueMessageBack + "\": \"" + Strings.cmdValueMessageBack+ "\"}", text:"hello", displayText:"I clicked the button to send 'hello'"),
+                    new CardAction(ActionTypes.Signin, "Sign In", value: baseUri + "/authentication/simple-start.aspx?width=5000&height=5000")
                 }
             };
 

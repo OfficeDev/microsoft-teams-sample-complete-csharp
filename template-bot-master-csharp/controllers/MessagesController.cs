@@ -10,6 +10,8 @@ using Microsoft.Bot.Connector.Teams;
 using Microsoft.Bot.Connector.Teams.Models;
 using System.Collections.Generic;
 using Microsoft.Teams.TemplateBotCSharp.Properties;
+using System.IO;
+using Newtonsoft.Json;
 
 namespace Microsoft.Teams.Tutorial.CSharp
 {
@@ -46,7 +48,37 @@ namespace Microsoft.Teams.Tutorial.CSharp
             }
             else if (activity.Type == ActivityTypes.Invoke) // Received an invoke
             {
-                if (activity.IsO365ConnectorCardActionQuery())
+                if (activity.Name == "signin/verifyState")
+                {
+                    try
+                    {
+                        var invokeValue = JsonConvert.DeserializeObject<InvokeValue>(activity.Value.ToString());
+                        var graphRequest = WebRequest.Create("https://graph.microsoft.com/v1.0/me/");
+                        graphRequest.Headers["Authorization"] = "Bearer " + invokeValue.State.AccessToken;
+
+                        using (var graphResponse = graphRequest.GetResponse())
+                        {
+                            using (var reader = new StreamReader(graphResponse.GetResponseStream()))
+                            {
+                                var responseText = reader.ReadToEnd();
+                                var userInfo = JsonConvert.DeserializeObject<UserInfo>(responseText);
+
+                                var replyActivity = activity.CreateReply();
+                                replyActivity.Text = userInfo.DisplayName + "<br />" + userInfo.Mail + "<br />" + userInfo.OfficeLocation;
+
+                                var connectorClient = new ConnectorClient(new Uri(activity.ServiceUrl));
+                                await connectorClient.Conversations.ReplyToActivityWithRetriesAsync(replyActivity);
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        // do nothing
+                    }
+
+                    return Request.CreateResponse(HttpStatusCode.OK);
+                }
+                else if (activity.IsO365ConnectorCardActionQuery())
                 {
                     return await HandleO365ConnectorCardActionQuery(activity);
                 }
@@ -271,5 +303,22 @@ namespace Microsoft.Teams.Tutorial.CSharp
 
             return null;
         }
+    }
+
+    public class InvokeValue
+    {
+        public SignInState State { get; set; }
+    }
+
+    public class SignInState
+    {
+        public string AccessToken { get; set; }
+    }
+
+    public class UserInfo
+    {
+        public string DisplayName { get; set; }
+        public string Mail { get; set; }
+        public string OfficeLocation { get; set; }
     }
 }
