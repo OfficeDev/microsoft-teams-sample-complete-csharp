@@ -5,7 +5,6 @@ using Microsoft.Bot.Connector.Teams.Models;
 using Microsoft.Teams.TemplateBotCSharp.Properties;
 using Microsoft.Teams.TemplateBotCSharp.Utility;
 using System;
-using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -22,6 +21,8 @@ namespace Microsoft.Teams.TemplateBotCSharp
         /// </summary>
         public async Task<HttpResponseMessage> Post([FromBody]Activity activity)
         {
+            var connectorClient = new ConnectorClient(new Uri(activity.ServiceUrl));
+
             if (activity.Type == ActivityTypes.Message)
             {
                 //Set the Locale for Bot
@@ -37,8 +38,6 @@ namespace Microsoft.Teams.TemplateBotCSharp
                 //Validate bot for specific teams tenant if any
                 if (Middleware.RejectMessageBasedOnTenant(activity, activity.GetTenantId()))
                 {
-                    var connectorClient = new ConnectorClient(new Uri(activity.ServiceUrl));
-
                     Activity replyActivity = activity.CreateReply();
                     replyActivity.Text = Strings.TenantLevelDeniedAccess;
 
@@ -55,14 +54,43 @@ namespace Microsoft.Teams.TemplateBotCSharp
 
                 }
             }
+            else if (activity.Type == ActivityTypes.MessageReaction)
+            {
+                var reactionsAdded = activity.ReactionsAdded;
+                var reactionsRemoved = activity.ReactionsRemoved;
+                var replytoId = activity.ReplyToId;
+                Activity reply;
+
+                if (reactionsAdded != null && reactionsAdded.Count > 0)
+                {
+                    reply = activity.CreateReply(Strings.LikeMessage);
+                }
+                else
+                {
+                    reply = activity.CreateReply(Strings.RemoveLike);
+                }
+
+                await connectorClient.Conversations.ReplyToActivityAsync(reply);
+
+                return Request.CreateResponse(HttpStatusCode.OK);
+            }
             else if (activity.Type == ActivityTypes.Invoke) // Received an invoke
             {
                 // Handle ComposeExtension query
                 if (activity.IsComposeExtensionQuery())
                 {
                     // this will handle the compose extension request
-                    var invokeResponse = WikipediaComposeExtension.GetComposeExtensionResponse(activity);
-                    return Request.CreateResponse<ComposeExtensionResponse>(HttpStatusCode.OK, invokeResponse);
+
+                    if (activity.Name == "composeExtension/selectItem")
+                    {
+                        var selectedItemResponse = WikipediaComposeExtension.HandleComposeExtensionSelectedItem(activity);
+                        return Request.CreateResponse<ComposeExtensionResponse>(HttpStatusCode.OK, selectedItemResponse);
+                    }
+                    else
+                    {
+                        var invokeResponse = WikipediaComposeExtension.GetComposeExtensionResponse(activity);
+                        return Request.CreateResponse<ComposeExtensionResponse>(HttpStatusCode.OK, invokeResponse);
+                    }
                 }
                 //Actionable Message
                 else if (activity.IsO365ConnectorCardActionQuery())

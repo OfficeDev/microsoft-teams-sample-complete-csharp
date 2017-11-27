@@ -4,7 +4,7 @@ using Microsoft.Bot.Connector.Teams.Models;
 using Microsoft.Teams.TemplateBotCSharp.Properties;
 using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
+using System.Text;
 
 namespace Microsoft.Teams.TemplateBotCSharp.Utility
 {
@@ -38,22 +38,25 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
             return activity.Locale;
         }
 
-        public static ComposeExtensionAttachment CreateComposeExtensionCardsAttachments(string title,string text,string imageUrl, string state)
+        public static ComposeExtensionAttachment CreateComposeExtensionCardsAttachments(WikiHelperSearchResult wikiResult, string state)
         {
-            return GetComposeExtensionMainResultAttachment(title, text, imageUrl, state).ToComposeExtensionAttachment(GetComposeExtensionPreviewAttachment(title, text, imageUrl, state));
+            return GetComposeExtensionMainResultAttachment(wikiResult, state).ToComposeExtensionAttachment(GetComposeExtensionPreviewAttachment(wikiResult, state));
         }
 
-        public static Attachment GetComposeExtensionMainResultAttachment(string title,string text,string imageUrl, string state)
+        public static Attachment GetComposeExtensionMainResultAttachment(WikiHelperSearchResult wikiResult, string state)
         {
+            var tapAction = new CardAction("invoke", value: "{ \"" + "imageUrl" + "\": \"" + wikiResult.imageUrl + "\", \"" + "highlightedTitle" + "\": \"" + wikiResult.highlightedTitle + "\"}");
+
             if (string.Equals(state.ToLower(), "hero"))
             {
                 return new HeroCard()
                 {
-                    Title = title,
-                    Text = text,
+                    Title = wikiResult.highlightedTitle,
+                    Tap = tapAction,
+                    Text = wikiResult.text,
                     Images =
                     {
-                        new CardImage(imageUrl)
+                        new CardImage(wikiResult.imageUrl)
                     },
                 }.ToAttachment();
             }
@@ -61,26 +64,31 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
             {
                 return new ThumbnailCard()
                 {
-                    Title = title,
-                    Text= text,
+                    Title = wikiResult.highlightedTitle,
+                    Tap = tapAction,
+                    Text = wikiResult.text,
                     Images =
                     {
-                        new CardImage(imageUrl)
+                        new CardImage(wikiResult.imageUrl)
                     },
                 }.ToAttachment();
             }
         }
 
-        public static Attachment GetComposeExtensionPreviewAttachment(string title, string text, string imageUrl, string state)
+        public static Attachment GetComposeExtensionPreviewAttachment(WikiHelperSearchResult wikiResult, string state)
         {
+            string quoted = cleanForJSON(wikiResult.text);
+            var tapAction = new CardAction("invoke", value: "{ \"" + "imageUrl" + "\": \"" + wikiResult.imageUrl + "\",\"" + "text" + "\": \"" + quoted + "\", \"" + "highlightedTitle" + "\": \"" + wikiResult.highlightedTitle + "\"}");
+
             if (string.Equals(state.ToLower(), "hero"))
             {
                 return new HeroCard()
                 {
-                    Title = title,
+                    Title = wikiResult.highlightedTitle,
+                    Tap = tapAction,
                     Images =
                     {
-                        new CardImage(imageUrl)
+                        new CardImage(wikiResult.imageUrl)
                     },
                 }.ToAttachment();
             }
@@ -88,10 +96,11 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
             {
                 return new ThumbnailCard()
                 {
-                    Title = title,
+                    Title = wikiResult.highlightedTitle,
+                    Tap = tapAction,
                     Images =
                     {
-                        new CardImage(imageUrl)
+                        new CardImage(wikiResult.imageUrl)
                     },
                 }.ToAttachment();
             }
@@ -114,5 +123,68 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
             return null;
         }
 
+        public static string cleanForJSON(string s)
+        {
+            if (s == null || s.Length == 0)
+            {
+                return "";
+            }
+
+            char c = '\0';
+            int i;
+            int len = s.Length;
+            StringBuilder sb = new StringBuilder(len + 4);
+            String t;
+
+            for (i = 0; i < len; i += 1)
+            {
+                c = s[i];
+                switch (c)
+                {
+                    case '\\':
+                    case '"':
+                        sb.Append('\\');
+                        sb.Append(c);
+                        break;
+                    case '/':
+                        sb.Append('\\');
+                        sb.Append(c);
+                        break;
+                    case '\b':
+                        sb.Append("\\b");
+                        break;
+                    case '\t':
+                        sb.Append("\\t");
+                        break;
+                    case '\n':
+                        sb.Append("\\n");
+                        break;
+                    case '\f':
+                        sb.Append("\\f");
+                        break;
+                    case '\r':
+                        sb.Append("\\r");
+                        break;
+                    default:
+                        if (c < ' ')
+                        {
+                            t = "000" + String.Format("X", c);
+                            sb.Append("\\u" + t.Substring(t.Length - 4));
+                        }
+                        else
+                        {
+                            sb.Append(c);
+                        }
+                        break;
+                }
+            }
+            return sb.ToString();
+        }
+
+        public static BotData GetBotDataObject(Activity activity)
+        {
+            StateClient stateClient = activity.GetStateClient();
+            return stateClient.BotState.GetUserData(activity.ChannelId, activity.From.Id);
+        }
     }
 }

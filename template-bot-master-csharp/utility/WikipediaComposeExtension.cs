@@ -25,6 +25,8 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
             StateClient stateClient = activity.GetStateClient();
             BotData userData = stateClient.BotState.GetUserData(activity.ChannelId, activity.From.Id);
 
+            var translationHistory = new List<WikiHelperSearchResult>();
+
             bool IsSettingUrl = false;
 
             var composeExtensionQuery = activity.GetComposeExtensionQueryData();
@@ -115,11 +117,32 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
             if (initialRunParameter == "true")
             {
                 //Signin Experience, please uncomment below code for Signin Experience
-                //composeExtensionResponse = WikiHelper.GetSignin(composeExtensionResponse);
+                //composeExtensionResponse = GetSignin(composeExtensionResponse);
                 //return composeExtensionResponse;
 
                 composeExtensionResponse = new ComposeExtensionResponse();
-                composeExtensionResponse.ComposeExtension = GetMessageResponseResult(Strings.ComposeExtensionInitialRunText);
+
+                var userSession = userData.GetProperty<List<WikiHelperSearchResult>>("ComposeExtensionSelectedResults");
+                if (userSession != null)
+                {
+                    translationHistory = userSession;
+
+                    foreach (var searchResult in translationHistory)
+                    {
+                        WikiHelperSearchResult wikiSearchResult = SetWikiSearchResult(searchResult.imageUrl, searchResult.highlightedTitle, searchResult.text);
+
+                        // create the card itself and the preview card based upon the information
+                        // check user preference for which type of card to create
+                        lstComposeExtensionAttachment.Add(TemplateUtility.CreateComposeExtensionCardsAttachments(wikiSearchResult, userData.GetProperty<string>(Strings.ComposeExtensionCardTypeKeyword)));
+                    }
+
+                    composeExtensionResponse = GetComposeExtenionQueryResult(composeExtensionResponse, lstComposeExtensionAttachment);
+                }
+                else
+                {
+                    composeExtensionResponse.ComposeExtension = GetMessageResponseResult(Strings.ComposeExtensionInitialRunText);
+                }
+
                 return composeExtensionResponse;
             }
 
@@ -156,15 +179,95 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
 
                 string cardText = searchResult.snippet + " ...";
 
+                WikiHelperSearchResult wikiSearchResult = SetWikiSearchResult(imageUrl, highlightedTitle, cardText);
+
                 // create the card itself and the preview card based upon the information
                 // check user preference for which type of card to create
 
-                lstComposeExtensionAttachment.Add(TemplateUtility.CreateComposeExtensionCardsAttachments(highlightedTitle, cardText, imageUrl, userData.GetProperty<string>(Strings.ComposeExtensionCardTypeKeyword)));
+                lstComposeExtensionAttachment.Add(TemplateUtility.CreateComposeExtensionCardsAttachments(wikiSearchResult, userData.GetProperty<string>(Strings.ComposeExtensionCardTypeKeyword)));
             }
 
             composeExtensionResponse = GetComposeExtenionQueryResult(composeExtensionResponse, lstComposeExtensionAttachment);
 
             return composeExtensionResponse;
+        }
+
+        /// <summary>
+        /// Purpose of this method is to Keep the history of selected item and return the response Compose Extension
+        /// </summary>
+        /// <param name="activity"></param>
+        /// <returns></returns>
+        public static ComposeExtensionResponse HandleComposeExtensionSelectedItem(Activity activity)
+        {
+            WikiHelperSearchResult selectedItem = new WikiHelperSearchResult();
+            var translationHistory = new List<WikiHelperSearchResult>();
+
+            BotData userData = TemplateUtility.GetBotDataObject(activity);
+
+            //Get the Max number of History items from config file
+            int maxTranslationHistory = Convert.ToInt32(ConfigurationManager.AppSettings["MaxTranslationHistoryCount"]);
+
+            selectedItem = JsonConvert.DeserializeObject<WikiHelperSearchResult>(activity.Value.ToString());
+
+            var userSession = userData.GetProperty<List<WikiHelperSearchResult>>("ComposeExtensionSelectedResults");
+
+            translationHistory = userSession != null ? userSession : translationHistory;
+
+            if (translationHistory != null && translationHistory.Count > 0)
+            {
+                int index = 0;
+                while (index < translationHistory.Count)
+                {
+                    if (string.Equals(translationHistory[index].highlightedTitle.ToLower(), selectedItem.highlightedTitle.ToLower()))
+                    {
+                        translationHistory.RemoveAt(index);
+                    }
+                    else
+                    {
+                        index++;
+                    }
+                }
+            }
+
+            //Add new item in list
+            translationHistory.Insert(0, selectedItem);
+
+            //Restrict the transaction History with Max Items.
+            if (translationHistory.Count > maxTranslationHistory)
+            {
+                translationHistory = translationHistory.GetRange(0, maxTranslationHistory);
+            }
+
+            //Save the history Items in user Data
+            userData.SetProperty<List<WikiHelperSearchResult>>("ComposeExtensionSelectedResults", translationHistory);
+            activity.GetStateClient().BotState.SetUserDataAsync(activity.ChannelId, activity.From.Id, userData);
+
+
+            ComposeExtensionResponse composeExtensionResponse = new ComposeExtensionResponse();
+            List<ComposeExtensionAttachment> lstComposeExtensionAttachment = new List<ComposeExtensionAttachment>();
+
+            if (selectedItem != null)
+            {
+                // create the card itself and the preview card based upon the information
+                // check user preference for which type of card to create
+                lstComposeExtensionAttachment.Add(TemplateUtility.CreateComposeExtensionCardsAttachments(selectedItem, userData.GetProperty<string>(Strings.ComposeExtensionCardTypeKeyword)));
+                composeExtensionResponse = GetComposeExtenionQueryResult(composeExtensionResponse, lstComposeExtensionAttachment);
+            }
+            else
+            {
+                composeExtensionResponse.ComposeExtension = GetMessageResponseResult(Strings.ComposeExtensionInitialRunText);
+            }
+
+            return composeExtensionResponse;
+        }
+
+        public static WikiHelperSearchResult SetWikiSearchResult(string imageUrl, string highlightedTitle, string cardText)
+        {
+            WikiHelperSearchResult objWikiHelperSearchResult = new WikiHelperSearchResult();
+            objWikiHelperSearchResult.imageUrl = imageUrl;
+            objWikiHelperSearchResult.highlightedTitle = highlightedTitle;
+            objWikiHelperSearchResult.text = cardText;
+            return objWikiHelperSearchResult;
         }
 
         // return the value of the specified query parameter
@@ -336,6 +439,13 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
 
             return composeExtensionResponse;
         }
+    }
+
+    public class WikiHelperSearchResult
+    {
+        public string imageUrl { get; set; }
+        public string highlightedTitle { get; set; }
+        public string text { get; set; }
     }
 
     //Wiki Json Result Object Classes

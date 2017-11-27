@@ -795,4 +795,10 @@
   <data name="InvokeRequestJsonKey" xml:space="preserve">
     <value>invokeKey</value>
   </data>
+  <data name="LikeMessage" xml:space="preserve">
+    <value>Message Liked!!</value>
+  </data>
+  <data name="RemoveLike" xml:space="preserve">
+    <value>Like Removed!!</value>
+  </data>
 </root>
