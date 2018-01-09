@@ -25,7 +25,7 @@ NOTE: Teams does not work nor render things exactly like the Bot Emulator, but i
 
 1. Open the template-bot-master-csharp.sln solution with Visual Studio
 
-2. In Visual Studio click the play button (should be defaulted to running the Microsoft Edge configuration) 
+2. In Visual Studio click the “Start Debugging” button (should be defaulted to running the Microsoft Edge configuration) 
 
 3. Once the code is running, connect with the Bot Emulator to the default endpoint, "http://localhost:3979/api/messages", leaving "Microsoft App ID" and "Microsoft App Password" blank
 
@@ -46,13 +46,53 @@ Congratulations!!! You can now chat with the bot in the Bot Emulator!
 
 	* The ngrok application will fill the entire prompt window. Make note of the Forwarding address using https. This address is required in the next step. 
 
-	* Minimize the ngrok Command Prompt window. It is no longer referenced in this lab, but it must remain running.
+	* Minimize the Command Prompt window that’s running ngrok. It’s no longer referenced in this article, but it must remain running.
 
+2. Register a bot in the Microsoft Bot Framework.
 
+Bots in Teams must be built upon the Microsoft Bot Framework. For this sample, as part of the package download process, you’ll get the   Bot Framework SDK and the Microsoft Teams extensions to Bot Framework.
+  
+In addition, every bot must be registered in the Bot Framework, so it is accessible by the services it uses like Microsoft Teams. Our  samples are designed for you to run yourself, so you’ll need to create your own bot, which also includes a Microsoft App ID and  password. Here’s how: 
+
+ * Using your work or school account, sign in to the Microsoft Bot Framework site https://dev.botframework.com/bots/new.
+ 
+ * Display name – Give your app a name. This does not have to be unique. This will be the name displayed in Teams. We recommend that you make this the same name as your app name in the manifest (this sample uses Sample-App-csharp). 
+	> **NOTE**: If you decide to change the Display Name or icon after your bot is registered, it may take some time before your new name or icon will show up in your Teams client; logging out and logging back in will usually accelerate this.
+	
+ * Bot handle – Create a unique identifier for your bot.
+	> **NOTE**: This cannot be changed and is not visible to users. If you change the Display name of your bot, your Bot handle will remain the same.
+	
+ * Long description – Enter a long description which may appear in channels or directories.
+	> **NOTE**: In Microsoft Teams, the Store information will come from the Seller Dashboard.
+
+ Next, you need to configure your bot’s service endpoint so Microsoft Teams knows how to connect to your bot:
+ 
+ * Messaging endpoint – Paste the ngrok URL that you copied to the clipboard and append the appropriate endpoint to it. For our samples, again, our code is listening for messages on "/api/messages”, so for example you’d enter “https://2d1224fb.ngrok.io/api/messages”
+ 
+ * Create Microsoft App ID and password – This button will take you to the Application Registration Portal, where you will create a unique Microsoft App ID and password.
+    * App name – This will be filled in from what you entered in the previous step
     
-2. Register a new bot (or update an existing one) with Bot Framework by using the https endpoint started by ngrok and the extension "/api/messages" as the full endpoint for the bot's "Messaging endpoint". e.g. "https://####abcd.ngrok.io/api/messages" - Bot registration is here (open in a new browser tab): https://dev.botframework.com/bots
-
-    > **NOTE**: When you create your bot you will create an App ID and App password - make sure you keep these for later.
+    * App ID – This is a unique GUID created for your app, e.g. 93fed3d5-6782-462e-8a58-6a3e83ca6eab
+    
+    * Generate an app password to continue – Click this button to generate an app password (you’ll sometimes see this called an app secret), e.g. qgSctpqT89ZdfAymt66Ukgf
+    
+	> **NOTE**: You’ll need to copy and save this in a secure location as you will need this, and the App ID later. The app password will only be shown once.
+	
+    * Click the “Finish and go back to Bot Framework” button. 
+    
+    * You’ll return to the Registration page, with the App ID filled in, that matches the one created above. Check the box at the bottom to agree to the terms of use, and click “Register” to create your new accessible Bot Framework bot.
+    
+    * Click on the Microsoft Teams icon under “Add a featured channel.” 
+    
+    * Check the box to agree to the Terms of Service. 
+    
+    * Click “Done” on the Configure MS Teams page in the bottom left hand corner.
+    
+ * Bots and Microsoft Azure – When you edit the properties of an existing bot in the list of your bots in Bot Framework such as its messaging endpoint, which is common when first developing a bot, especially if you use ngrok, you will see the "Migration status" column and a blue "Migrate" button that will take you into the Microsoft Azure portal. Don't click on the "Migrate" button unless that's what you want to do; instead, click on the name of the bot and you can edit its properties. 
+ 
+    * If you register your bot using Microsoft Azure, it does not need to be hosted on Microsoft Azure.
+    
+    * If you do register a bot using Microsoft Azure portal, you must have a Microsoft Azure account. You can create one for free. To verify your identity when you create one, you must provide a credit card, but it won't be charged; it's always free to create and use bots with Microsoft Teams.
 
 3. You project needs to run with a configuration that matches your registered bot's configuration. To do this, you will need to update the web.config file:
 
