@@ -82,7 +82,7 @@ In addition, every bot must be registered in the Bot Framework, so it is accessi
     
     * You’ll return to the Registration page, with the App ID filled in, that matches the one created above. Check the box at the bottom to agree to the terms of use, and click “Register” to create your new accessible Bot Framework bot.
     
-    * Click on the Microsoft Teams icon under “Add a featured channel.” 
+    * On the new page that opens once your app is done being created, click on the Microsoft Teams icon under "Add a featured channel" in order to allow your bot to use this channel. 
     
     * Check the box to agree to the Terms of Service. 
     
@@ -90,9 +90,9 @@ In addition, every bot must be registered in the Bot Framework, so it is accessi
     
  * Bots and Microsoft Azure – When you edit the properties of an existing bot in the list of your bots in Bot Framework such as its messaging endpoint, which is common when first developing a bot, especially if you use ngrok, you will see the "Migration status" column and a blue "Migrate" button that will take you into the Microsoft Azure portal. Don't click on the "Migrate" button unless that's what you want to do; instead, click on the name of the bot and you can edit its properties. 
  
-    * If you register your bot using Microsoft Azure, it does not need to be hosted on Microsoft Azure.
+    * If you do register a bot using the Microsoft Azure portal, it does not need to be hosted on Microsoft Azure.
     
-    * If you do register a bot using Microsoft Azure portal, you must have a Microsoft Azure account. You can create one for free. To verify your identity when you create one, you must provide a credit card, but it won't be charged; it's always free to create and use bots with Microsoft Teams.
+    * If you do register a bot using the Microsoft Azure portal, you must have a Microsoft Azure account. You can create one for free. To verify your identity when you create one, you must provide a credit card, but it won't be charged; it's always free to create and use bots with Microsoft Teams.
 
 3. You project needs to run with a configuration that matches your registered bot's configuration. To do this, you will need to update the web.config file:
 
