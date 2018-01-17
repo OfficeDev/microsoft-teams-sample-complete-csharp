@@ -2,6 +2,7 @@
 using Microsoft.Bot.Connector.Teams;
 using Microsoft.Bot.Connector.Teams.Models;
 using Microsoft.Teams.TemplateBotCSharp.Properties;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Text;
@@ -9,10 +10,10 @@ using System.Text;
 namespace Microsoft.Teams.TemplateBotCSharp.Utility
 {
     /// <summary>
-    /// This method is used to Get the local from incoming acitvity payload
+    /// Get the locale from incoming activity payload and Handle Compose Extension methods
     /// </summary>
     public static class TemplateUtility
-    {
+    {        
         public static string GetLocale(Activity activity)
         {
             if (activity == null)
@@ -20,7 +21,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
                 throw new ArgumentNullException(nameof(activity));
             }
 
-            //Get the local from activity
+            //Get the locale from activity
             if (activity.Entities != null)
             {
                 foreach(var entity in activity.Entities)
@@ -38,76 +39,101 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
             return activity.Locale;
         }
 
-        public static ComposeExtensionAttachment CreateComposeExtensionCardsAttachments(WikiHelperSearchResult wikiResult, string state)
+        public static ComposeExtensionAttachment CreateComposeExtensionCardsAttachments(WikiHelperSearchResult wikiResult, string selectedType)
         {
-            return GetComposeExtensionMainResultAttachment(wikiResult, state).ToComposeExtensionAttachment(GetComposeExtensionPreviewAttachment(wikiResult, state));
+            return GetComposeExtensionMainResultAttachment(wikiResult, selectedType).ToComposeExtensionAttachment(GetComposeExtensionPreviewAttachment(wikiResult, selectedType));
         }
 
-        public static Attachment GetComposeExtensionMainResultAttachment(WikiHelperSearchResult wikiResult, string state)
+        public static Attachment GetComposeExtensionMainResultAttachment(WikiHelperSearchResult wikiResult, string selectedType)
         {
-            var tapAction = new CardAction("invoke", value: "{ \"" + "imageUrl" + "\": \"" + wikiResult.imageUrl + "\", \"" + "highlightedTitle" + "\": \"" + wikiResult.highlightedTitle + "\"}");
+            CardType cardType;
+            Attachment cardAttachment = null;
 
-            if (string.Equals(state.ToLower(), "hero"))
+            if (Enum.TryParse(selectedType, out cardType))
             {
-                return new HeroCard()
+                switch (cardType)
                 {
-                    Title = wikiResult.highlightedTitle,
-                    Tap = tapAction,
-                    Text = wikiResult.text,
-                    Images =
-                    {
-                        new CardImage(wikiResult.imageUrl)
-                    },
-                }.ToAttachment();
+                    case CardType.hero:
+                     {
+                        cardAttachment = new HeroCard()
+                        {
+                            Title = wikiResult.highlightedTitle,
+                            Text = wikiResult.text,
+                            Images =
+                            {
+                                new CardImage(wikiResult.imageUrl)
+                            },
+                        }.ToAttachment();
+                     }
+                     break;
+                    case CardType.thumbnail:
+                     {
+                        cardAttachment = new ThumbnailCard()
+                        {
+                            Title = wikiResult.highlightedTitle,
+                            Text = wikiResult.text,
+                            Images =
+                            {
+                                new CardImage(wikiResult.imageUrl)
+                            },
+                        }.ToAttachment();
+                     }
+                    break;
+                }
             }
-            else
-            {
-                return new ThumbnailCard()
-                {
-                    Title = wikiResult.highlightedTitle,
-                    Tap = tapAction,
-                    Text = wikiResult.text,
-                    Images =
-                    {
-                        new CardImage(wikiResult.imageUrl)
-                    },
-                }.ToAttachment();
-            }
+
+            return cardAttachment;
         }
 
-        public static Attachment GetComposeExtensionPreviewAttachment(WikiHelperSearchResult wikiResult, string state)
+        public static Attachment GetComposeExtensionPreviewAttachment(WikiHelperSearchResult wikiResult, string selectedType)
+        {
+            string invokeVal = GetCardActionInvokeValue(wikiResult);
+            var tapAction = new CardAction("invoke", value: invokeVal);
+
+
+            CardType cardType;
+            Attachment cardAttachment = null;
+
+            if (Enum.TryParse(selectedType, out cardType))
+            {
+                switch (cardType)
+                {
+                    case CardType.hero:
+                      {
+                            cardAttachment = new HeroCard()
+                            {
+                                Title = wikiResult.highlightedTitle,
+                                Tap = tapAction,
+                                Images = { new CardImage(wikiResult.imageUrl) },
+                            }.ToAttachment();
+                      }
+                      break;
+                    case CardType.thumbnail:
+                      {
+                            cardAttachment = new ThumbnailCard()
+                            {
+                                Title = wikiResult.highlightedTitle,
+                                Tap = tapAction,
+                                Images = { new CardImage(wikiResult.imageUrl) },
+                            }.ToAttachment();
+                      }
+                      break;
+                }
+            }
+
+            return cardAttachment;
+        }
+
+        private static string GetCardActionInvokeValue(WikiHelperSearchResult wikiResult)
         {
             string quoted = cleanForJSON(wikiResult.text);
-            var tapAction = new CardAction("invoke", value: "{ \"" + "imageUrl" + "\": \"" + wikiResult.imageUrl + "\",\"" + "text" + "\": \"" + quoted + "\", \"" + "highlightedTitle" + "\": \"" + wikiResult.highlightedTitle + "\"}");
-
-            if (string.Equals(state.ToLower(), "hero"))
-            {
-                return new HeroCard()
-                {
-                    Title = wikiResult.highlightedTitle,
-                    Tap = tapAction,
-                    Images =
-                    {
-                        new CardImage(wikiResult.imageUrl)
-                    },
-                }.ToAttachment();
-            }
-            else
-            {
-                return new ThumbnailCard()
-                {
-                    Title = wikiResult.highlightedTitle,
-                    Tap = tapAction,
-                    Images =
-                    {
-                        new CardImage(wikiResult.imageUrl)
-                    },
-                }.ToAttachment();
-            }
+            InvokeValue invokeValue = new InvokeValue(wikiResult.imageUrl, quoted, wikiResult.highlightedTitle);
+            JObject json = (JObject)JToken.FromObject(invokeValue);
+            return json.ToString();
         }
 
         /// <summary>
-        /// Purpose of this method is to parse the invoke request json and returned the invoke value
+        /// Parse the invoke request json and returned the invoke value
         /// </summary>
         /// <param name="inputString"></param>
         /// <returns></returns>
@@ -133,7 +159,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
             char c = '\0';
             int i;
             int len = s.Length;
-            StringBuilder sb = new StringBuilder(len + 4);
+            StringBuilder sb = new StringBuilder();
             String t;
 
             for (i = 0; i < len; i += 1)
@@ -185,6 +211,20 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
         {
             StateClient stateClient = activity.GetStateClient();
             return stateClient.BotState.GetUserData(activity.ChannelId, activity.From.Id);
+        }
+    }
+
+    public class InvokeValue
+    {
+        public string imageUrl { get; set; }
+        public string text { get; set; }
+        public string highlightedTitle { get; set; }
+
+        public InvokeValue(string urlValue, string textValue, string highlightedTitleValue)
+        {
+            imageUrl = urlValue;
+            text = textValue;
+            highlightedTitle = highlightedTitleValue;
         }
     }
 }

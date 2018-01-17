@@ -42,7 +42,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
         }
 
         /// <summary>
-        /// This method is used to Create Card Template with Channel member information
+        /// Create Card Template with Channel member information
         /// </summary>
         /// <param name="userName"></param>
         /// <param name="objectId"></param>

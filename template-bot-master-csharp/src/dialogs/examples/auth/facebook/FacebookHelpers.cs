@@ -77,7 +77,7 @@ namespace Microsoft.Teams.TemplateBotCSharp
         public static readonly string FacebookAppSecret = ConfigurationManager.AppSettings["FBAppSecret"].ToString();
 
         /// <summary>
-        /// Purpose of this method is to get the Authentication Token from Api code
+        /// Get the Authentication Token from Api code
         /// </summary>
         /// <param name="conversationReference"></param>
         /// <param name="code"></param>
@@ -97,7 +97,7 @@ namespace Microsoft.Teams.TemplateBotCSharp
         }
 
         /// <summary>
-        /// Purpose of this method is to Validate the Access Token
+        /// Validate the Access Token
         /// </summary>
         /// <param name="accessToken"></param>
         /// <returns></returns>
@@ -112,7 +112,7 @@ namespace Microsoft.Teams.TemplateBotCSharp
         }
 
         /// <summary>
-        /// Purpose of this method is to get the User Profile information using valid Access Token
+        /// Get the User Profile information using valid Access Token
         /// </summary>
         /// <param name="accessToken"></param>
         /// <returns></returns>
@@ -128,7 +128,7 @@ namespace Microsoft.Teams.TemplateBotCSharp
         }
 
         /// <summary>
-        /// Purpose of this method is to get the Profile Picture detail using valid Access Token
+        /// Get the Profile Picture detail using valid Access Token
         /// </summary>
         /// <param name="accessToken"></param>
         /// <returns></returns>
@@ -141,7 +141,7 @@ namespace Microsoft.Teams.TemplateBotCSharp
         }
 
         /// <summary>
-        /// Purpose of this method is to Create Auth URL    
+        /// Create the Auth URL    
         /// </summary>
         /// <param name="conversationReference"></param>
         /// <param name="facebookOauthCallback"></param>
@@ -159,7 +159,7 @@ namespace Microsoft.Teams.TemplateBotCSharp
         }
 
         /// <summary>
-        /// Purpose of this method is to create Facebook Login URL
+        /// Create Facebook Login URL
         /// </summary>
         /// <param name="conversationReference"></param>
         /// <param name="facebookOauthCallback"></param>

@@ -7,7 +7,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
     public static class InvokeHandler
     {
         /// <summary>
-        /// Purpose of this method is to parse the invoke value and change the activity type as message
+        /// Parse the invoke value and change the activity type as message
         /// </summary>
         /// <param name="activity"></param>
         /// <returns></returns>

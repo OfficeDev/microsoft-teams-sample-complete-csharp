@@ -65,7 +65,7 @@ namespace Microsoft.Teams.TemplateBotCSharp
     public static class VSTSHelpers
     {
         /// <summary>
-        /// Purpose of this method is to execute the VSTS Api call
+        /// Execute the VSTS Api call
         /// </summary>
         /// <param name="postData"></param>
         /// <param name="IsCallback"></param>
@@ -118,7 +118,7 @@ namespace Microsoft.Teams.TemplateBotCSharp
         }
 
         /// <summary>
-        /// Purpose of this method is to create authorization url
+        /// Create authorization the url
         /// </summary>
         /// <param name="conversationReference"></param>
         /// <returns></returns>
@@ -141,7 +141,7 @@ namespace Microsoft.Teams.TemplateBotCSharp
         }
 
         /// <summary>
-        /// Purpose of this method is to get VSTS Profile
+        /// Get The VSTS Profile
         /// </summary>
         /// <param name="accessToken"></param>
         /// <returns></returns>
@@ -153,7 +153,7 @@ namespace Microsoft.Teams.TemplateBotCSharp
         }
 
         /// <summary>
-        /// Purpose of this method is to get VSTS Work Item
+        /// Get VSTS Work Item
         /// </summary>
         /// <param name="accessToken"></param>
         /// <param name="workItemId"></param>
@@ -184,7 +184,7 @@ namespace Microsoft.Teams.TemplateBotCSharp
         }
 
         /// <summary>
-        /// Purpose of this method is to get Create Api Post Data
+        /// Get Create Api Post Data
         /// </summary>
         /// <param name="code"></param>
         /// <returns></returns>
@@ -198,7 +198,7 @@ namespace Microsoft.Teams.TemplateBotCSharp
         }
 
         /// <summary>
-        /// Purpose of this method is to get Refresh Token Api Post Data
+        /// Get the Refresh Token Api Post Data
         /// </summary>
         /// <param name="refreshToken"></param>
         /// <returns></returns>
@@ -213,7 +213,7 @@ namespace Microsoft.Teams.TemplateBotCSharp
         }
 
         /// <summary>
-        /// Purpose of this method is to process the Api call
+        /// Process the Api call
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="uri"></param>
@@ -238,7 +238,7 @@ namespace Microsoft.Teams.TemplateBotCSharp
         }
 
         /// <summary>
-        /// /// Purpose of this method is to process the Api call
+        /// Process the Api call
         /// </summary>
         /// <param name="uri"></param>
         /// <param name="accessToken"></param>
@@ -263,7 +263,7 @@ namespace Microsoft.Teams.TemplateBotCSharp
         }
 
         /// <summary>
-        /// /// Purpose of this method is to Create Uri
+        /// Create Uri
         /// </summary>
         /// <param name="endPoint"></param>
         /// <param name="queryParams"></param>

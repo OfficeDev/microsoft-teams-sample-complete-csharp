@@ -64,13 +64,13 @@ namespace Microsoft.Teams.TemplateBotCSharp
                 if (reactionsAdded != null && reactionsAdded.Count > 0)
                 {
                     reply = activity.CreateReply(Strings.LikeMessage);
+                    await connectorClient.Conversations.ReplyToActivityAsync(reply);
                 }
-                else
+                else if (reactionsRemoved != null && reactionsRemoved.Count > 0)
                 {
                     reply = activity.CreateReply(Strings.RemoveLike);
+                    await connectorClient.Conversations.ReplyToActivityAsync(reply);
                 }
-
-                await connectorClient.Conversations.ReplyToActivityAsync(reply);
 
                 return Request.CreateResponse(HttpStatusCode.OK);
             }
@@ -79,8 +79,7 @@ namespace Microsoft.Teams.TemplateBotCSharp
                 // Handle ComposeExtension query
                 if (activity.IsComposeExtensionQuery())
                 {
-                    // this will handle the compose extension request
-
+                    // Handle compose extension selected item
                     if (activity.Name == "composeExtension/selectItem")
                     {
                         var selectedItemResponse = WikipediaComposeExtension.HandleComposeExtensionSelectedItem(activity);
@@ -113,7 +112,7 @@ namespace Microsoft.Teams.TemplateBotCSharp
                     messageActivity = InvokeHandler.HandleInvokeRequest(activity);
 
                     await Conversation.SendAsync(messageActivity, () => new Dialogs.RootDialog());
-                    
+
                     return Request.CreateResponse(HttpStatusCode.OK);
                 }
             }
@@ -198,7 +197,7 @@ namespace Microsoft.Teams.TemplateBotCSharp
         }
 
         /// <summary>
-        /// Purpose of this method is to handle the PopUp SignIn requests
+        /// Handle the PopUp SignIn requests
         /// </summary>
         /// <param name="activity"></param>
         /// <returns></returns>
