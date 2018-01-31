@@ -141,7 +141,7 @@ namespace Microsoft.Teams.TemplateBotCSharp
         }
 
         /// <summary>
-        /// Get The VSTS Profile
+        /// Get the VSTS Profile
         /// </summary>
         /// <param name="accessToken"></param>
         /// <returns></returns>

@@ -10,7 +10,7 @@ using System.Text;
 namespace Microsoft.Teams.TemplateBotCSharp.Utility
 {
     /// <summary>
-    /// Get the locale from incoming activity payload and Handle Compose Extension methods
+    /// Get the locale from incoming activity payload and handle compose extension methods
     /// </summary>
     public static class TemplateUtility
     {        
@@ -99,25 +99,21 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
                 switch (cardType)
                 {
                     case CardType.hero:
-                      {
-                            cardAttachment = new HeroCard()
-                            {
-                                Title = wikiResult.highlightedTitle,
-                                Tap = tapAction,
-                                Images = { new CardImage(wikiResult.imageUrl) },
-                            }.ToAttachment();
-                      }
-                      break;
+                        cardAttachment = new HeroCard()
+                        {
+                            Title = wikiResult.highlightedTitle,
+                            Tap = tapAction,
+                            Images = { new CardImage(wikiResult.imageUrl) },
+                        }.ToAttachment();
+                    break;
                     case CardType.thumbnail:
-                      {
-                            cardAttachment = new ThumbnailCard()
-                            {
-                                Title = wikiResult.highlightedTitle,
-                                Tap = tapAction,
-                                Images = { new CardImage(wikiResult.imageUrl) },
-                            }.ToAttachment();
-                      }
-                      break;
+                        cardAttachment = new ThumbnailCard()
+                        {
+                            Title = wikiResult.highlightedTitle,
+                            Tap = tapAction,
+                            Images = { new CardImage(wikiResult.imageUrl) },
+                        }.ToAttachment();
+                    break;
                 }
             }
 

@@ -18,10 +18,12 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
         hero,
         thumbnail
     }
+
     public static class WikipediaComposeExtension
     {
         const string searchApiUrlFormat = "https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=[keyword]&srlimit=[limit]&sroffset=[offset]&format=json";
         const string imageApiUrlFormat = "https://en.wikipedia.org/w/api.php?action=query&formatversion=2&format=json&prop=pageimages&piprop=thumbnail&pithumbsize=250&titles=[title]";
+        const string composeExtensionSelectedResults = "ComposeExtensionSelectedResults";
 
         public static ComposeExtensionResponse GetComposeExtensionResponse(Activity activity)
         {
@@ -126,7 +128,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
 
                 composeExtensionResponse = new ComposeExtensionResponse();
 
-                var historySearchWikiResult = userData.GetProperty<List<WikiHelperSearchResult>>("ComposeExtensionSelectedResults");
+                var historySearchWikiResult = userData.GetProperty<List<WikiHelperSearchResult>>(composeExtensionSelectedResults);
                 if (historySearchWikiResult != null)
                 {
                     foreach (var searchResult in historySearchWikiResult)
@@ -135,8 +137,10 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
 
                         // create the card itself and the preview card based upon the information
                         // check user preference for which type of card to create
-                        var userPreferredCardType = TemplateUtility.CreateComposeExtensionCardsAttachments(wikiSearchResult, userData.GetProperty<string>(Strings.ComposeExtensionCardTypeKeyword));
-                        composeExtensionAttachments.Add(userPreferredCardType);
+
+                        var userPreferredCardType = userData.GetProperty<string>(Strings.ComposeExtensionCardTypeKeyword);
+                        var createdCardAttachment = TemplateUtility.CreateComposeExtensionCardsAttachments(wikiSearchResult, userPreferredCardType);
+                        composeExtensionAttachments.Add(createdCardAttachment);
                     }
 
                     composeExtensionResponse = GetComposeExtensionQueryResult(composeExtensionResponse, composeExtensionAttachments);
@@ -186,8 +190,9 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
 
                 // create the card itself and the preview card based upon the information
                 // check user preference for which type of card to create
-
-                composeExtensionAttachments.Add(TemplateUtility.CreateComposeExtensionCardsAttachments(wikiSearchResult, userData.GetProperty<string>(Strings.ComposeExtensionCardTypeKeyword)));
+                var userPreferredCardType = userData.GetProperty<string>(Strings.ComposeExtensionCardTypeKeyword);
+                var createdCardAttachment = TemplateUtility.CreateComposeExtensionCardsAttachments(wikiSearchResult, userPreferredCardType);
+                composeExtensionAttachments.Add(createdCardAttachment);
             }
 
             composeExtensionResponse = GetComposeExtensionQueryResult(composeExtensionResponse, composeExtensionAttachments);
@@ -196,21 +201,21 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
         }
 
         /// <summary>
-        /// Handle the callback received when the user selects an item from the results list
-        /// Keep a history of recently-selected items in bot user data. The history will be returned in response to the initialRun query
+        /// Handle the callback received when the user selects an item from the results list        
         /// </summary>
         /// <param name="activity"></param>
         /// <returns></returns>
         public static ComposeExtensionResponse HandleComposeExtensionSelectedItem(Activity activity)
         {
+            // Keep a history of recently-selected items in bot user data. The history will be returned in response to the initialRun query
             BotData userData = TemplateUtility.GetBotDataObject(activity);
 
             //Get the Max number of History items from config file
-            int MaxHistoryWikiResultCount = Convert.ToInt32(ConfigurationManager.AppSettings["MaxTranslationHistoryCount"]);
+            int maxComposeExtensionHistoryCount = Convert.ToInt32(ConfigurationManager.AppSettings["MaxComposeExtensionHistoryCount"]);
 
             WikiHelperSearchResult selectedItem = JsonConvert.DeserializeObject<WikiHelperSearchResult>(activity.Value.ToString());
 
-            var historySearchWikiResult = userData.GetProperty<List<WikiHelperSearchResult>>("ComposeExtensionSelectedResults");
+            var historySearchWikiResult = userData.GetProperty<List<WikiHelperSearchResult>>(composeExtensionSelectedResults);
 
             //Removing other occurrences of the current selectedItem so there are not duplicates in the most recently used list
             if (historySearchWikiResult != null && historySearchWikiResult.Count > 0)
@@ -233,9 +238,9 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
             historySearchWikiResult.Insert(0, selectedItem);
 
             //Restrict the transaction History with Max Items.
-            if (historySearchWikiResult.Count > MaxHistoryWikiResultCount)
+            if (historySearchWikiResult.Count > maxComposeExtensionHistoryCount)
             {
-                historySearchWikiResult = historySearchWikiResult.GetRange(0, MaxHistoryWikiResultCount);
+                historySearchWikiResult = historySearchWikiResult.GetRange(0, maxComposeExtensionHistoryCount);
             }
 
             //Save the history Items in user Data
@@ -250,8 +255,9 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
             {
                 // create the card itself and the preview card based upon the information
                 // check user preference for which type of card to create
-                var userPreferredCardType = TemplateUtility.CreateComposeExtensionCardsAttachments(selectedItem, userData.GetProperty<string>(Strings.ComposeExtensionCardTypeKeyword));
-                composeExtensionAttachment.Add(userPreferredCardType);
+                var userPreferredCardType = userData.GetProperty<string>(Strings.ComposeExtensionCardTypeKeyword);
+                var createdCardAttachment = TemplateUtility.CreateComposeExtensionCardsAttachments(selectedItem, userPreferredCardType);
+                composeExtensionAttachment.Add(createdCardAttachment);
 
                 composeExtensionResponse = GetComposeExtensionQueryResult(composeExtensionResponse, composeExtensionAttachment);
             }
