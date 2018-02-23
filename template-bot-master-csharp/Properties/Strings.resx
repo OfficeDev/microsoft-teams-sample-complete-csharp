@@ -801,4 +801,7 @@
   <data name="RemoveLike" xml:space="preserve">
     <value>Like Removed!!</value>
   </data>
+  <data name="PopUpSignInMsg" xml:space="preserve">
+    <value>Authentication popup closed, Magic number passed through - </value>
+  </data>
 </root>
