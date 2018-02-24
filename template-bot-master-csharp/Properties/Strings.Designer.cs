@@ -1717,6 +1717,15 @@ namespace Microsoft.Teams.TemplateBotCSharp.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Authentication popup closed, Magic number passed through - .
+        /// </summary>
+        internal static string PopUpSignInMsg {
+            get {
+                return ResourceManager.GetString("PopUpSignInMsg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ooops, what you choose is not a valid option, please try again!!.
         /// </summary>
         internal static string PromptInvalidMsg {
