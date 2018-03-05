@@ -44,6 +44,11 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
             return GetComposeExtensionMainResultAttachment(wikiResult, selectedType).ToComposeExtensionAttachment(GetComposeExtensionPreviewAttachment(wikiResult, selectedType));
         }
 
+        public static ComposeExtensionAttachment CreateComposeExtensionCardsAttachmentsSelectedItem(WikiHelperSearchResult wikiResult, string selectedType)
+        {
+            return GetComposeExtensionMainResultAttachment(wikiResult, selectedType).ToComposeExtensionAttachment();
+        }
+
         public static Attachment GetComposeExtensionMainResultAttachment(WikiHelperSearchResult wikiResult, string selectedType)
         {
             CardType cardType;
@@ -54,7 +59,6 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
                 switch (cardType)
                 {
                     case CardType.hero:
-                     {
                         cardAttachment = new HeroCard()
                         {
                             Title = wikiResult.highlightedTitle,
@@ -64,10 +68,8 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
                                 new CardImage(wikiResult.imageUrl)
                             },
                         }.ToAttachment();
-                     }
-                     break;
+                        break;
                     case CardType.thumbnail:
-                     {
                         cardAttachment = new ThumbnailCard()
                         {
                             Title = wikiResult.highlightedTitle,
@@ -77,8 +79,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
                                 new CardImage(wikiResult.imageUrl)
                             },
                         }.ToAttachment();
-                     }
-                    break;
+                        break;
                 }
             }
 
@@ -90,7 +91,6 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
             string invokeVal = GetCardActionInvokeValue(wikiResult);
             var tapAction = new CardAction("invoke", value: invokeVal);
 
-
             CardType cardType;
             Attachment cardAttachment = null;
 
@@ -105,7 +105,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
                             Tap = tapAction,
                             Images = { new CardImage(wikiResult.imageUrl) },
                         }.ToAttachment();
-                    break;
+                        break;
                     case CardType.thumbnail:
                         cardAttachment = new ThumbnailCard()
                         {
@@ -113,7 +113,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
                             Tap = tapAction,
                             Images = { new CardImage(wikiResult.imageUrl) },
                         }.ToAttachment();
-                    break;
+                        break;
                 }
             }
 

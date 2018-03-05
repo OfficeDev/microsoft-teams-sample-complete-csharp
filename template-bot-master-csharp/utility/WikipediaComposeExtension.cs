@@ -21,9 +21,10 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
 
     public static class WikipediaComposeExtension
     {
-        const string searchApiUrlFormat = "https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=[keyword]&srlimit=[limit]&sroffset=[offset]&format=json";
-        const string imageApiUrlFormat = "https://en.wikipedia.org/w/api.php?action=query&formatversion=2&format=json&prop=pageimages&piprop=thumbnail&pithumbsize=250&titles=[title]";
-        const string composeExtensionSelectedResults = "ComposeExtensionSelectedResults";
+        const string SearchApiUrlFormat = "https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=[keyword]&srlimit=[limit]&sroffset=[offset]&format=json";
+        const string ImageApiUrlFormat = "https://en.wikipedia.org/w/api.php?action=query&formatversion=2&format=json&prop=pageimages&piprop=thumbnail&pithumbsize=250&titles=[title]";
+        const string ComposeExtensionSelectedResultsKey = "ComposeExtensionSelectedResults";
+        const string MaxComposeExtensionHistoryCountKey = "MaxComposeExtensionHistoryCount";
 
         public static ComposeExtensionResponse GetComposeExtensionResponse(Activity activity)
         {
@@ -32,7 +33,8 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
             List<ComposeExtensionAttachment> composeExtensionAttachments = new List<ComposeExtensionAttachment>();
             StateClient stateClient = activity.GetStateClient();
             BotData userData = stateClient.BotState.GetUserData(activity.ChannelId, activity.From.Id);
-            
+
+            var userPreferredCardType = userData.GetProperty<string>(Strings.ComposeExtensionCardTypeKeyword);
             bool IsSettingUrl = false;
 
             var composeExtensionQuery = activity.GetComposeExtensionQueryData();
@@ -112,14 +114,13 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
                 return composeExtensionResponse;
             }
 
-
             /**
             // this is the situation where the user in on the initial run of the compose extension
             // e.g. when the user first goes to the compose extension and the search bar is still blank
             // in order to get the compose extension to run the initial run, the setting "initialRun": true
             // must be set in the manifest for the compose extension
             **/
-
+            
             if (initialRunParameter == "true")
             {
                 //Signin Experience, please uncomment below code for Signin Experience
@@ -128,7 +129,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
 
                 composeExtensionResponse = new ComposeExtensionResponse();
 
-                var historySearchWikiResult = userData.GetProperty<List<WikiHelperSearchResult>>(composeExtensionSelectedResults);
+                var historySearchWikiResult = userData.GetProperty<List<WikiHelperSearchResult>>(ComposeExtensionSelectedResultsKey);
                 if (historySearchWikiResult != null)
                 {
                     foreach (var searchResult in historySearchWikiResult)
@@ -138,7 +139,6 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
                         // create the card itself and the preview card based upon the information
                         // check user preference for which type of card to create
 
-                        var userPreferredCardType = userData.GetProperty<string>(Strings.ComposeExtensionCardTypeKeyword);
                         var createdCardAttachment = TemplateUtility.CreateComposeExtensionCardsAttachments(wikiSearchResult, userPreferredCardType);
                         composeExtensionAttachments.Add(createdCardAttachment);
                     }
@@ -152,7 +152,6 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
 
                 return composeExtensionResponse;
             }
-
 
             /**
 
@@ -190,7 +189,6 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
 
                 // create the card itself and the preview card based upon the information
                 // check user preference for which type of card to create
-                var userPreferredCardType = userData.GetProperty<string>(Strings.ComposeExtensionCardTypeKeyword);
                 var createdCardAttachment = TemplateUtility.CreateComposeExtensionCardsAttachments(wikiSearchResult, userPreferredCardType);
                 composeExtensionAttachments.Add(createdCardAttachment);
             }
@@ -211,11 +209,11 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
             BotData userData = TemplateUtility.GetBotDataObject(activity);
 
             //Get the Max number of History items from config file
-            int maxComposeExtensionHistoryCount = Convert.ToInt32(ConfigurationManager.AppSettings["MaxComposeExtensionHistoryCount"]);
+            int maxComposeExtensionHistoryCount = Convert.ToInt32(ConfigurationManager.AppSettings[MaxComposeExtensionHistoryCountKey]);
 
             WikiHelperSearchResult selectedItem = JsonConvert.DeserializeObject<WikiHelperSearchResult>(activity.Value.ToString());
 
-            var historySearchWikiResult = userData.GetProperty<List<WikiHelperSearchResult>>(composeExtensionSelectedResults);
+            var historySearchWikiResult = userData.GetProperty<List<WikiHelperSearchResult>>(ComposeExtensionSelectedResultsKey);
 
             //Removing other occurrences of the current selectedItem so there are not duplicates in the most recently used list
             if (historySearchWikiResult != null && historySearchWikiResult.Count > 0)
@@ -244,9 +242,8 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
             }
 
             //Save the history Items in user Data
-            userData.SetProperty<List<WikiHelperSearchResult>>("ComposeExtensionSelectedResults", historySearchWikiResult);
+            userData.SetProperty<List<WikiHelperSearchResult>>(ComposeExtensionSelectedResultsKey, historySearchWikiResult);
             activity.GetStateClient().BotState.SetUserDataAsync(activity.ChannelId, activity.From.Id, userData);
-
 
             ComposeExtensionResponse composeExtensionResponse = new ComposeExtensionResponse();
             List<ComposeExtensionAttachment> composeExtensionAttachment = new List<ComposeExtensionAttachment>();
@@ -256,7 +253,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
                 // create the card itself and the preview card based upon the information
                 // check user preference for which type of card to create
                 var userPreferredCardType = userData.GetProperty<string>(Strings.ComposeExtensionCardTypeKeyword);
-                var createdCardAttachment = TemplateUtility.CreateComposeExtensionCardsAttachments(selectedItem, userPreferredCardType);
+                var createdCardAttachment = TemplateUtility.CreateComposeExtensionCardsAttachmentsSelectedItem(selectedItem, userPreferredCardType);
                 composeExtensionAttachment.Add(createdCardAttachment);
 
                 composeExtensionResponse = GetComposeExtensionQueryResult(composeExtensionResponse, composeExtensionAttachment);
@@ -337,7 +334,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
 
         public static WikiResult SearchWiki(string queryParameter, ComposeExtensionQuery composeExtensionQuery)
         {
-            string searchApiUrl = searchApiUrlFormat.Replace("[keyword]", queryParameter);
+            string searchApiUrl = SearchApiUrlFormat.Replace("[keyword]", queryParameter);
             searchApiUrl = searchApiUrl.Replace("[limit]", composeExtensionQuery.QueryOptions.Count + "");
             searchApiUrl = searchApiUrl.Replace("[offset]", composeExtensionQuery.QueryOptions.Skip + "");
             WikiResult wikiResult = null;
@@ -367,7 +364,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
         {
             ImageResult imageResult = null;
             // a separate API call to Wikipedia is needed to fetch the page image, if it exists
-            string imageApiUrl = imageApiUrlFormat.Replace("[title]", wikiSearch.title);
+            string imageApiUrl = ImageApiUrlFormat.Replace("[title]", wikiSearch.title);
 
             try
             {

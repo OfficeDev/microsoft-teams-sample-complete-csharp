@@ -208,6 +208,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
                 "activity subtitle",
                 "activity text",
                 "http://connectorsdemo.azurewebsites.net/images/MSC12_Oscar_002.jpg",
+                null,
                 true,
                 new List<O365ConnectorCardFact>
                 {
