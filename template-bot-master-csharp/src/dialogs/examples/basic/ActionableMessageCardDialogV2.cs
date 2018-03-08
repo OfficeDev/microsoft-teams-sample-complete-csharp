@@ -149,16 +149,19 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
                 });
             #endregion
 
-            var section = new O365ConnectorCardSection(
-                "",
-                "",
-                "Actionable Message",
-                "",
-                "This is an actionable message card. You can add operations within the card.",
-                imageUrl,
-                true,
-                null,
-                null);
+            var section = new O365ConnectorCardSection
+            {
+                Title = "",
+                Text = "",
+                ActivityTitle = "Actionable Message",
+                ActivitySubtitle = "",
+                ActivityText = "This is an actionable message card. You can add operations within the card.",
+                ActivityImage = imageUrl,
+                ActivityImageType = null,
+                Markdown = true,
+                Facts = null,
+                Images = null
+            };
 
             O365ConnectorCard card = new O365ConnectorCard()
             {
