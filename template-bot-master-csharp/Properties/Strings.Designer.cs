@@ -1231,6 +1231,15 @@ namespace Microsoft.Teams.TemplateBotCSharp.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Message Liked!!.
+        /// </summary>
+        internal static string LikeMessage {
+            get {
+                return ResourceManager.GetString("LikeMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Here is Local Time - .
         /// </summary>
         internal static string LocalTimeZonePrompt {
@@ -1776,6 +1785,15 @@ namespace Microsoft.Teams.TemplateBotCSharp.Properties {
         internal static string QuizTitleWelcomeMsg {
             get {
                 return ResourceManager.GetString("QuizTitleWelcomeMsg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Like Removed!!.
+        /// </summary>
+        internal static string RemoveLike {
+            get {
+                return ResourceManager.GetString("RemoveLike", resourceCulture);
             }
         }
         

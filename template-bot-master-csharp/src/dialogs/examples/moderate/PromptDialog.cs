@@ -49,7 +49,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
         }
 
         /// <summary>
-        /// This method will Prompt the welcome message. 
+        /// Prompt the welcome message. 
         /// Few options for user to choose any.
         /// </summary>
         /// <param name="context"></param>
@@ -97,7 +97,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
         }
 
         /// <summary>
-        /// This method will end this dialog and pass the user selection to ResumeAfterFlowGame method in Root Dialog
+        /// End this dialog and pass the user selection to ResumeAfterFlowGame method in Root Dialog
         /// </summary>
         /// <param name="context"></param>
         /// <param name="result"></param>

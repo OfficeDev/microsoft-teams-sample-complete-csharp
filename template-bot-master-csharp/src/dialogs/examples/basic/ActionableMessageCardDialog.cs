@@ -201,20 +201,22 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
                 });
             #endregion
 
-            var section = new O365ConnectorCardSection(
-                "**section title**",
-                "section text",
-                "activity title",
-                "activity subtitle",
-                "activity text",
-                "http://connectorsdemo.azurewebsites.net/images/MSC12_Oscar_002.jpg",
-                true,
-                new List<O365ConnectorCardFact>
+            var section = new O365ConnectorCardSection
+            {
+                Title = "**section title**",
+                Text = "section text",
+                ActivityTitle = "activity title",
+                ActivitySubtitle = "activity subtitle",
+                ActivityText = "activity text",
+                ActivityImage = "http://connectorsdemo.azurewebsites.net/images/MSC12_Oscar_002.jpg",
+                ActivityImageType = null,
+                Markdown = true,
+                Facts = new List<O365ConnectorCardFact>
                 {
                     new O365ConnectorCardFact("Fact name 1", "Fact value 1"),
                     new O365ConnectorCardFact("Fact name 2", "Fact value 2"),
                 },
-                new List<O365ConnectorCardImage>
+                Images = new List<O365ConnectorCardImage>
                 {
                     new O365ConnectorCardImage
                     {
@@ -231,7 +233,8 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
                         Image = "http://connectorsdemo.azurewebsites.net/images/WIN12_Anthony_02.jpg",
                         Title = "image 3"
                     }
-                });
+                }
+            };
 
             O365ConnectorCard card = new O365ConnectorCard()
             {
