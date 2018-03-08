@@ -4,6 +4,7 @@ using Microsoft.Bot.Connector.Teams;
 using Microsoft.Bot.Connector.Teams.Models;
 using Microsoft.Teams.TemplateBotCSharp.Properties;
 using Microsoft.Teams.TemplateBotCSharp.Utility;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Net;
 using System.Net.Http;
@@ -205,10 +206,18 @@ namespace Microsoft.Teams.TemplateBotCSharp
         private static async Task<HttpResponseMessage> PopUpSignInHandler(Activity activity)
         {
             var connectorClient = new ConnectorClient(new Uri(activity.ServiceUrl));
+            string magicNumber = string.Empty;
+
+            JObject invokeObjects = JObject.Parse(activity.Value.ToString());
+
+            if (invokeObjects.Count > 0)
+            {
+                 magicNumber=  invokeObjects["state"].Value<string>();
+            }
 
             Activity replyActivity = activity.CreateReply();
 
-            replyActivity.Text = $@"Authentication Successful";
+            replyActivity.Text = Strings.PopUpSignInMsg + magicNumber;
 
             await connectorClient.Conversations.ReplyToActivityWithRetriesAsync(replyActivity);
 
