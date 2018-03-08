@@ -206,9 +206,9 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
                 Title = "**section title**",
                 Text = "section text",
                 ActivityTitle = "activity title",
-                ActivitySubtitle= "activity subtitle",
-                ActivityText="activity text",
-                ActivityImage= "http://connectorsdemo.azurewebsites.net/images/MSC12_Oscar_002.jpg",
+                ActivitySubtitle = "activity subtitle",
+                ActivityText = "activity text",
+                ActivityImage = "http://connectorsdemo.azurewebsites.net/images/MSC12_Oscar_002.jpg",
                 ActivityImageType = null,
                 Markdown = true,
                 Facts = new List<O365ConnectorCardFact>

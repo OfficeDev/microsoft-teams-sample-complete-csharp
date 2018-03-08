@@ -88,8 +88,8 @@ namespace Microsoft.Teams.TemplateBotCSharp
                     }
                     else
                     {
-                        var invokeResponse = WikipediaComposeExtension.GetComposeExtensionResponse(activity);
-                        return Request.CreateResponse<ComposeExtensionResponse>(HttpStatusCode.OK, invokeResponse);
+                        var composeExtensionResponse = WikipediaComposeExtension.GetComposeExtensionResponse(activity);
+                        return Request.CreateResponse<ComposeExtensionResponse>(HttpStatusCode.OK, composeExtensionResponse);
                     }
                 }
                 //Actionable Message

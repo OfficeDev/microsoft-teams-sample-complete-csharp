@@ -137,7 +137,6 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
                         WikiHelperSearchResult wikiSearchResult = new WikiHelperSearchResult(searchResult.imageUrl, searchResult.highlightedTitle, searchResult.text);
 
                         // create the card itself and the preview card based upon the information
-                        // check user preference for which type of card to create
 
                         var createdCardAttachment = TemplateUtility.CreateComposeExtensionCardsAttachments(wikiSearchResult, userPreferredCardType);
                         composeExtensionAttachments.Add(createdCardAttachment);
@@ -188,7 +187,6 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
                 WikiHelperSearchResult wikiSearchResult = new WikiHelperSearchResult(imageUrl, highlightedTitle, cardText);
 
                 // create the card itself and the preview card based upon the information
-                // check user preference for which type of card to create
                 var createdCardAttachment = TemplateUtility.CreateComposeExtensionCardsAttachments(wikiSearchResult, userPreferredCardType);
                 composeExtensionAttachments.Add(createdCardAttachment);
             }
