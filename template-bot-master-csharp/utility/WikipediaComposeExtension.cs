@@ -228,7 +228,8 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
                         index++;
                     }
                 }
-            } else
+            }
+            else
             {
                 historySearchWikiResult = new List<WikiHelperSearchResult>();
             }
