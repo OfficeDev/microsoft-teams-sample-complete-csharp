@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Text;
+using System.Collections.Generic;
 
 namespace Microsoft.Teams.TemplateBotCSharp.Utility
 {
@@ -63,10 +64,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
                         {
                             Title = wikiResult.highlightedTitle,
                             Text = wikiResult.text,
-                            Images =
-                            {
-                                new CardImage(wikiResult.imageUrl)
-                            },
+                            Images = new List<CardImage> { new CardImage(wikiResult.imageUrl) },
                         }.ToAttachment();
                         break;
                     case CardType.thumbnail:
@@ -74,10 +72,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
                         {
                             Title = wikiResult.highlightedTitle,
                             Text = wikiResult.text,
-                            Images =
-                            {
-                                new CardImage(wikiResult.imageUrl)
-                            },
+                            Images = new List<CardImage> { new CardImage(wikiResult.imageUrl) },
                         }.ToAttachment();
                         break;
                 }
@@ -103,7 +98,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
                         {
                             Title = wikiResult.highlightedTitle,
                             Tap = tapAction,
-                            Images = { new CardImage(wikiResult.imageUrl) },
+                            Images = new List<CardImage> { new CardImage(wikiResult.imageUrl) },
                         }.ToAttachment();
                         break;
                     case CardType.thumbnail:
@@ -111,7 +106,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
                         {
                             Title = wikiResult.highlightedTitle,
                             Tap = tapAction,
-                            Images = { new CardImage(wikiResult.imageUrl) },
+                            Images = new List<CardImage> { new CardImage(wikiResult.imageUrl) },
                         }.ToAttachment();
                         break;
                 }
