@@ -45,14 +45,7 @@ namespace Microsoft.Teams.TemplateBotCSharp
                     return Request.CreateResponse(HttpStatusCode.OK);
                 }
 
-                try
-                {
-                    await Conversation.SendAsync(activity, () => new Dialogs.RootDialog());
-                }
-                catch (Exception ex)
-                {
-
-                }
+                await Conversation.SendAsync(activity, () => new Dialogs.RootDialog());
             }
             else if (activity.Type == ActivityTypes.MessageReaction)
             {
@@ -79,16 +72,18 @@ namespace Microsoft.Teams.TemplateBotCSharp
                 // Handle ComposeExtension query
                 if (activity.IsComposeExtensionQuery())
                 {
+                    var service = TemplateUtility.GetBotDataStore(activity);
+
                     // Handle compose extension selected item
                     if (activity.Name == "composeExtension/selectItem")
                     {
                         //This handler is used to process the event when a user in Teams selects a result from the compose extension result list
-                        var selectedItemResponse = WikipediaComposeExtension.HandleComposeExtensionSelectedItem(activity);
+                        ComposeExtensionResponse selectedItemResponse = await WikipediaComposeExtension.HandleComposeExtensionSelectedItem(activity, service);
                         return Request.CreateResponse<ComposeExtensionResponse>(HttpStatusCode.OK, selectedItemResponse);
                     }
                     else
                     {
-                        var composeExtensionResponse = WikipediaComposeExtension.GetComposeExtensionResponse(activity);
+                        ComposeExtensionResponse composeExtensionResponse = await WikipediaComposeExtension.GetComposeExtensionResponse(activity, service);
                         return Request.CreateResponse<ComposeExtensionResponse>(HttpStatusCode.OK, composeExtensionResponse);
                     }
                 }

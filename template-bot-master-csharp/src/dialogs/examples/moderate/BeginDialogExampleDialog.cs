@@ -21,13 +21,14 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
 
             //Set the Last Dialog in Conversation Data
             context.UserData.SetValue(Strings.LastDialogKey, Strings.LastDialogBeginDialog);
-
+            await context.PostAsync(Strings.BeginDialog);
 
             context.Call(new HelloDialog(), ResumeAfterBeginDialog);
         }
 
         private async Task ResumeAfterBeginDialog(IDialogContext context, IAwaitable<object> result)
         {
+            await context.PostAsync(Strings.BeginDialogEnd);
             context.Done<object>(null);
         }
     }

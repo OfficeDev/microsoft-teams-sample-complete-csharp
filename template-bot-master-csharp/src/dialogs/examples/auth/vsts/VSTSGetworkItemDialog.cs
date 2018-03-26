@@ -43,15 +43,7 @@ namespace Microsoft.Teams.TemplateBotCSharp
 
             if (context.UserData.TryGetValue("persistedCookieVSTS", out conversationReference))
             {
-
-                try
-                {
-                    requestedWorkItemId = conversationReference.User.Properties["workItemId"].ToString();
-                }
-                catch(Exception ex)
-                {
-                    //Ignore here if its coming from logged in session
-                }
+                requestedWorkItemId = conversationReference.User.Properties["workItemId"].ToString();
 
                 if(string.IsNullOrEmpty(requestedWorkItemId))
                 {

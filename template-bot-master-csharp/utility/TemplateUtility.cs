@@ -1,11 +1,17 @@
-﻿using Microsoft.Bot.Connector;
+﻿using Autofac;
+using Microsoft.Bot.Builder.Dialogs;
+using Microsoft.Bot.Builder.Dialogs.Internals;
+using Microsoft.Bot.Connector;
 using Microsoft.Bot.Connector.Teams;
 using Microsoft.Bot.Connector.Teams.Models;
 using Microsoft.Teams.TemplateBotCSharp.Properties;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
+using System.Configuration;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Microsoft.Teams.TemplateBotCSharp.Utility
 {
@@ -13,7 +19,8 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
     /// Get the locale from incoming activity payload and handle compose extension methods
     /// </summary>
     public static class TemplateUtility
-    {        
+    {
+        public static string BotId = ConfigurationManager.AppSettings["MicrosoftAppId"].ToString();
         public static string GetLocale(Activity activity)
         {
             if (activity == null)
@@ -54,6 +61,10 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
             CardType cardType;
             Attachment cardAttachment = null;
 
+            List<CardImage> images = new List<CardImage>();
+            CardImage image = new CardImage(wikiResult.imageUrl);
+            images.Add(image);
+
             if (Enum.TryParse(selectedType, out cardType))
             {
                 switch (cardType)
@@ -63,10 +74,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
                         {
                             Title = wikiResult.highlightedTitle,
                             Text = wikiResult.text,
-                            Images =
-                            {
-                                new CardImage(wikiResult.imageUrl)
-                            },
+                            Images = images
                         }.ToAttachment();
                         break;
                     case CardType.thumbnail:
@@ -74,10 +82,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
                         {
                             Title = wikiResult.highlightedTitle,
                             Text = wikiResult.text,
-                            Images =
-                            {
-                                new CardImage(wikiResult.imageUrl)
-                            },
+                            Images = images
                         }.ToAttachment();
                         break;
                 }
@@ -94,6 +99,10 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
             CardType cardType;
             Attachment cardAttachment = null;
 
+            List<CardImage> images = new List<CardImage>();
+            CardImage image = new CardImage(wikiResult.imageUrl);
+            images.Add(image);
+
             if (Enum.TryParse(selectedType, out cardType))
             {
                 switch (cardType)
@@ -103,7 +112,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
                         {
                             Title = wikiResult.highlightedTitle,
                             Tap = tapAction,
-                            Images = { new CardImage(wikiResult.imageUrl) },
+                            Images = images
                         }.ToAttachment();
                         break;
                     case CardType.thumbnail:
@@ -111,7 +120,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
                         {
                             Title = wikiResult.highlightedTitle,
                             Tap = tapAction,
-                            Images = { new CardImage(wikiResult.imageUrl) },
+                            Images = images
                         }.ToAttachment();
                         break;
                 }
@@ -190,7 +199,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
                     default:
                         if (c < ' ')
                         {
-                            t = "000" + String.Format("X", c);
+                            t = "000" + String.Format("{0} : {1}", "X", c);
                             sb.Append("\\u" + t.Substring(t.Length - 4));
                         }
                         else
@@ -203,10 +212,31 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
             return sb.ToString();
         }
 
-        public static BotData GetBotDataObject(Activity activity)
+        public static IBotDataStore<BotData> GetBotDataStore(Activity activity)
         {
-            StateClient stateClient = activity.GetStateClient();
-            return stateClient.BotState.GetUserData(activity.ChannelId, activity.From.Id);
+            using (var scope = Conversation.Container.BeginLifetimeScope())
+            {
+                using (var scope1 = DialogModule.BeginLifetimeScope(scope, activity as IMessageActivity))
+                {
+                    // Resolve services from a scope that is a child
+                    // of the root container.
+                    var service = scope1.Resolve<IBotDataStore<BotData>>();
+                    return service;
+                }
+            }
+        }
+
+        public static async Task<BotData> GetBotDataObject(IBotDataStore<BotData> botDataStore, IActivity activity)
+        {
+            IAddress key = new Address(BotId, activity.ChannelId, activity.From.Id, activity.Conversation.Id, activity.ServiceUrl);
+            BotData botData = await botDataStore.LoadAsync(key, BotStoreType.BotUserData, CancellationToken.None);
+            return botData;
+        }
+
+        public static async void SaveBotDataObject(IBotDataStore<BotData> botDataStore, Activity activity, BotData botData)
+        {
+            IAddress key = new Address(BotId, activity.ChannelId, activity.From.Id, activity.Conversation.Id, activity.ServiceUrl);
+            await botDataStore.SaveAsync(key, BotStoreType.BotUserData, botData, CancellationToken.None);
         }
     }
 

@@ -167,19 +167,16 @@ namespace Microsoft.Teams.TemplateBotCSharp
             Tuple.Create("api-version", "1.0"));
 
             var res = await VSTSRequestAPI(uri, accessToken);
-            try
-            {
-                var jsonObject= JObject.Parse(res); // parse as array
+            
+            var jsonObject= JObject.Parse(res); // parse as array
 
+            if (jsonObject != null)
+            {
                 item.Title = jsonObject["fields"]["System.Title"].ToString();
                 item.TeamProject = jsonObject["fields"]["System.TeamProject"].ToString();
                 item.Url = jsonObject["url"].ToString();
             }
-            catch (Exception ex)
-            {
-
-            }
-
+            
             return item;
         }
 
@@ -249,14 +246,7 @@ namespace Microsoft.Teams.TemplateBotCSharp
             using (HttpClient client = new HttpClient())
             {
                 client.DefaultRequestHeaders.Add("authorization", "bearer " + accessToken);
-                try
-                {
-                    json = await client.GetStringAsync(uri).ConfigureAwait(false);
-                }
-                catch(Exception ex)
-                {
-
-                }
+                json = await client.GetStringAsync(uri).ConfigureAwait(false);
             }
 
             return json;

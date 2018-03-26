@@ -35,6 +35,8 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
                 Strings.DisplayCardPromptText,
                 Strings.PromptInvalidMsg,
                 3);
+
+            await context.PostAsync(Strings.DisplayCardMsgTitle);
         }
 
         public async Task DisplaySelectedCard(IDialogContext context, IAwaitable<string> result)
