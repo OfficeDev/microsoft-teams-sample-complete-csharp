@@ -77,12 +77,13 @@ namespace Microsoft.Teams.TemplateBotCSharp
                     // Handle compose extension selected item
                     if (activity.Name == "composeExtension/selectItem")
                     {
-                        //This handler is used to process the event when a user in Teams selects a result from the compose extension result list
+                        // This handler is used to process the event when a user in Teams selects wiki item from wiki result
                         ComposeExtensionResponse selectedItemResponse = await WikipediaComposeExtension.HandleComposeExtensionSelectedItem(activity, service);
                         return Request.CreateResponse<ComposeExtensionResponse>(HttpStatusCode.OK, selectedItemResponse);
                     }
                     else
                     {
+                        // Handle the wiki compose extension request and returned the wiki result response
                         ComposeExtensionResponse composeExtensionResponse = await WikipediaComposeExtension.GetComposeExtensionResponse(activity, service);
                         return Request.CreateResponse<ComposeExtensionResponse>(HttpStatusCode.OK, composeExtensionResponse);
                     }

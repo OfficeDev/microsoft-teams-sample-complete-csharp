@@ -209,7 +209,6 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
         {
             // Keep a history of recently-selected items in bot user data. The history will be returned in response to the initialRun query
 
-            //var service = TemplateUtility.GetBotDataStore(activity);
             if (userData == null)
             {
                 userData = await TemplateUtility.GetBotDataObject(service, activity);
