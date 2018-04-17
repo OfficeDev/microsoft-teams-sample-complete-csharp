@@ -147,7 +147,7 @@ namespace Microsoft.Teams.TemplateBotCSharp
                 {
                     // Determine if the bot was added to the team/conversation
                     var botId = message.Recipient.Id;
-                    var botWasAdded = message.MembersAdded.Any(member => member.Id == message.Recipient.Id);
+                    var botWasAdded = message.MembersAdded.Any(member => member.Id == botId);
 
                     // Create the welcome message to send
                     Activity welcomeMessage = message.CreateReply();
@@ -175,7 +175,10 @@ namespace Microsoft.Teams.TemplateBotCSharp
                             }
                             else
                             {
-                                // First-run message has already been sent, so skip sending it again
+                                // First-run message has already been sent, so skip sending it again.
+                                // Do not remove the check for IsFreSent above. Your bot can receive spurious conversationUpdate
+                                // activities from chat service, so if you always respond to all of them, you will send random 
+                                // welcome messages to users who have already received the welcome.
                             }
                         }
                     }
