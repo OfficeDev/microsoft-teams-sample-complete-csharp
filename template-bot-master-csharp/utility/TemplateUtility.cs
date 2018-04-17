@@ -214,15 +214,12 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
 
         public static IBotDataStore<BotData> GetBotDataStore(Activity activity)
         {
-            using (var scope = Conversation.Container.BeginLifetimeScope())
+            using (var scope = DialogModule.BeginLifetimeScope(Conversation.Container, activity))
             {
-                using (var scope1 = DialogModule.BeginLifetimeScope(scope, activity as IMessageActivity))
-                {
-                    // Resolve services from a scope that is a child
-                    // of the root container.
-                    var service = scope1.Resolve<IBotDataStore<BotData>>();
-                    return service;
-                }
+                // Resolve services from a scope that is a child
+                // of the root container.
+                var service = scope.Resolve<IBotDataStore<BotData>>();
+                return service;
             }
         }
 
