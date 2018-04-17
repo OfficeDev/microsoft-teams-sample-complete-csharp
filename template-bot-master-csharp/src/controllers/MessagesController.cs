@@ -1,12 +1,17 @@
-﻿using Microsoft.Bot.Builder.Dialogs;
+﻿using Autofac;
+using Microsoft.Bot.Builder.Dialogs;
+using Microsoft.Bot.Builder.Dialogs.Internals;
 using Microsoft.Bot.Connector;
 using Microsoft.Bot.Connector.Teams;
 using Microsoft.Bot.Connector.Teams.Models;
 using Microsoft.Teams.TemplateBotCSharp.Properties;
 using Microsoft.Teams.TemplateBotCSharp.Utility;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http;
 
@@ -19,12 +24,18 @@ namespace Microsoft.Teams.TemplateBotCSharp
         /// POST: api/Messages
         /// Receive a message from a user and reply to it
         /// </summary>
-        public async Task<HttpResponseMessage> Post([FromBody]Activity activity)
+        public async Task<HttpResponseMessage> Post([FromBody]Activity activity, CancellationToken cancellationToken)
         {
             var connectorClient = new ConnectorClient(new Uri(activity.ServiceUrl));
 
             if (activity.Type == ActivityTypes.Message)
             {
+                // Special handling for a command to simulate a reset of the bot chat
+                if (!(activity.Conversation.IsGroup ?? false) && (activity.Text == "/resetbotchat"))
+                {
+                    return await HandleResetBotChatAsync(activity, cancellationToken);
+                }
+
                 //Set the Locale for Bot
                 activity.Locale = TemplateUtility.GetLocale(activity);
 
@@ -45,14 +56,7 @@ namespace Microsoft.Teams.TemplateBotCSharp
                     return Request.CreateResponse(HttpStatusCode.OK);
                 }
 
-                try
-                {
-                    await Conversation.SendAsync(activity, () => new Dialogs.RootDialog());
-                }
-                catch (Exception ex)
-                {
-
-                }
+                await Conversation.SendAsync(activity, () => new Dialogs.RootDialog());
             }
             else if (activity.Type == ActivityTypes.MessageReaction)
             {
@@ -119,7 +123,7 @@ namespace Microsoft.Teams.TemplateBotCSharp
             }
             else
             {
-                HandleSystemMessage(activity);
+                await HandleSystemMessageAsync(activity, connectorClient, cancellationToken);
             }
 
             var response = Request.CreateResponse(HttpStatusCode.OK);
@@ -127,7 +131,7 @@ namespace Microsoft.Teams.TemplateBotCSharp
             return response;
         }
 
-        private Activity HandleSystemMessage(Activity message)
+        private async Task HandleSystemMessageAsync(Activity message, ConnectorClient connectorClient, CancellationToken cancellationToken)
         {
             if (message.Type == ActivityTypes.DeleteUserData)
             {
@@ -136,12 +140,60 @@ namespace Microsoft.Teams.TemplateBotCSharp
             }
             else if (message.Type == ActivityTypes.ConversationUpdate)
             {
-                //uncomment the below line to handle cnversation update messages
-                //TeamEventBase eventData = message.GetConversationUpdateData();
+                // This shows how to send a welcome message in response to a conversationUpdate event
 
-                // Handle conversation state changes, like members being added and removed
-                // Use Activity.MembersAdded and Activity.MembersRemoved and Activity.Action for info
-                // Not available in all channels
+                // We're only interested in member added events
+                if (message.MembersAdded?.Count > 0)
+                {
+                    // Determine if the bot was added to the team/conversation
+                    var botId = message.Recipient.Id;
+                    var botWasAdded = message.MembersAdded.Any(member => member.Id == message.Recipient.Id);
+
+                    // Create the welcome message to send
+                    Activity welcomeMessage = message.CreateReply();
+                    welcomeMessage.Text = "Hello, I'm your new bot!";
+
+                    if (!(message.Conversation.IsGroup ?? false))
+                    {
+                        // 1:1 conversation event
+
+                        // If the user hasn't received a first-run message yet, then send a message to the user
+                        // introducing your bot and what it can do. Do NOT send this blindly, as your bot can receive
+                        // spurious conversationUpdate events, especially if you use proactive messaging.
+                        using (var scope = DialogModule.BeginLifetimeScope(Conversation.Container, message))
+                        {
+                            var address = Address.FromActivity(message);
+                            var botDataStore = scope.Resolve<IBotDataStore<BotData>>();
+                            var botData = await botDataStore.LoadAsync(address, BotStoreType.BotUserData, cancellationToken);
+                            if (!botData.GetProperty<bool>("IsFreSent"))
+                            {
+                                await connectorClient.Conversations.ReplyToActivityWithRetriesAsync(welcomeMessage, cancellationToken);
+
+                                // Remember that we sent the welcome message already
+                                botData.SetProperty("IsFreSent", true);
+                                await botDataStore.SaveAsync(address, BotStoreType.BotUserData, botData, cancellationToken);
+                            }
+                            else
+                            {
+                                // First-run message has already been sent, so skip sending it again
+                            }
+                        }
+                    }
+                    else
+                    {
+                        // Team event (bot or user was added to a team)
+                        if (botWasAdded)
+                        {
+                            // Bot was added to the team
+                            // Send a message to the team's channel, introducing your bot and what you can do
+                            await connectorClient.Conversations.ReplyToActivityWithRetriesAsync(welcomeMessage, cancellationToken);
+                        }
+                        else
+                        {
+                            // Other users were added to the team/conversation
+                        }
+                    }
+                }
             }
             else if (message.Type == ActivityTypes.ContactRelationUpdate)
             {
@@ -150,13 +202,47 @@ namespace Microsoft.Teams.TemplateBotCSharp
             }
             else if (message.Type == ActivityTypes.Typing)
             {
-                // Handle knowing tha the user is typing
+                // Handle knowing that the user is typing
             }
             else if (message.Type == ActivityTypes.Ping)
             {
             }
+        }
 
-            return null;
+        /// <summary>
+        /// Handles a request from the user to simulate a new chat.
+        /// </summary>
+        /// <param name="message">The incoming message requesting the reset</param>
+        /// <param name="cancellationToken">The cancellation token</param>
+        /// <returns></returns>
+        private async Task<HttpResponseMessage> HandleResetBotChatAsync(Activity message, CancellationToken cancellationToken)
+        {
+            // Forget everything we know about the user
+            using (var scope = DialogModule.BeginLifetimeScope(Conversation.Container, message))
+            {
+                var address = Address.FromActivity(message);
+                var botDataStore = scope.Resolve<IBotDataStore<BotData>>();
+                await botDataStore.SaveAsync(address, BotStoreType.BotUserData, new BotData("*"), cancellationToken);
+                await botDataStore.SaveAsync(address, BotStoreType.BotConversationData, new BotData("*"), cancellationToken);
+                await botDataStore.SaveAsync(address, BotStoreType.BotPrivateConversationData, new BotData("*"), cancellationToken);
+            }
+
+            // If you need to reset the user state in other services your app uses, do it here.
+
+            // Synthesize a conversation update event
+            // Note that this is a fake event, as Teams does not support deleting a 1:1 conversation and re-creating it
+            var conversationUpdateMessage = new Activity {
+                Type = ActivityTypes.ConversationUpdate,
+                Id = message.Id,
+                ServiceUrl = message.ServiceUrl,
+                From = message.From,
+                Recipient = message.Recipient,
+                Conversation = message.Conversation,
+                ChannelData = message.ChannelData,
+                ChannelId = message.ChannelId,
+                MembersAdded = new List<ChannelAccount> { message.Recipient },
+            };
+            return await this.Post(conversationUpdateMessage, cancellationToken);
         }
 
         /// <summary>
