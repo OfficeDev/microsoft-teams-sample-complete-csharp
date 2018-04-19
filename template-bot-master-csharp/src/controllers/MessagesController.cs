@@ -247,7 +247,7 @@ namespace Microsoft.Teams.TemplateBotCSharp
                 Timestamp = message.Timestamp,
                 LocalTimestamp = message.LocalTimestamp,
                 Entities = message.Entities,
-                MembersAdded = new List<ChannelAccount> { message.Recipient },
+                MembersAdded = new List<ChannelAccount> { message.From, message.Recipient },
             };
             return await this.Post(conversationUpdateMessage, cancellationToken);
         }
