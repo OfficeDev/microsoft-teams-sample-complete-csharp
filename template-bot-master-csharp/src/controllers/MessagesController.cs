@@ -246,7 +246,6 @@ namespace Microsoft.Teams.TemplateBotCSharp
                 ChannelId = message.ChannelId,
                 Timestamp = message.Timestamp,
                 LocalTimestamp = message.LocalTimestamp,
-                Locale = message.Locale,
                 Entities = message.Entities,
                 MembersAdded = new List<ChannelAccount> { message.Recipient },
             };
