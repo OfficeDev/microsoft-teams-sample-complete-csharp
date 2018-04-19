@@ -151,7 +151,7 @@ namespace Microsoft.Teams.TemplateBotCSharp
 
                     // Create the welcome message to send
                     Activity welcomeMessage = message.CreateReply();
-                    welcomeMessage.Text = "Hello, I'm your new bot!";
+                    welcomeMessage.Text = Strings.BotWelcomeMessage;
 
                     if (!(message.Conversation.IsGroup ?? false))
                     {
@@ -165,6 +165,7 @@ namespace Microsoft.Teams.TemplateBotCSharp
                             var address = Address.FromActivity(message);
                             var botDataStore = scope.Resolve<IBotDataStore<BotData>>();
                             var botData = await botDataStore.LoadAsync(address, BotStoreType.BotUserData, cancellationToken);
+
                             if (!botData.GetProperty<bool>("IsFreSent"))
                             {
                                 await connectorClient.Conversations.ReplyToActivityWithRetriesAsync(welcomeMessage, cancellationToken);
@@ -184,7 +185,7 @@ namespace Microsoft.Teams.TemplateBotCSharp
                     }
                     else
                     {
-                        // Team event (bot or user was added to a team)
+                        // Not 1:1 chat event (bot or user was added to a team or group chat)
                         if (botWasAdded)
                         {
                             // Bot was added to the team
@@ -232,7 +233,7 @@ namespace Microsoft.Teams.TemplateBotCSharp
 
             // If you need to reset the user state in other services your app uses, do it here.
 
-            // Synthesize a conversation update event
+            // Synthesize a conversation update event and simulate the bot receiving it
             // Note that this is a fake event, as Teams does not support deleting a 1:1 conversation and re-creating it
             var conversationUpdateMessage = new Activity {
                 Type = ActivityTypes.ConversationUpdate,
@@ -243,6 +244,10 @@ namespace Microsoft.Teams.TemplateBotCSharp
                 Conversation = message.Conversation,
                 ChannelData = message.ChannelData,
                 ChannelId = message.ChannelId,
+                Timestamp = message.Timestamp,
+                LocalTimestamp = message.LocalTimestamp,
+                Locale = message.Locale,
+                Entities = message.Entities,
                 MembersAdded = new List<ChannelAccount> { message.Recipient },
             };
             return await this.Post(conversationUpdateMessage, cancellationToken);
