@@ -217,14 +217,14 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
             return DialogModule.BeginLifetimeScope(Conversation.Container, activity).Resolve<IBotDataStore<BotData>>();
         }
 
-        public static async Task<BotData> GetBotDataObject(IBotDataStore<BotData> botDataStore, IActivity activity)
+        public static async Task<BotData> GetBotUserDataObject(IBotDataStore<BotData> botDataStore, IActivity activity)
         {
             IAddress key = new Address(BotId, activity.ChannelId, activity.From.Id, activity.Conversation.Id, activity.ServiceUrl);
             BotData botData = await botDataStore.LoadAsync(key, BotStoreType.BotUserData, CancellationToken.None);
             return botData;
         }
 
-        public static async void SaveBotDataObject(IBotDataStore<BotData> botDataStore, Activity activity, BotData botData)
+        public static async void SaveBotUserDataObject(IBotDataStore<BotData> botDataStore, Activity activity, BotData botData)
         {
             IAddress key = new Address(BotId, activity.ChannelId, activity.From.Id, activity.Conversation.Id, activity.ServiceUrl);
             await botDataStore.SaveAsync(key, BotStoreType.BotUserData, botData, CancellationToken.None);

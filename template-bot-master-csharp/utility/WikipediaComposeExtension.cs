@@ -36,7 +36,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
 
             if (userData == null)
             {
-                userData = await TemplateUtility.GetBotDataObject(service, activity);
+                userData = await TemplateUtility.GetBotUserDataObject(service, activity);
             }
 
             var userPreferredCardType = userData.GetProperty<string>(Strings.ComposeExtensionCardTypeKeyword);
@@ -211,7 +211,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
 
             if (userData == null)
             {
-                userData = await TemplateUtility.GetBotDataObject(service, activity);
+                userData = await TemplateUtility.GetBotUserDataObject(service, activity);
             }
 
             //Get the Max number of History items from config file
@@ -253,7 +253,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
 
             //Save the history Items in user Data
             userData.SetProperty<List<WikiHelperSearchResult>>(ComposeExtensionSelectedResultsKey, historySearchWikiResult);
-            TemplateUtility.SaveBotDataObject(service, activity, userData);
+            TemplateUtility.SaveBotUserDataObject(service, activity, userData);
 
             ComposeExtensionResponse composeExtensionResponse = new ComposeExtensionResponse();
             List<ComposeExtensionAttachment> composeExtensionAttachment = new List<ComposeExtensionAttachment>();
@@ -293,7 +293,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
         public static void ParseSettingsAndSave(string state, BotData userData, Activity activity, IBotDataStore<BotData> service)
         {
             userData.SetProperty<string>("composeExtensionCardType", state);
-            TemplateUtility.SaveBotDataObject(service, activity, userData);
+            TemplateUtility.SaveBotUserDataObject(service, activity, userData);
         }
 
         public static ComposeExtensionResponse GetConfig(ComposeExtensionResponse composeExtensionResponse)
