@@ -23,10 +23,10 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
             context.UserData.SetValue(Strings.LastDialogKey, Strings.LastDialogBeginDialog);
             await context.PostAsync(Strings.BeginDialog);
 
-            context.Call(new HelloDialog(), ResumeAfterBeginDialog);
+            context.Call(new HelloDialog(), ResumeAfterHelloDialog);
         }
 
-        private async Task ResumeAfterBeginDialog(IDialogContext context, IAwaitable<object> result)
+        private async Task ResumeAfterHelloDialog(IDialogContext context, IAwaitable<object> result)
         {
             await context.PostAsync(Strings.BeginDialogEnd);
             context.Done<object>(null);

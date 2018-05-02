@@ -1,4 +1,6 @@
-﻿using Microsoft.Bot.Builder.Dialogs;
+﻿using Autofac;
+using Microsoft.Bot.Builder.Dialogs;
+using Microsoft.Bot.Builder.Dialogs.Internals;
 using Microsoft.Bot.Connector;
 using Microsoft.Bot.Connector.Teams;
 using Microsoft.Bot.Connector.Teams.Models;
@@ -7,6 +9,7 @@ using Microsoft.Teams.TemplateBotCSharp.Utility;
 using System;
 using System.Net;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http;
 
@@ -72,21 +75,30 @@ namespace Microsoft.Teams.TemplateBotCSharp
                 // Handle ComposeExtension query
                 if (activity.IsComposeExtensionQuery())
                 {
-                    var service = TemplateUtility.GetBotDataStore(activity);
+                    WikipediaComposeExtension wikipediaComposeExtension = new WikipediaComposeExtension();
+                    HttpResponseMessage httpResponse = null;
 
-                    // Handle compose extension selected item
-                    if (activity.Name == "composeExtension/selectItem")
+                    using (var scope = DialogModule.BeginLifetimeScope(Conversation.Container, activity))
                     {
-                        // This handler is used to process the event when a user in Teams selects wiki item from wiki result
-                        ComposeExtensionResponse selectedItemResponse = await WikipediaComposeExtension.HandleComposeExtensionSelectedItem(activity, service);
-                        return Request.CreateResponse<ComposeExtensionResponse>(HttpStatusCode.OK, selectedItemResponse);
+                        var botDataStore = scope.Resolve<IBotDataStore<BotData>>();
+                        // Handle compose extension selected item
+                        if (activity.Name == "composeExtension/selectItem")
+                        {
+                            // This handler is used to process the event when a user in Teams selects wiki item from wiki result
+                            ComposeExtensionResponse selectedItemResponse = await wikipediaComposeExtension.HandleComposeExtensionSelectedItem(activity, botDataStore);
+                            httpResponse = Request.CreateResponse<ComposeExtensionResponse>(HttpStatusCode.OK, selectedItemResponse);
+                        }
+                        else
+                        {
+                            // Handle the wiki compose extension request and returned the wiki result response
+                            ComposeExtensionResponse composeExtensionResponse = await wikipediaComposeExtension.GetComposeExtensionResponse(activity, botDataStore);
+                            httpResponse = Request.CreateResponse<ComposeExtensionResponse>(HttpStatusCode.OK, composeExtensionResponse);
+                        }
+
+                        var address = Address.FromActivity(activity);
+                        await botDataStore.FlushAsync(address, CancellationToken.None);
                     }
-                    else
-                    {
-                        // Handle the wiki compose extension request and returned the wiki result response
-                        ComposeExtensionResponse composeExtensionResponse = await WikipediaComposeExtension.GetComposeExtensionResponse(activity, service);
-                        return Request.CreateResponse<ComposeExtensionResponse>(HttpStatusCode.OK, composeExtensionResponse);
-                    }
+                    return httpResponse;
                 }
                 //Actionable Message
                 else if (activity.IsO365ConnectorCardActionQuery())
@@ -176,7 +188,6 @@ namespace Microsoft.Teams.TemplateBotCSharp
             replyActivity.Text = $@"
 
             <h2>Thanks, {activity.From.Name}</h2><br/>
-
 
             <h3>Your input action ID:</h3><br/>
 

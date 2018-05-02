@@ -1,5 +1,4 @@
-﻿using Autofac;
-using Microsoft.Bot.Builder.Dialogs;
+﻿using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Builder.Dialogs.Internals;
 using Microsoft.Bot.Connector;
 using Microsoft.Bot.Connector.Teams;
@@ -8,8 +7,6 @@ using Microsoft.Teams.TemplateBotCSharp.Properties;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -20,7 +17,6 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
     /// </summary>
     public static class TemplateUtility
     {
-        public static string BotId = ConfigurationManager.AppSettings["MicrosoftAppId"].ToString();
         public static string GetLocale(Activity activity)
         {
             if (activity == null)
@@ -61,9 +57,10 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
             CardType cardType;
             Attachment cardAttachment = null;
 
-            List<CardImage> images = new List<CardImage>();
-            CardImage image = new CardImage(wikiResult.imageUrl);
-            images.Add(image);
+            var images = new List<CardImage>
+            {
+                new CardImage(wikiResult.imageUrl)
+            };
 
             if (Enum.TryParse(selectedType, out cardType))
             {
@@ -99,9 +96,10 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
             CardType cardType;
             Attachment cardAttachment = null;
 
-            List<CardImage> images = new List<CardImage>();
-            CardImage image = new CardImage(wikiResult.imageUrl);
-            images.Add(image);
+            var images = new List<CardImage>
+            {
+                new CardImage(wikiResult.imageUrl)
+            };
 
             if (Enum.TryParse(selectedType, out cardType))
             {
@@ -131,8 +129,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
 
         private static string GetCardActionInvokeValue(WikiHelperSearchResult wikiResult)
         {
-            string quoted = cleanForJSON(wikiResult.text);
-            InvokeValue invokeValue = new InvokeValue(wikiResult.imageUrl, quoted, wikiResult.highlightedTitle);
+            InvokeValue invokeValue = new InvokeValue(wikiResult.imageUrl, wikiResult.text, wikiResult.highlightedTitle);
             JObject json = (JObject)JToken.FromObject(invokeValue);
             return json.ToString();
         }
@@ -154,80 +151,17 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
             return null;
         }
 
-        public static string cleanForJSON(string s)
+        public static async Task<BotData> GetBotUserDataObject(IBotDataStore<BotData> botDataStore, Activity activity)
         {
-            if (s == null || s.Length == 0)
-            {
-                return "";
-            }
-
-            char c = '\0';
-            int i;
-            int len = s.Length;
-            StringBuilder sb = new StringBuilder();
-            String t;
-
-            for (i = 0; i < len; i += 1)
-            {
-                c = s[i];
-                switch (c)
-                {
-                    case '\\':
-                    case '"':
-                        sb.Append('\\');
-                        sb.Append(c);
-                        break;
-                    case '/':
-                        sb.Append('\\');
-                        sb.Append(c);
-                        break;
-                    case '\b':
-                        sb.Append("\\b");
-                        break;
-                    case '\t':
-                        sb.Append("\\t");
-                        break;
-                    case '\n':
-                        sb.Append("\\n");
-                        break;
-                    case '\f':
-                        sb.Append("\\f");
-                        break;
-                    case '\r':
-                        sb.Append("\\r");
-                        break;
-                    default:
-                        if (c < ' ')
-                        {
-                            t = "000" + String.Format("{0} : {1}", "X", c);
-                            sb.Append("\\u" + t.Substring(t.Length - 4));
-                        }
-                        else
-                        {
-                            sb.Append(c);
-                        }
-                        break;
-                }
-            }
-            return sb.ToString();
-        }
-
-        public static IBotDataStore<BotData> GetBotDataStore(Activity activity)
-        {
-            return DialogModule.BeginLifetimeScope(Conversation.Container, activity).Resolve<IBotDataStore<BotData>>();
-        }
-
-        public static async Task<BotData> GetBotUserDataObject(IBotDataStore<BotData> botDataStore, IActivity activity)
-        {
-            IAddress key = new Address(BotId, activity.ChannelId, activity.From.Id, activity.Conversation.Id, activity.ServiceUrl);
+            IAddress key = Address.FromActivity(activity);
             BotData botData = await botDataStore.LoadAsync(key, BotStoreType.BotUserData, CancellationToken.None);
             return botData;
         }
 
-        public static async void SaveBotUserDataObject(IBotDataStore<BotData> botDataStore, Activity activity, BotData botData)
+        public static async Task SaveBotUserDataObject(IBotDataStore<BotData> botDataStore, Activity activity, BotData userData)
         {
-            IAddress key = new Address(BotId, activity.ChannelId, activity.From.Id, activity.Conversation.Id, activity.ServiceUrl);
-            await botDataStore.SaveAsync(key, BotStoreType.BotUserData, botData, CancellationToken.None);
+            IAddress key = Address.FromActivity(activity);
+            await botDataStore.SaveAsync(key, BotStoreType.BotUserData, userData, CancellationToken.None);            
         }
     }
 

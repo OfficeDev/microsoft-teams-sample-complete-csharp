@@ -28,6 +28,8 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
             //Set the Last Dialog in Conversation Data
             context.UserData.SetValue(Strings.LastDialogKey, Strings.LastDialogDisplayCardsDialog);
 
+            await context.PostAsync(Strings.DisplayCardMsgTitle);
+
             PromptDialog.Choice<string>(
                 context,
                 this.DisplaySelectedCard,
@@ -35,8 +37,6 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
                 Strings.DisplayCardPromptText,
                 Strings.PromptInvalidMsg,
                 3);
-
-            await context.PostAsync(Strings.DisplayCardMsgTitle);
         }
 
         public async Task DisplaySelectedCard(IDialogContext context, IAwaitable<string> result)
@@ -53,7 +53,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
             }
             else if (selectedCard.Equals(Strings.DisplayCardO365ConnectorCardV1))
             {
-                context.Call(new ConnectorCardV1Dialog(), ResumeAfterOptionDialog);
+                context.Call(new ConnectorCardDialog(), ResumeAfterOptionDialog);
             }
             else if (selectedCard.Equals(Strings.DisplayCardO365ConnectorCardV2))
             {

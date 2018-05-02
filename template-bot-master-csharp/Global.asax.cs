@@ -1,7 +1,6 @@
 ﻿using Autofac;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Builder.Dialogs.Internals;
-using Microsoft.Bot.Builder.Internals.Fibers;
 using Microsoft.Bot.Connector;
 using System.Web.Http;
 
@@ -13,16 +12,19 @@ namespace Microsoft.Teams.TemplateBotCSharp
         {
             GlobalConfiguration.Configure(WebApiConfig.Register);
 
+            // Use an in-memory store for bot data.
+            // This registers a IBotDataStore singleton that will be used throughout the app.
             var store = new InMemoryDataStore();
 
-            Conversation.UpdateContainer(
-             builder =>
-             {
-                 builder.Register(c => store)
-                           .Keyed<IBotDataStore<BotData>>(FiberModule.Key_DoNotSerialize)
-                           .AsSelf()
-                           .SingleInstance();
-             });
+            Conversation.UpdateContainer(builder =>
+            {
+                builder.Register(c => new CachingBotDataStore(store,
+                         CachingBotDataStoreConsistencyPolicy
+                         .ETagBasedConsistency))
+                         .As<IBotDataStore<BotData>>()
+                         .AsSelf()
+                         .InstancePerLifetimeScope();
+            });
         }
     }
 }
