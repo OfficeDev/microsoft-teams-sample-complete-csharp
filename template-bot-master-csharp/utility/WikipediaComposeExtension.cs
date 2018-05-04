@@ -340,7 +340,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
             searchApiUrl = searchApiUrl.Replace("[limit]", composeExtensionQuery.QueryOptions.Count + "");
             searchApiUrl = searchApiUrl.Replace("[offset]", composeExtensionQuery.QueryOptions.Skip + "");
 
-            Uri apiUrl = GetUri(searchApiUrl);
+            Uri apiUrl = new UriBuilder(searchApiUrl).Uri;
             return await ProcessRequest<WikiResult>(apiUrl);
         }
 
@@ -349,14 +349,8 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
             // a separate API call to Wikipedia is needed to fetch the page image, if it exists
             string imageApiUrl = ImageApiUrlFormat.Replace("[title]", wikiSearch.title);
 
-            Uri apiUrl = GetUri(imageApiUrl);
+            Uri apiUrl = new UriBuilder(imageApiUrl).Uri;
             return await ProcessRequest<ImageResult>(apiUrl);
-        }
-
-        private Uri GetUri(string endPoint)
-        {
-            var builder = new UriBuilder(endPoint);
-            return builder.Uri;
         }
 
         private async Task<T> ProcessRequest<T>(Uri uri)
