@@ -4,6 +4,7 @@ using Microsoft.Bot.Connector;
 using Microsoft.Bot.Connector.Teams;
 using Microsoft.Bot.Connector.Teams.Models;
 using Microsoft.Teams.TemplateBotCSharp.Properties;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -130,8 +131,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
         private static string GetCardActionInvokeValue(WikiHelperSearchResult wikiResult)
         {
             InvokeValue invokeValue = new InvokeValue(wikiResult.imageUrl, wikiResult.text, wikiResult.highlightedTitle);
-            JObject json = (JObject)JToken.FromObject(invokeValue);
-            return json.ToString();
+            return JsonConvert.SerializeObject(invokeValue);
         }
 
         /// <summary>

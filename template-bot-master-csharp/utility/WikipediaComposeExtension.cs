@@ -26,6 +26,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
         const string ComposeExtensionSelectedResultsKey = "ComposeExtensionSelectedResults";
         const string MaxComposeExtensionHistoryCountKey = "MaxComposeExtensionHistoryCount";
         public static HttpClient Client = new HttpClient();
+
         public async Task<ComposeExtensionResponse> GetComposeExtensionResponse(Activity activity, IBotDataStore<BotData> botDataStore)
         {
             ComposeExtensionResponse composeExtensionResponse = null;
@@ -153,19 +154,12 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
             }
 
             /**
-
             * Below here is simply the logic to call the Wikipedia API and create the response for
-
             * a query; the general flow is to call the Wikipedia API for the query and then call the
-
             * Wikipedia API for each entry for the query to see if that entry has an image; in order
-
             * to get the asynchronous sections handled, an array of Promises for cards is used; each
-
             * Promise is resolved when it is discovered if an image exists for that entry; once all
-
             * of the Promises are resolved, the response is sent back to Teams
-
             */
 
             WikiResult wikiResult = await SearchWiki(queryParameter, composeExtensionQuery);
