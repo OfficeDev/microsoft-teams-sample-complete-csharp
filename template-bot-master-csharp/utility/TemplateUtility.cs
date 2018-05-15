@@ -1,12 +1,15 @@
-﻿using Microsoft.Bot.Connector;
+﻿using Microsoft.Bot.Builder.Dialogs;
+using Microsoft.Bot.Builder.Dialogs.Internals;
+using Microsoft.Bot.Connector;
 using Microsoft.Bot.Connector.Teams;
 using Microsoft.Bot.Connector.Teams.Models;
 using Microsoft.Teams.TemplateBotCSharp.Properties;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
-using System.Text;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Microsoft.Teams.TemplateBotCSharp.Utility
 {
@@ -14,7 +17,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
     /// Get the locale from incoming activity payload and handle compose extension methods
     /// </summary>
     public static class TemplateUtility
-    {        
+    {
         public static string GetLocale(Activity activity)
         {
             if (activity == null)
@@ -55,6 +58,11 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
             CardType cardType;
             Attachment cardAttachment = null;
 
+            var images = new List<CardImage>
+            {
+                new CardImage(wikiResult.imageUrl)
+            };
+
             if (Enum.TryParse(selectedType, out cardType))
             {
                 switch (cardType)
@@ -64,7 +72,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
                         {
                             Title = wikiResult.highlightedTitle,
                             Text = wikiResult.text,
-                            Images = new List<CardImage> { new CardImage(wikiResult.imageUrl) },
+                            Images = images
                         }.ToAttachment();
                         break;
                     case CardType.thumbnail:
@@ -72,7 +80,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
                         {
                             Title = wikiResult.highlightedTitle,
                             Text = wikiResult.text,
-                            Images = new List<CardImage> { new CardImage(wikiResult.imageUrl) },
+                            Images = images
                         }.ToAttachment();
                         break;
                 }
@@ -89,6 +97,11 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
             CardType cardType;
             Attachment cardAttachment = null;
 
+            var images = new List<CardImage>
+            {
+                new CardImage(wikiResult.imageUrl)
+            };
+
             if (Enum.TryParse(selectedType, out cardType))
             {
                 switch (cardType)
@@ -98,7 +111,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
                         {
                             Title = wikiResult.highlightedTitle,
                             Tap = tapAction,
-                            Images = new List<CardImage> { new CardImage(wikiResult.imageUrl) },
+                            Images = images
                         }.ToAttachment();
                         break;
                     case CardType.thumbnail:
@@ -106,7 +119,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
                         {
                             Title = wikiResult.highlightedTitle,
                             Tap = tapAction,
-                            Images = new List<CardImage> { new CardImage(wikiResult.imageUrl) },
+                            Images = images
                         }.ToAttachment();
                         break;
                 }
@@ -117,10 +130,8 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
 
         private static string GetCardActionInvokeValue(WikiHelperSearchResult wikiResult)
         {
-            string quoted = cleanForJSON(wikiResult.text);
-            InvokeValue invokeValue = new InvokeValue(wikiResult.imageUrl, quoted, wikiResult.highlightedTitle);
-            JObject json = (JObject)JToken.FromObject(invokeValue);
-            return json.ToString();
+            InvokeValue invokeValue = new InvokeValue(wikiResult.imageUrl, wikiResult.text, wikiResult.highlightedTitle);
+            return JsonConvert.SerializeObject(invokeValue);
         }
 
         /// <summary>
@@ -140,68 +151,17 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
             return null;
         }
 
-        public static string cleanForJSON(string s)
+        public static async Task<BotData> GetBotUserDataObject(IBotDataStore<BotData> botDataStore, Activity activity)
         {
-            if (s == null || s.Length == 0)
-            {
-                return "";
-            }
-
-            char c = '\0';
-            int i;
-            int len = s.Length;
-            StringBuilder sb = new StringBuilder();
-            String t;
-
-            for (i = 0; i < len; i += 1)
-            {
-                c = s[i];
-                switch (c)
-                {
-                    case '\\':
-                    case '"':
-                        sb.Append('\\');
-                        sb.Append(c);
-                        break;
-                    case '/':
-                        sb.Append('\\');
-                        sb.Append(c);
-                        break;
-                    case '\b':
-                        sb.Append("\\b");
-                        break;
-                    case '\t':
-                        sb.Append("\\t");
-                        break;
-                    case '\n':
-                        sb.Append("\\n");
-                        break;
-                    case '\f':
-                        sb.Append("\\f");
-                        break;
-                    case '\r':
-                        sb.Append("\\r");
-                        break;
-                    default:
-                        if (c < ' ')
-                        {
-                            t = "000" + String.Format("X", c);
-                            sb.Append("\\u" + t.Substring(t.Length - 4));
-                        }
-                        else
-                        {
-                            sb.Append(c);
-                        }
-                        break;
-                }
-            }
-            return sb.ToString();
+            IAddress key = Address.FromActivity(activity);
+            BotData botData = await botDataStore.LoadAsync(key, BotStoreType.BotUserData, CancellationToken.None);
+            return botData;
         }
 
-        public static BotData GetBotDataObject(Activity activity)
+        public static async Task SaveBotUserDataObject(IBotDataStore<BotData> botDataStore, Activity activity, BotData userData)
         {
-            StateClient stateClient = activity.GetStateClient();
-            return stateClient.BotState.GetUserData(activity.ChannelId, activity.From.Id);
+            IAddress key = Address.FromActivity(activity);
+            await botDataStore.SaveAsync(key, BotStoreType.BotUserData, userData, CancellationToken.None);            
         }
     }
 

@@ -1,15 +1,15 @@
-﻿using Microsoft.Bot.Connector;
+﻿using Microsoft.Bot.Builder.Dialogs.Internals;
+using Microsoft.Bot.Connector;
 using Microsoft.Bot.Connector.Teams;
 using Microsoft.Bot.Connector.Teams.Models;
 using Microsoft.Teams.TemplateBotCSharp.Properties;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Configuration;
-using System.IO;
-using System.Net;
+using System.Net.Http;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace Microsoft.Teams.TemplateBotCSharp.Utility
 {
@@ -19,30 +19,31 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
         thumbnail
     }
 
-    public static class WikipediaComposeExtension
+    public class WikipediaComposeExtension
     {
         const string SearchApiUrlFormat = "https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=[keyword]&srlimit=[limit]&sroffset=[offset]&format=json";
         const string ImageApiUrlFormat = "https://en.wikipedia.org/w/api.php?action=query&formatversion=2&format=json&prop=pageimages&piprop=thumbnail&pithumbsize=250&titles=[title]";
         const string ComposeExtensionSelectedResultsKey = "ComposeExtensionSelectedResults";
         const string MaxComposeExtensionHistoryCountKey = "MaxComposeExtensionHistoryCount";
+        public static HttpClient Client = new HttpClient();
 
-        public static ComposeExtensionResponse GetComposeExtensionResponse(Activity activity)
+        public async Task<ComposeExtensionResponse> GetComposeExtensionResponse(Activity activity, IBotDataStore<BotData> botDataStore)
         {
             ComposeExtensionResponse composeExtensionResponse = null;
             ImageResult imageResult = null;
             List<ComposeExtensionAttachment> composeExtensionAttachments = new List<ComposeExtensionAttachment>();
-            StateClient stateClient = activity.GetStateClient();
-            BotData userData = stateClient.BotState.GetUserData(activity.ChannelId, activity.From.Id);
+
+            var userData = await TemplateUtility.GetBotUserDataObject(botDataStore, activity);
 
             var userPreferredCardType = userData.GetProperty<string>(Strings.ComposeExtensionCardTypeKeyword);
-            bool IsSettingUrl = false;
+
+            bool isSettingUrl = false;
 
             var composeExtensionQuery = activity.GetComposeExtensionQueryData();
             if (string.Equals(activity.Name.ToLower(), Strings.ComposeExtensionQuerySettingUrl))
             {
-                IsSettingUrl = true;
+                isSettingUrl = true;
             }
-
 
             if (composeExtensionQuery.CommandId == null || composeExtensionQuery.Parameters == null)
             {
@@ -69,7 +70,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
 
             if (!string.IsNullOrEmpty(composeExtensionQuery.State))
             {
-                ParseSettingsAndSave(composeExtensionQuery.State, userData, stateClient, activity);
+                ParseSettingsAndSave(composeExtensionQuery.State, userData, activity, botDataStore);
                 /**
                 //// need to keep going to return a response so do not return here
                 //// these variables are changed so if the word 'setting' kicked off the compose extension,
@@ -83,7 +84,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
             // this is a sitaution where the user's preferences have not been set up yet
             if (string.IsNullOrEmpty(userData.GetProperty<string>(Strings.ComposeExtensionCardTypeKeyword)))
             {
-                composeExtensionResponse = GetConfig(composeExtensionResponse);
+                composeExtensionResponse = GetConfig();
                 return composeExtensionResponse;
             }
 
@@ -95,8 +96,9 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
 
             if (string.Equals(queryParameter.ToLower(), Strings.ComposeExtensionResetKeyword))
             {
-                //make the userData null
-                userData = null;
+                userData.RemoveProperty(Strings.ComposeExtensionCardTypeKeyword);
+                await TemplateUtility.SaveBotUserDataObject(botDataStore, activity, userData);
+
                 composeExtensionResponse = new ComposeExtensionResponse();
                 composeExtensionResponse.ComposeExtension = GetMessageResponseResult(Strings.ComposeExtensionResetText);
                 return composeExtensionResponse;
@@ -108,9 +110,9 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
             // keywords for English are "setting" and "settings"
             **/
 
-            if ((string.Equals(queryParameter.ToLower(), Strings.ComposeExtensionSettingKeyword) || string.Equals(queryParameter.ToLower(), Strings.ComposeExtensionSettingsKeyword)) || (IsSettingUrl))
+            if ((string.Equals(queryParameter.ToLower(), Strings.ComposeExtensionSettingKeyword) || string.Equals(queryParameter.ToLower(), Strings.ComposeExtensionSettingsKeyword)) || (isSettingUrl))
             {
-                composeExtensionResponse = GetConfig(composeExtensionResponse);
+                composeExtensionResponse = GetConfig();
                 return composeExtensionResponse;
             }
 
@@ -137,12 +139,11 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
                         WikiHelperSearchResult wikiSearchResult = new WikiHelperSearchResult(searchResult.imageUrl, searchResult.highlightedTitle, searchResult.text);
 
                         // create the card itself and the preview card based upon the information
-
                         var createdCardAttachment = TemplateUtility.CreateComposeExtensionCardsAttachments(wikiSearchResult, userPreferredCardType);
                         composeExtensionAttachments.Add(createdCardAttachment);
                     }
 
-                    composeExtensionResponse = GetComposeExtensionQueryResult(composeExtensionResponse, composeExtensionAttachments);
+                    composeExtensionResponse = GetComposeExtensionQueryResult(composeExtensionAttachments);
                 }
                 else
                 {
@@ -153,45 +154,35 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
             }
 
             /**
-
             * Below here is simply the logic to call the Wikipedia API and create the response for
-
             * a query; the general flow is to call the Wikipedia API for the query and then call the
-
             * Wikipedia API for each entry for the query to see if that entry has an image; in order
-
             * to get the asynchronous sections handled, an array of Promises for cards is used; each
-
             * Promise is resolved when it is discovered if an image exists for that entry; once all
-
             * of the Promises are resolved, the response is sent back to Teams
-
             */
 
-            WikiResult wikiResult = SearchWiki(queryParameter, composeExtensionQuery);
+            WikiResult wikiResult = await SearchWiki(queryParameter, composeExtensionQuery);
 
             // enumerate search results and build Promises for cards for response
             foreach (var searchResult in wikiResult.query.search)
             {
                 //Get the Image result on the basis of Image Title one by one
-                imageResult = SearchWikiImage(searchResult);
+                imageResult = await SearchWikiImage(searchResult);
 
                 //Get the Image Url from imageResult
                 string imageUrl = GetImageURL(imageResult);
 
-                //Set the Highlighter title
-                string highlightedTitle = GetHighLightedTitle(searchResult.title, queryParameter);
-
                 string cardText = searchResult.snippet + " ...";
 
-                WikiHelperSearchResult wikiSearchResult = new WikiHelperSearchResult(imageUrl, highlightedTitle, cardText);
+                WikiHelperSearchResult wikiSearchResult = new WikiHelperSearchResult(imageUrl, searchResult.title, cardText);
 
                 // create the card itself and the preview card based upon the information
                 var createdCardAttachment = TemplateUtility.CreateComposeExtensionCardsAttachments(wikiSearchResult, userPreferredCardType);
                 composeExtensionAttachments.Add(createdCardAttachment);
             }
 
-            composeExtensionResponse = GetComposeExtensionQueryResult(composeExtensionResponse, composeExtensionAttachments);
+            composeExtensionResponse = GetComposeExtensionQueryResult(composeExtensionAttachments);
 
             return composeExtensionResponse;
         }
@@ -201,10 +192,10 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
         /// </summary>
         /// <param name="activity"></param>
         /// <returns></returns>
-        public static ComposeExtensionResponse HandleComposeExtensionSelectedItem(Activity activity)
+        public async Task<ComposeExtensionResponse> HandleComposeExtensionSelectedItem(Activity activity, IBotDataStore<BotData> botDataStore)
         {
             // Keep a history of recently-selected items in bot user data. The history will be returned in response to the initialRun query
-            BotData userData = TemplateUtility.GetBotDataObject(activity);
+            var userData = await TemplateUtility.GetBotUserDataObject(botDataStore, activity);
 
             //Get the Max number of History items from config file
             int maxComposeExtensionHistoryCount = Convert.ToInt32(ConfigurationManager.AppSettings[MaxComposeExtensionHistoryCountKey]);
@@ -245,7 +236,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
 
             //Save the history Items in user Data
             userData.SetProperty<List<WikiHelperSearchResult>>(ComposeExtensionSelectedResultsKey, historySearchWikiResult);
-            activity.GetStateClient().BotState.SetUserDataAsync(activity.ChannelId, activity.From.Id, userData);
+            await TemplateUtility.SaveBotUserDataObject(botDataStore, activity, userData);
 
             ComposeExtensionResponse composeExtensionResponse = new ComposeExtensionResponse();
             List<ComposeExtensionAttachment> composeExtensionAttachment = new List<ComposeExtensionAttachment>();
@@ -258,7 +249,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
                 var createdCardAttachment = TemplateUtility.CreateComposeExtensionCardsAttachmentsSelectedItem(selectedItem, userPreferredCardType);
                 composeExtensionAttachment.Add(createdCardAttachment);
 
-                composeExtensionResponse = GetComposeExtensionQueryResult(composeExtensionResponse, composeExtensionAttachment);
+                composeExtensionResponse = GetComposeExtensionQueryResult(composeExtensionAttachment);
             }
             else
             {
@@ -269,32 +260,33 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
         }
 
         // return the value of the specified query parameter
-        public static string GetQueryParameterByName(ComposeExtensionQuery query, string name)
+        public string GetQueryParameterByName(ComposeExtensionQuery query, string name)
         {
-            if (query.Parameters[0].Name == name)
+            foreach (var param in query.Parameters)
             {
-                return query.Parameters[0].Value.ToString();
+                if (param.Name == name)
+                {
+                    return param.Value.ToString();
+                }
             }
-            else
-            {
-                return "";
-            }
+
+            return "";
         }
 
         // used to parse the user preferences from the state and save them for later use
-        public static void ParseSettingsAndSave(string state, BotData userData, StateClient stateClient, Activity activity)
+        public async void ParseSettingsAndSave(string state, BotData userData, Activity activity, IBotDataStore<BotData> service)
         {
             userData.SetProperty<string>("composeExtensionCardType", state);
-            stateClient.BotState.SetUserData(activity.ChannelId, activity.From.Id, userData);
+            await TemplateUtility.SaveBotUserDataObject(service, activity, userData);
         }
 
-        public static ComposeExtensionResponse GetConfig(ComposeExtensionResponse composeExtensionResponse)
+        public ComposeExtensionResponse GetConfig()
         {
             string configUrl = ConfigurationManager.AppSettings["BaseUri"].ToString() + "/composeExtensionSettings.html";
             CardAction configExp = new CardAction(ActionTypes.OpenUrl, "Config", null, configUrl);
             List<CardAction> cardActions = new List<CardAction>();
             cardActions.Add(configExp);
-            composeExtensionResponse = new ComposeExtensionResponse();
+            ComposeExtensionResponse composeExtensionResponse = new ComposeExtensionResponse();
             ComposeExtensionResult composeExtensionResult = new ComposeExtensionResult();
 
             ComposeExtensionSuggestedAction objSuggestedAction = new ComposeExtensionSuggestedAction();
@@ -307,13 +299,13 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
             return composeExtensionResponse;
         }
 
-        public static ComposeExtensionResponse GetSignin(ComposeExtensionResponse composeExtensionResponse)
+        public ComposeExtensionResponse GetSignin()
         {
             string configUrl = ConfigurationManager.AppSettings["BaseUri"].ToString() + "/composeExtensionSettings.html";
             CardAction configExp = new CardAction(ActionTypes.OpenUrl, "Config", null, configUrl);
             List<CardAction> cardActions = new List<CardAction>();
             cardActions.Add(configExp);
-            composeExtensionResponse = new ComposeExtensionResponse();
+            ComposeExtensionResponse composeExtensionResponse = new ComposeExtensionResponse();
             ComposeExtensionResult composeExtensionResult = new ComposeExtensionResult();
 
             ComposeExtensionSuggestedAction objSuggestedAction = new ComposeExtensionSuggestedAction();
@@ -326,7 +318,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
             return composeExtensionResponse;
         }
 
-        public static ComposeExtensionResult GetMessageResponseResult(string message)
+        public ComposeExtensionResult GetMessageResponseResult(string message)
         {
             ComposeExtensionResult composeExtensionResult = new ComposeExtensionResult();
             composeExtensionResult.Type = "message";
@@ -334,61 +326,32 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
             return composeExtensionResult;
         }
 
-        public static WikiResult SearchWiki(string queryParameter, ComposeExtensionQuery composeExtensionQuery)
+        public async Task<WikiResult> SearchWiki(string queryParameter, ComposeExtensionQuery composeExtensionQuery)
         {
             string searchApiUrl = SearchApiUrlFormat.Replace("[keyword]", queryParameter);
             searchApiUrl = searchApiUrl.Replace("[limit]", composeExtensionQuery.QueryOptions.Count + "");
             searchApiUrl = searchApiUrl.Replace("[offset]", composeExtensionQuery.QueryOptions.Skip + "");
-            WikiResult wikiResult = null;
 
-            // call Wikipedia API to search
-            try
-            {
-                HttpWebRequest myRequest = (HttpWebRequest)WebRequest.Create(searchApiUrl);
-                using (HttpWebResponse response = (HttpWebResponse)myRequest.GetResponse())
-                {
-                    string ResponseText;
-                    using (StreamReader reader = new StreamReader(response.GetResponseStream()))
-                    {
-                        ResponseText = reader.ReadToEnd();
-                        wikiResult = JsonConvert.DeserializeObject<WikiResult>(ResponseText);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-
-            }
-            return wikiResult;
+            Uri apiUrl = new Uri(searchApiUrl);
+            return await ProcessRequest<WikiResult>(apiUrl);
         }
 
-        public static ImageResult SearchWikiImage(Search wikiSearch)
+        public async Task<ImageResult> SearchWikiImage(Search wikiSearch)
         {
-            ImageResult imageResult = null;
             // a separate API call to Wikipedia is needed to fetch the page image, if it exists
             string imageApiUrl = ImageApiUrlFormat.Replace("[title]", wikiSearch.title);
 
-            try
-            {
-                HttpWebRequest myRequest = (HttpWebRequest)WebRequest.Create(imageApiUrl);
-                using (HttpWebResponse response = (HttpWebResponse)myRequest.GetResponse())
-                {
-                    string ResponseText;
-                    using (StreamReader reader = new StreamReader(response.GetResponseStream()))
-                    {
-                        ResponseText = reader.ReadToEnd();
-                        imageResult = JsonConvert.DeserializeObject<ImageResult>(ResponseText);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-
-            }
-            return imageResult;
+            Uri apiUrl = new Uri(imageApiUrl);
+            return await ProcessRequest<ImageResult>(apiUrl);
         }
 
-        public static string GetImageURL(ImageResult imageResult)
+        private async Task<T> ProcessRequest<T>(Uri uri)
+        {
+            var json = await Client.GetStringAsync(uri).ConfigureAwait(false);
+            return JsonConvert.DeserializeObject<T>(json);
+        }
+
+        public string GetImageURL(ImageResult imageResult)
         {
             string imageUrl = string.Empty;
 
@@ -405,30 +368,9 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
             return imageUrl;
         }
 
-        public static string GetHighLightedTitle(string title, string queryParameter)
+        public ComposeExtensionResponse GetComposeExtensionQueryResult(List<ComposeExtensionAttachment> composeExtensionAttachments)
         {
-            // make title into a link
-            string originalTitle = "<a href=\"" + "https://en.wikipedia.org/wiki/" + title + "\" target=\"_blank\">" + title + "</a>";
-
-            // highlight matched keyword
-            string highlightedTitle = title;
-
-            if (queryParameter != null)
-            {
-                Match matches = new Regex(queryParameter).Match("gi");
-
-                if (matches != null && matches.Length > 0)
-                {
-                    highlightedTitle = highlightedTitle.Replace(new Regex(queryParameter).Match("gi").ToString(), "<b>" + matches.Value + "</b>");
-                }
-            }
-
-            return highlightedTitle;
-        }
-
-        public static ComposeExtensionResponse GetComposeExtensionQueryResult(ComposeExtensionResponse composeExtensionResponse, List<ComposeExtensionAttachment> composeExtensionAttachments)
-        {
-            composeExtensionResponse = new ComposeExtensionResponse();
+            ComposeExtensionResponse composeExtensionResponse = new ComposeExtensionResponse();
             ComposeExtensionResult composeExtensionResult = new ComposeExtensionResult();
             composeExtensionResult.Type = "result";
             composeExtensionResult.Attachments = composeExtensionAttachments;

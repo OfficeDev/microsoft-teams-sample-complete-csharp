@@ -34,7 +34,6 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
             context.UserData.SetValue(Strings.LastDialogKey, Strings.LastDialogFetchPayloadRosterDialog);
 
             await context.PostAsync(message);
-            await context.PostAsync(Strings.ThanksRosterTitleMsg);
 
             context.Done<object>(null);
         }

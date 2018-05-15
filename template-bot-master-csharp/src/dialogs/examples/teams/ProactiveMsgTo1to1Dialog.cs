@@ -40,25 +40,14 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
                 }
             };
 
-            try
-            {
-                var conversationResource = await connectorClient.Conversations.CreateConversationAsync(parameters);
-                IMessageActivity message = null;
+            var conversationResource = await connectorClient.Conversations.CreateConversationAsync(parameters);
 
-                if (conversationResource != null)
-                {
-                    message = Activity.CreateMessageActivity();
-                    message.From = new ChannelAccount(botId, botName);
-                    message.Conversation = new ConversationAccount(id: conversationResource.Id.ToString());
-                    message.Text = Strings.Send1on1Prompt;
-                }
+            var message = Activity.CreateMessageActivity();
+            message.From = new ChannelAccount(botId, botName);
+            message.Conversation = new ConversationAccount(id: conversationResource.Id.ToString());
+            message.Text = Strings.Send1on1Prompt;
 
-                await connectorClient.Conversations.SendToConversationAsync((Activity)message);
-            }
-            catch (Exception ex)
-            {
-
-            }
+            await connectorClient.Conversations.SendToConversationAsync((Activity)message);
 
             context.Done<object>(null);
         }

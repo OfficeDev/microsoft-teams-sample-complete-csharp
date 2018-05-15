@@ -37,7 +37,6 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
 
             await context.PostAsync(message);
 
-            await context.PostAsync(Strings.ThanksRosterTitleMsg);
             context.Done<object>(null);
         }
 

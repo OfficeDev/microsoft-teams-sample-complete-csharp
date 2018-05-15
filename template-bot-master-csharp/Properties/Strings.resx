@@ -804,4 +804,22 @@
   <data name="BotWelcomeMessage" xml:space="preserve">
     <value>Hello, I'm your new bot!</value>
   </data>
+  <data name="BeginDialog" xml:space="preserve">
+    <value>Hello, welcome to begin dialog</value>
+  </data>
+  <data name="BeginDialogEnd" xml:space="preserve">
+    <value>Begin dialog end</value>
+  </data>
+  <data name="DisplayCardMsgTitle" xml:space="preserve">
+    <value>Please select any card</value>
+  </data>
+  <data name="QuizDialogBeginTitle" xml:space="preserve">
+    <value>Begin quiz dialog</value>
+  </data>
+  <data name="DefaultDialogTitleMsg" xml:space="preserve">
+    <value>Please choose options to play with Sample App.</value>
+  </data>
+  <data name="EndDialogTitleMsg" xml:space="preserve">
+    <value>Thanks for using Sample App</value>
+  </data>
 </root>

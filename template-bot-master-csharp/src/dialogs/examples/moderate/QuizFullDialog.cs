@@ -26,6 +26,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
             //Set the Last Dialog in Conversation Data
             context.UserData.SetValue(Strings.LastDialogKey, Strings.LastDialogQuizDialog);
 
+            await context.PostAsync(Strings.QuizDialogBeginTitle);
             context.Call(new Quiz1Dialog(), ResumeAfterRunQuiz1Dialog);
         }
 

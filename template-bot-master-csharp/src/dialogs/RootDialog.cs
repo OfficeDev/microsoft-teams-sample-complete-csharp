@@ -1,6 +1,7 @@
 ﻿using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Builder.Scorables;
 using Microsoft.Bot.Connector;
+using Microsoft.Bot.Connector.Teams.Models;
 using Microsoft.Teams.TemplateBotCSharp.Properties;
 using System;
 using System.Collections.Generic;
@@ -19,9 +20,9 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
 
         [RegexPattern(DialogMatches.FetchRosterPayloadMatch)]
         [ScorableGroup(1)]
-        public async Task FetchRosterPayLoadDetails(IDialogContext context, IActivity activity)
+        public void FetchRosterPayLoadDetails(IDialogContext context, IActivity activity)
         {
-            context.Call(new FetchRosterDialog(), this.EndDialog);
+            context.Call(new FetchRosterDialog(), this.EndFetchRosterDialog);
         }
 
         #endregion
@@ -30,9 +31,15 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
 
         [RegexPattern(DialogMatches.FetchRosterApiMatch)]
         [ScorableGroup(1)]
-        public async Task FetchRoster(IDialogContext context, IActivity activity)
+        public void FetchRoster(IDialogContext context, IActivity activity)
         {
-            context.Call(new ListNamesDialog(), this.EndDialog);
+            context.Call(new ListNamesDialog(), this.EndFetchRosterDialog);
+        }
+
+        public async Task EndFetchRosterDialog(IDialogContext context, IAwaitable<object> result)
+        {
+            await context.PostAsync(Strings.ThanksRosterTitleMsg);
+            context.Done<object>(null);
         }
 
         #endregion
@@ -57,7 +64,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
 
         [RegexPattern(DialogMatches.PromptFlowGameMatch)]
         [ScorableGroup(1)]
-        public async Task FlowGame(IDialogContext context, IActivity activity)
+        public void FlowGame(IDialogContext context, IActivity activity)
         {
             context.Call(new PromptDialogExample(), this.ResumeAfterFlowGame);
         }
@@ -113,7 +120,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
         [RegexPattern(DialogMatches.HelloDialogMatch1)]
         [RegexPattern(DialogMatches.HelloDialogMatch2)]
         [ScorableGroup(1)]
-        public async Task RunHelloDialog(IDialogContext context, IActivity activity)
+        public void RunHelloDialog(IDialogContext context, IActivity activity)
         {
             context.Call(new HelloDialog(), this.EndDialog);
         }
@@ -126,7 +133,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
         [RegexPattern(DialogMatches.AtMentionMatch2)]
         [RegexPattern(DialogMatches.AtMentionMatch3)]
         [ScorableGroup(1)]
-        public async Task AtMentionMatchUser(IDialogContext context, IActivity activity)
+        public void AtMentionMatchUser(IDialogContext context, IActivity activity)
         {
             context.Call(new AtMentionDialog(), this.EndDialog);
         }
@@ -136,7 +143,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
         #region Multi Dialog1
         [RegexPattern(DialogMatches.MultiDialog1Match1)]
         [ScorableGroup(1)]
-        public async Task MultiDialog(IDialogContext context, IActivity activity)
+        public void MultiDialog(IDialogContext context, IActivity activity)
         {
             context.Call(new MultiDialog1(), this.EndDialog);
         }
@@ -146,7 +153,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
         #region Multi Dialog2
         [RegexPattern(DialogMatches.MultiDialog2Match)]
         [ScorableGroup(1)]
-        public async Task MultiDialog2(IDialogContext context, IActivity activity)
+        public void MultiDialog2(IDialogContext context, IActivity activity)
         {
             context.Call(new MultiDialog2(), this.EndDialog);
         }
@@ -157,20 +164,27 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
 
         [RegexPattern(DialogMatches.Help)]
         [ScorableGroup(1)]
-        public async Task Help(IDialogContext context, IActivity activity)
+        public void Help(IDialogContext context, IActivity activity)
         {
-            await this.Default(context, activity);
+            this.Default(context, activity);
         }
 
         [MethodBind]
         [ScorableGroup(2)]
-        public async Task Default(IDialogContext context, IActivity activity)
+        public void Default(IDialogContext context, IActivity activity)
         {
-            context.Call(new HelpDialog(), this.EndDialog);
+            context.Call(new HelpDialog(), this.EndDefaultDialog);
+        }
+
+        public async Task EndDefaultDialog(IDialogContext context, IAwaitable<object> result)
+        {
+            await context.PostAsync(Strings.DefaultDialogTitleMsg);
+            context.Done<object>(null);
         }
 
         public async Task EndDialog(IDialogContext context, IAwaitable<object> result)
         {
+            await context.PostAsync(Strings.EndDialogTitleMsg);
             context.Done<object>(null);
         }
 
@@ -180,7 +194,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
 
         [RegexPattern(DialogMatches.FecthLastExecutedDialogMatch)]
         [ScorableGroup(1)]
-        public async Task FetchLastExecutedDialog(IDialogContext context, IActivity activity)
+        public void FetchLastExecutedDialog(IDialogContext context, IActivity activity)
         {
             context.Call(new GetLastDialogUsedDialog(), this.EndDialog);
         }
@@ -203,7 +217,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
 
         [RegexPattern(DialogMatches.SetUpTextMsg)]
         [ScorableGroup(1)]
-        public async Task SetUpTextMessage(IDialogContext context, IActivity activity)
+        public void SetUpTextMessage(IDialogContext context, IActivity activity)
         {
             context.Call(new UpdateTextMsgSetupDialog(), this.EndDialog);
         }
@@ -214,7 +228,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
 
         [RegexPattern(DialogMatches.UpdateLastSetupTextMsg)]
         [ScorableGroup(1)]
-        public async Task UpdateLastSetUpTextMessage(IDialogContext context, IActivity activity)
+        public void UpdateLastSetUpTextMessage(IDialogContext context, IActivity activity)
         {
             context.Call(new UpdateTextMsgDialog(), this.EndDialog);
         }
@@ -225,7 +239,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
 
         [RegexPattern(DialogMatches.SetUpNUpdateCard)]
         [ScorableGroup(1)]
-        public async Task SetUpNUpdateCardMessage(IDialogContext context, IActivity activity)
+        public void SetUpNUpdateCardMessage(IDialogContext context, IActivity activity)
         {
             context.Call(new UpdateCardMsgSetupDialog(), this.EndDialog);
         }
@@ -236,7 +250,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
 
         [RegexPattern(DialogMatches.DisplayCards)]
         [ScorableGroup(1)]
-        public async Task DisplayCards(IDialogContext context, IActivity activity)
+        public void DisplayCards(IDialogContext context, IActivity activity)
         {
             context.Call(new DisplayCardsDialog(), this.EndDialog);
         }
@@ -254,7 +268,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
 
         [RegexPattern(DialogMatches.MessageBack)]
         [ScorableGroup(1)]
-        public async Task RunMessageBackDialog(IDialogContext context, IActivity activity)
+        public void RunMessageBackDialog(IDialogContext context, IActivity activity)
         {
             context.Call(new MessagebackDialog(), this.EndDialog);
         }
@@ -277,7 +291,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
 
         [RegexPattern(DialogMatches.DeepLinkTabCard)]
         [ScorableGroup(1)]
-        public async Task DeeplinkDialog(IDialogContext context, IActivity activity)
+        public void DeeplinkDialog(IDialogContext context, IActivity activity)
         {
             context.Call(new DeepLinkStaticTabDialog(), this.EndDialog);
         }
@@ -323,7 +337,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
 
         [RegexPattern(DialogMatches.Facebooklogin)]
         [ScorableGroup(1)]
-        public async Task SimpleFacebookAuthLoginDialog(IDialogContext context, IActivity activity)
+        public void SimpleFacebookAuthLoginDialog(IDialogContext context, IActivity activity)
         {
             context.Call(new SimpleFacebookAuthDialog(), this.EndDialog);
         }
@@ -345,7 +359,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
 
         [RegexPattern(DialogMatches.VSTSlogin)]
         [ScorableGroup(1)]
-        public async Task VSTSAuthLoginDialog(IDialogContext context, IActivity activity)
+        public void VSTSAuthLoginDialog(IDialogContext context, IActivity activity)
         {
             context.Call(new VSTSAPICallDialog(), this.EndDialog);
         }
@@ -367,7 +381,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
 
         [RegexPattern(DialogMatches.VSTSApi)]
         [ScorableGroup(1)]
-        public async Task VSTSAuthGetWorkItemDialog(IDialogContext context, IActivity activity)
+        public void VSTSAuthGetWorkItemDialog(IDialogContext context, IActivity activity)
         {
             context.Call(new VSTSGetworkItemDialog(), this.EndDialog);
         }
@@ -378,7 +392,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
 
         [RegexPattern(DialogMatches.HeroCard)]
         [ScorableGroup(1)]
-        public async Task HeroCard(IDialogContext context, IActivity activity)
+        public void HeroCard(IDialogContext context, IActivity activity)
         {
             context.Call(new HeroCardDialog(), this.EndDialog);
         }
@@ -389,7 +403,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
 
         [RegexPattern(DialogMatches.ThumbnailCard)]
         [ScorableGroup(1)]
-        public async Task ThumbnailCard(IDialogContext context, IActivity activity)
+        public void ThumbnailCard(IDialogContext context, IActivity activity)
         {
             context.Call(new ThumbnailcardDialog(), this.EndDialog);
         }
@@ -400,7 +414,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
 
         [RegexPattern(DialogMatches.ConnectorCardV1)]
         [ScorableGroup(1)]
-        public async Task O365ConnectorCardV1(IDialogContext context, IActivity activity)
+        public void O365ConnectorCardV1(IDialogContext context, IActivity activity)
         {
             context.Call(new ConnectorCardV1Dialog(), this.EndDialog);
         }
@@ -411,7 +425,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
 
         [RegexPattern(DialogMatches.ConnectorCardV2)]
         [ScorableGroup(1)]
-        public async Task O365ConnectorCardV2(IDialogContext context, IActivity activity)
+        public void O365ConnectorCardV2(IDialogContext context, IActivity activity)
         {
             context.Call(new ConnectorCardV2Dialog(), this.EndDialog);
         }
@@ -422,7 +436,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
 
         [RegexPattern(DialogMatches.ConnectorCardV3)]
         [ScorableGroup(1)]
-        public async Task O365ConnectorCardV3(IDialogContext context, IActivity activity)
+        public void O365ConnectorCardV3(IDialogContext context, IActivity activity)
         {
             context.Call(new ConnectorCardV3Dialog(), this.EndDialog);
         }
@@ -433,7 +447,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
 
         [RegexPattern(DialogMatches.ActionableCard)]
         [ScorableGroup(1)]
-        public async Task O365ConnectorCardActionableMessage(IDialogContext context, IActivity activity)
+        public void O365ConnectorCardActionableMessage(IDialogContext context, IActivity activity)
         {
             context.Call(new ActionableMessageCardDialog(), this.EndDialog);
         }
@@ -444,7 +458,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
 
         [RegexPattern(DialogMatches.ActionableCardV2)]
         [ScorableGroup(1)]
-        public async Task O365ConnectorCardActionableMessageV2(IDialogContext context, IActivity activity)
+        public void O365ConnectorCardActionableMessageV2(IDialogContext context, IActivity activity)
         {
             context.Call(new ActionableMessageCardDialogV2(), this.EndDialog);
         }
@@ -455,7 +469,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
 
         [RegexPattern(DialogMatches.PopUpSignIn)]
         [ScorableGroup(1)]
-        public async Task PopUpSignIn(IDialogContext context, IActivity activity)
+        public void PopUpSignIn(IDialogContext context, IActivity activity)
         {
             context.Call(new PopupSigninCardDialog(), this.EndDialog);
         }

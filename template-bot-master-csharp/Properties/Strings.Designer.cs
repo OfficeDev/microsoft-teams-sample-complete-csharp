@@ -97,6 +97,24 @@ namespace Microsoft.Teams.TemplateBotCSharp.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Hello, welcome to begin dialog.
+        /// </summary>
+        internal static string BeginDialog {
+            get {
+                return ResourceManager.GetString("BeginDialog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Begin dialog end.
+        /// </summary>
+        internal static string BeginDialogEnd {
+            get {
+                return ResourceManager.GetString("BeginDialogEnd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Chat.
         /// </summary>
         internal static string CaptionChatButton {
@@ -439,6 +457,15 @@ namespace Microsoft.Teams.TemplateBotCSharp.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please choose options to play with Sample App..
+        /// </summary>
+        internal static string DefaultDialogTitleMsg {
+            get {
+                return ResourceManager.GetString("DefaultDialogTitleMsg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This is step1 in Root Dialog.
         /// </summary>
         internal static string DialogFlowStep1 {
@@ -480,6 +507,15 @@ namespace Microsoft.Teams.TemplateBotCSharp.Properties {
         internal static string DisplayCardHeroCard {
             get {
                 return ResourceManager.GetString("DisplayCardHeroCard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please select any card.
+        /// </summary>
+        internal static string DisplayCardMsgTitle {
+            get {
+                return ResourceManager.GetString("DisplayCardMsgTitle", resourceCulture);
             }
         }
         
@@ -561,6 +597,15 @@ namespace Microsoft.Teams.TemplateBotCSharp.Properties {
         internal static string DisplayCardThumbnailCard {
             get {
                 return ResourceManager.GetString("DisplayCardThumbnailCard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Thanks for using Sample App.
+        /// </summary>
+        internal static string EndDialogTitleMsg {
+            get {
+                return ResourceManager.GetString("EndDialogTitleMsg", resourceCulture);
             }
         }
         
@@ -1776,6 +1821,15 @@ namespace Microsoft.Teams.TemplateBotCSharp.Properties {
         internal static string QuizAnswerYes {
             get {
                 return ResourceManager.GetString("QuizAnswerYes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Begin quiz dialog.
+        /// </summary>
+        internal static string QuizDialogBeginTitle {
+            get {
+                return ResourceManager.GetString("QuizDialogBeginTitle", resourceCulture);
             }
         }
         
