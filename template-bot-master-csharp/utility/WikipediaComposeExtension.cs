@@ -96,9 +96,9 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
 
             if (string.Equals(queryParameter.ToLower(), Strings.ComposeExtensionResetKeyword))
             {
-                //make the userData null
                 userData.RemoveProperty(Strings.ComposeExtensionCardTypeKeyword);
                 await TemplateUtility.SaveBotUserDataObject(botDataStore, activity, userData);
+
                 composeExtensionResponse = new ComposeExtensionResponse();
                 composeExtensionResponse.ComposeExtension = GetMessageResponseResult(Strings.ComposeExtensionResetText);
                 return composeExtensionResponse;
