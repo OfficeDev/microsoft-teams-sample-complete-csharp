@@ -53,7 +53,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
             }
             else if (selectedCard.Equals(Strings.DisplayCardO365ConnectorCardV1))
             {
-                context.Call(new ConnectorCardDialog(), ResumeAfterOptionDialog);
+                context.Call(new ConnectorCardV1Dialog(), ResumeAfterOptionDialog);
             }
             else if (selectedCard.Equals(Strings.DisplayCardO365ConnectorCardV2))
             {
