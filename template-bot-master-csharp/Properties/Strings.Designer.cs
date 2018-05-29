@@ -106,6 +106,15 @@ namespace Microsoft.Teams.TemplateBotCSharp.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Hello, I&apos;m your new bot!.
+        /// </summary>
+        internal static string BotWelcomeMessage {
+            get {
+                return ResourceManager.GetString("BotWelcomeMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Chat.
         /// </summary>
         internal static string CaptionChatButton {

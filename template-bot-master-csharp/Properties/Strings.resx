@@ -801,6 +801,9 @@
   <data name="RemoveLike" xml:space="preserve">
     <value>Like Removed!!</value>
   </data>
+  <data name="BotWelcomeMessage" xml:space="preserve">
+    <value>Hello, I'm your new bot!</value>
+  </data>
   <data name="BeginDialog" xml:space="preserve">
     <value>Hello, welcome to begin dialog</value>
   </data>
