@@ -38,19 +38,14 @@
     {
       "configurationUrl": "<<BASE_URI>>/public/tab/tabConfig/index.html",
       "canUpdateConfiguration": false,
-      "scopes": [
-        "team"
-      ]
+       "scopes": [ "team", "groupchat" ]
     }
   ],
   "bots": [
     {
       "botId": "<<REGISTERED_BOT_ID>>",
       "isNotificationOnly": false,
-      "scopes": [
-        "team",
-        "personal"
-      ],
+      "scopes": [ "team", "personal", "groupchat" ],
       "commandLists": [
         {
           "scopes": [
