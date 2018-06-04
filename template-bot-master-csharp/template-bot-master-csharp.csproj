@@ -193,12 +193,9 @@
     <Compile Include="src\dialogs\examples\auth\vsts\VSTSGetworkItemDialog.cs" />
     <Compile Include="src\dialogs\examples\auth\vsts\VSTSAPICallDialog.cs" />
     <Compile Include="src\dialogs\examples\auth\vsts\VSTSHelpers.cs" />
-    <Compile Include="src\dialogs\examples\basic\ActionableMessageCardDialogV2.cs" />
-    <Compile Include="src\dialogs\examples\basic\ActionableMessageCardDialog.cs" />
-    <Compile Include="src\dialogs\examples\basic\ConnectorCardV3Dialog.cs" />
-    <Compile Include="src\dialogs\examples\basic\ConnectorCardV2Dialog.cs" />
+    <Compile Include="src\dialogs\examples\basic\O365ConnectorCardActionsDialog.cs" />
     <Compile Include="src\dialogs\examples\basic\GetLastDialogUsedDialog.cs" />
-    <Compile Include="src\dialogs\examples\basic\ConnectorCardV1Dialog.cs" />
+    <Compile Include="src\dialogs\examples\basic\O365ConnectorCardDialog.cs" />
     <Compile Include="src\dialogs\examples\basic\PopupSigninCardDialog.cs" />
     <Compile Include="src\dialogs\examples\basic\MessagebackDialog.cs" />
     <Compile Include="src\dialogs\examples\basic\HelloDialog.cs" />
