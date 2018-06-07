@@ -19,7 +19,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Strings {
@@ -88,15 +88,6 @@ namespace Microsoft.Teams.TemplateBotCSharp.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Hello, I&apos;m your new bot!.
-        /// </summary>
-        internal static string BotWelcomeMessage {
-            get {
-                return ResourceManager.GetString("BotWelcomeMessage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Hello, welcome to begin dialog.
         /// </summary>
         internal static string BeginDialog {
@@ -111,6 +102,15 @@ namespace Microsoft.Teams.TemplateBotCSharp.Properties {
         internal static string BeginDialogEnd {
             get {
                 return ResourceManager.GetString("BeginDialogEnd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hello, I&apos;m your new bot!.
+        /// </summary>
+        internal static string BotWelcomeMessage {
+            get {
+                return ResourceManager.GetString("BotWelcomeMessage", resourceCulture);
             }
         }
         
@@ -520,47 +520,47 @@ namespace Microsoft.Teams.TemplateBotCSharp.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Connector Card Actions 2.
+        /// </summary>
+        internal static string DisplayCardO365ConnectorActionableCard2 {
+            get {
+                return ResourceManager.GetString("DisplayCardO365ConnectorActionableCard2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Connector Card Actions.
         /// </summary>
-        internal static string DisplayCardO365ConnectorActionableCard {
+        internal static string DisplayCardO365ConnectorActionableCardDefault {
             get {
-                return ResourceManager.GetString("DisplayCardO365ConnectorActionableCard", resourceCulture);
+                return ResourceManager.GetString("DisplayCardO365ConnectorActionableCardDefault", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Connector Card Actions V2.
+        ///   Looks up a localized string similar to Connector Card 2.
         /// </summary>
-        internal static string DisplayCardO365ConnectorActionableCardV2 {
+        internal static string DisplayCardO365ConnectorCard2 {
             get {
-                return ResourceManager.GetString("DisplayCardO365ConnectorActionableCardV2", resourceCulture);
+                return ResourceManager.GetString("DisplayCardO365ConnectorCard2", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ConnectorCardV1.
+        ///   Looks up a localized string similar to Connector Card 3.
         /// </summary>
-        internal static string DisplayCardO365ConnectorCardV1 {
+        internal static string DisplayCardO365ConnectorCard3 {
             get {
-                return ResourceManager.GetString("DisplayCardO365ConnectorCardV1", resourceCulture);
+                return ResourceManager.GetString("DisplayCardO365ConnectorCard3", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ConnectorCardV2.
+        ///   Looks up a localized string similar to Connector Card.
         /// </summary>
-        internal static string DisplayCardO365ConnectorCardV2 {
+        internal static string DisplayCardO365ConnectorCardDefault {
             get {
-                return ResourceManager.GetString("DisplayCardO365ConnectorCardV2", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to ConnectorCardV3.
-        /// </summary>
-        internal static string DisplayCardO365ConnectorCardV3 {
-            get {
-                return ResourceManager.GetString("DisplayCardO365ConnectorCardV3", resourceCulture);
+                return ResourceManager.GetString("DisplayCardO365ConnectorCardDefault", resourceCulture);
             }
         }
         
@@ -1024,29 +1024,11 @@ namespace Microsoft.Teams.TemplateBotCSharp.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ConnectorCardV1Dialog.
+        ///   Looks up a localized string similar to ConnectorCardDialog.
         /// </summary>
-        internal static string LastDialogConnectorCardV1Dialog {
+        internal static string LastDialogConnectorCardDialog {
             get {
-                return ResourceManager.GetString("LastDialogConnectorCardV1Dialog", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to ConnectorCardV2Dialog.
-        /// </summary>
-        internal static string LastDialogConnectorCardV2Dialog {
-            get {
-                return ResourceManager.GetString("LastDialogConnectorCardV2Dialog", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to ConnectorCardV3Dialog.
-        /// </summary>
-        internal static string LastDialogConnectorCardV3Dialog {
-            get {
-                return ResourceManager.GetString("LastDialogConnectorCardV3Dialog", resourceCulture);
+                return ResourceManager.GetString("LastDialogConnectorCardDialog", resourceCulture);
             }
         }
         

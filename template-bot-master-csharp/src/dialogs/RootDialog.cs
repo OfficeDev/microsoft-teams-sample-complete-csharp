@@ -410,59 +410,40 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
 
         #endregion
 
-        #region Load Connector Card V1
-
-        [RegexPattern(DialogMatches.ConnectorCardV1)]
+        #region Load O365Connector Actionable Card Default
+        [RegexPattern(DialogMatches.O365ConnectorCardActionableCardDefault)]
         [ScorableGroup(1)]
-        public void O365ConnectorCardV1(IDialogContext context, IActivity activity)
+        public void O365ConnectorCardActionableMessageDefault(IDialogContext context, IActivity activity)
         {
-            context.Call(new ConnectorCardV1Dialog(), this.EndDialog);
+            context.Call(new O365ConnectorCardActionsDialog(), this.EndDialog);
         }
-
         #endregion
 
-        #region Load Connector Card V2
-
-        [RegexPattern(DialogMatches.ConnectorCardV2)]
-        [ScorableGroup(1)]
-        public void O365ConnectorCardV2(IDialogContext context, IActivity activity)
-        {
-            context.Call(new ConnectorCardV2Dialog(), this.EndDialog);
-        }
-
-        #endregion
-
-        #region Load Connector Card V3
-
-        [RegexPattern(DialogMatches.ConnectorCardV3)]
-        [ScorableGroup(1)]
-        public void O365ConnectorCardV3(IDialogContext context, IActivity activity)
-        {
-            context.Call(new ConnectorCardV3Dialog(), this.EndDialog);
-        }
-
-        #endregion
-
-        #region Load Actionable Message Card
-
-        [RegexPattern(DialogMatches.ActionableCard)]
+        #region Load O365Connector Actionable Card Samples
+        [RegexPattern(DialogMatches.O365ConnectorCardActionableCards)]
         [ScorableGroup(1)]
         public void O365ConnectorCardActionableMessage(IDialogContext context, IActivity activity)
         {
-            context.Call(new ActionableMessageCardDialog(), this.EndDialog);
+            context.Call(new O365ConnectorCardActionsDialog(), this.EndDialog);
         }
-
         #endregion
 
-        #region Load Actionable Message Card V2
-
-        [RegexPattern(DialogMatches.ActionableCardV2)]
+        #region Load O365Connector Card Default
+        [RegexPattern(DialogMatches.O365ConnectorCardDefault)]
         [ScorableGroup(1)]
-        public void O365ConnectorCardActionableMessageV2(IDialogContext context, IActivity activity)
+        public void O365ConnectorCardDefault(IDialogContext context, IActivity activity)
         {
-            context.Call(new ActionableMessageCardDialogV2(), this.EndDialog);
+            context.Call(new O365ConnectorCardDialog(), this.EndDialog);
         }
+        #endregion
 
+        #region Load O365Connector Card Samples
+        [RegexPattern(DialogMatches.O365ConnectorCards)]
+        [ScorableGroup(1)]
+        public void O365ConnectorCard(IDialogContext context, IActivity activity)
+        {
+            context.Call(new O365ConnectorCardDialog(), this.EndDialog);
+        }
         #endregion
 
         #region PopUp SignIn

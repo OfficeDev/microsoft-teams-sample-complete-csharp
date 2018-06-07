@@ -15,7 +15,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
 
         public DisplayCardsDialog()
         {
-            options = new List<string> { Strings.DisplayCardHeroCard, Strings.DisplayCardThumbnailCard, Strings.DisplayCardO365ConnectorCardV1, Strings.DisplayCardO365ConnectorCardV2, Strings.DisplayCardO365ConnectorCardV3, Strings.DisplayCardO365ConnectorActionableCard, Strings.DisplayCardO365ConnectorActionableCardV2 };
+            options = new List<string> { Strings.DisplayCardHeroCard, Strings.DisplayCardThumbnailCard, Strings.DisplayCardO365ConnectorCardDefault, Strings.DisplayCardO365ConnectorCard2, Strings.DisplayCardO365ConnectorCard3, Strings.DisplayCardO365ConnectorActionableCardDefault, Strings.DisplayCardO365ConnectorActionableCard2 };
         }
 
         public async Task StartAsync(IDialogContext context)
@@ -51,25 +51,25 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
             {
                 context.Call(new ThumbnailcardDialog(), ResumeAfterOptionDialog);
             }
-            else if (selectedCard.Equals(Strings.DisplayCardO365ConnectorCardV1))
+            else if (selectedCard.Equals(Strings.DisplayCardO365ConnectorCardDefault))
             {
-                context.Call(new ConnectorCardV1Dialog(), ResumeAfterOptionDialog);
+                context.Call(new O365ConnectorCardDialog(), ResumeAfterOptionDialog);
             }
-            else if (selectedCard.Equals(Strings.DisplayCardO365ConnectorCardV2))
+            else if (selectedCard.Equals(Strings.DisplayCardO365ConnectorCard2))
             {
-                context.Call(new ConnectorCardV2Dialog(), ResumeAfterOptionDialog);
+                context.Call(new O365ConnectorCardDialog(), ResumeAfterOptionDialog);
             }
-            else if (selectedCard.Equals(Strings.DisplayCardO365ConnectorCardV3))
+            else if (selectedCard.Equals(Strings.DisplayCardO365ConnectorCard3))
             {
-                context.Call(new ConnectorCardV3Dialog(), ResumeAfterOptionDialog);
+                context.Call(new O365ConnectorCardDialog(), ResumeAfterOptionDialog);
             }
-            else if (selectedCard.Equals(Strings.DisplayCardO365ConnectorActionableCard))
+            else if (selectedCard.Equals(Strings.DisplayCardO365ConnectorActionableCardDefault))
             {
-                context.Call(new ActionableMessageCardDialog(), ResumeAfterOptionDialog);
+                context.Call(new O365ConnectorCardActionsDialog(), ResumeAfterOptionDialog);
             }
-            else if (selectedCard.Equals(Strings.DisplayCardO365ConnectorActionableCardV2))
+            else if (selectedCard.Equals(Strings.DisplayCardO365ConnectorActionableCard2))
             {
-                context.Call(new ActionableMessageCardDialogV2(), ResumeAfterOptionDialog);
+                context.Call(new O365ConnectorCardActionsDialog(), ResumeAfterOptionDialog);
             }
         }
 

@@ -399,14 +399,14 @@
   <data name="DisplayCardHeroCard" xml:space="preserve">
     <value>Hero Card</value>
   </data>
-  <data name="DisplayCardO365ConnectorCardV1" xml:space="preserve">
-    <value>ConnectorCardV1</value>
+  <data name="DisplayCardO365ConnectorCardDefault" xml:space="preserve">
+    <value>Connector Card</value>
   </data>
-  <data name="DisplayCardO365ConnectorCardV2" xml:space="preserve">
-    <value>ConnectorCardV2</value>
+  <data name="DisplayCardO365ConnectorCard2" xml:space="preserve">
+    <value>Connector Card 2</value>
   </data>
-  <data name="DisplayCardO365ConnectorCardV3" xml:space="preserve">
-    <value>ConnectorCardV3</value>
+  <data name="DisplayCardO365ConnectorCard3" xml:space="preserve">
+    <value>Connector Card 3</value>
   </data>
   <data name="DisplayCardPromptText" xml:space="preserve">
     <value>What card you would like to test?</value>
@@ -741,7 +741,7 @@
   <data name="ComposeExtensionQuerySettingUrl" xml:space="preserve">
     <value>composeextension/querysettingurl</value>
   </data>
-  <data name="DisplayCardO365ConnectorActionableCard" xml:space="preserve">
+  <data name="DisplayCardO365ConnectorActionableCardDefault" xml:space="preserve">
     <value>Connector Card Actions</value>
   </data>
   <data name="cmdO365ConnectorCardActionableMessages" xml:space="preserve">
@@ -750,20 +750,14 @@
   <data name="LastDialogActionableMessageDialog" xml:space="preserve">
     <value>ActionableMessageCardDialog</value>
   </data>
-  <data name="LastDialogConnectorCardV1Dialog" xml:space="preserve">
-    <value>ConnectorCardV1Dialog</value>
-  </data>
-  <data name="LastDialogConnectorCardV2Dialog" xml:space="preserve">
-    <value>ConnectorCardV2Dialog</value>
-  </data>
-  <data name="LastDialogConnectorCardV3Dialog" xml:space="preserve">
-    <value>ConnectorCardV3Dialog</value>
+  <data name="LastDialogConnectorCardDialog" xml:space="preserve">
+    <value>ConnectorCardDialog</value>
   </data>
   <data name="TenantLevelDeniedAccess" xml:space="preserve">
     <value>MS Teams: Attempted access from a different Office 365 tenant: message rejected</value>
   </data>
-  <data name="DisplayCardO365ConnectorActionableCardV2" xml:space="preserve">
-    <value>Connector Card Actions V2</value>
+  <data name="DisplayCardO365ConnectorActionableCard2" xml:space="preserve">
+    <value>Connector Card Actions 2</value>
   </data>
   <data name="LastDialogPopUpSignIn" xml:space="preserve">
     <value>PopUpSignInDialog</value>

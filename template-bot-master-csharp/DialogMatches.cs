@@ -60,12 +60,11 @@
         public const string HeroCard = "hero card";
         public const string ThumbnailCard = "thumbnail card";
 
-        public const string ConnectorCardV1 = "connectorcardv1";
-        public const string ConnectorCardV2 = "connectorcardv2";
-        public const string ConnectorCardV3 = "connectorcardv3";
+        public const string O365ConnectorCardDefault = "connector card";
+        public const string O365ConnectorCards = "connector card (.*)";
 
-        public const string ActionableCard = "connector card actions";
-        public const string ActionableCardV2 = "connector card actions v2";
+        public const string O365ConnectorCardActionableCardDefault = "connector card actions";
+        public const string O365ConnectorCardActionableCards = "connector card actions (.*)";
 
         public const string PopUpSignIn = "signin";
     }
