@@ -63,7 +63,7 @@
         public const string O365ConnectorCardDefault = "connector card";
         public const string O365ConnectorCards = "connector card (.*)";
 
-        public const string O365ConnectorCardActionableCardDeafult = "connector card actions";
+        public const string O365ConnectorCardActionableCardDefault = "connector card actions";
         public const string O365ConnectorCardActionableCards = "connector card actions (.*)";
 
         public const string PopUpSignIn = "signin";

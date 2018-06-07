@@ -410,10 +410,10 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
 
         #endregion
 
-        #region Load O365Connector Actionable Card Deafult
-        [RegexPattern(DialogMatches.O365ConnectorCardActionableCardDeafult)]
+        #region Load O365Connector Actionable Card Default
+        [RegexPattern(DialogMatches.O365ConnectorCardActionableCardDefault)]
         [ScorableGroup(1)]
-        public void O365ConnectorCardActionableMessageDeafult(IDialogContext context, IActivity activity)
+        public void O365ConnectorCardActionableMessageDefault(IDialogContext context, IActivity activity)
         {
             context.Call(new O365ConnectorCardActionsDialog(), this.EndDialog);
         }

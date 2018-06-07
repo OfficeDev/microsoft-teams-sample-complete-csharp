@@ -11,7 +11,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
         /// <summary>
         /// Here are below scenarios - 
         ///     #Scenario 1 - Reject the Bot If Tenant is configured in web.config and doesn't match with Incoming request tenant
-        ///     #Scenario 2 - Allow Bot for every Tenant if Tenant is not configured in web.config file and deafult value is #ANY#             
+        ///     #Scenario 2 - Allow Bot for every Tenant if Tenant is not configured in web.config file and default value is #ANY#             
         /// </summary>
         /// <param name="activity"></param>
         /// <param name="currentTenant"></param>

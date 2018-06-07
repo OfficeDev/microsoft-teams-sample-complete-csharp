@@ -4,7 +4,6 @@ using Microsoft.Bot.Connector.Teams.Models;
 using Microsoft.Teams.TemplateBotCSharp.Properties;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Threading.Tasks;
 
 namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
@@ -29,8 +28,6 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
 
             var message = context.MakeMessage();
 
-            string baseUri = Convert.ToString(ConfigurationManager.AppSettings["BaseUri"]);
-
             // get the input number for the example to show if the user passed it into the command - e.g. 'show connector card 2'
             var activity = (IMessageActivity)context.Activity;
 
@@ -42,14 +39,14 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
                 // Actionable cards can have multiple sections, each with its own set of actions.
                 // If a section contains only 1 card action, that is automatically expanded
                 case "2":
-                    attachment = O365ActionableCardMultipleSection(baseUri);
+                    attachment = O365ActionableCardMultipleSection();
                     break;
 
                 // this is the default example's content
                 // multiple choice (compact & expanded), text input, date and placing images in card
                 case "1":
                 default:
-                    attachment = O365ActionableCardDeafult();
+                    attachment = O365ActionableCardDefault();
                     break;
             }
 
@@ -65,178 +62,194 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
         /// </summary>
         /// <returns>The result card with actions.</returns>
         /// 
-        public static Attachment O365ActionableCardDeafult()
+        public static Attachment O365ActionableCardDefault()
         {
             #region multi choice examples
-           
-            var multichoice = new O365ConnectorCardActionCard(
-                O365ConnectorCardActionCard.Type,
-                "Multiple Choice",
-                "Multiple Choice Card",
-                new List<O365ConnectorCardInputBase>
+
+            var multichoice = new O365ConnectorCardActionCard(O365ConnectorCardActionCard.Type)
+            {
+                Name = "Multiple Choice",
+                Id = "Multiple Choice Card",
+                Inputs = new List<O365ConnectorCardInputBase>
                 {
-                     // multiple choice control with required, multiselect, expanded style
-                    new O365ConnectorCardMultichoiceInput(
-                        O365ConnectorCardMultichoiceInput.Type,
-                        "CardsType",
-                        true,
-                        "Pick multiple options",
-                        null,
-                        new List<O365ConnectorCardMultichoiceInputChoice>
+                    // multiple choice control with required, multiselect, expanded style
+                    new O365ConnectorCardMultichoiceInput (O365ConnectorCardMultichoiceInput.Type)
+                    {
+                        Id = "CardsType",
+                        IsRequired = true,
+                        Title = "Pick multiple options",
+                        Value = null,
+                        Choices = new List<O365ConnectorCardMultichoiceInputChoice>
                         {
                             new O365ConnectorCardMultichoiceInputChoice("Hero Card", "Hero Card"),
                             new O365ConnectorCardMultichoiceInputChoice("Thumbnail Card", "Thumbnail Card"),
                             new O365ConnectorCardMultichoiceInputChoice("O365 Connector Card", "O365 Connector Card")
                         },
-                        "expanded",
-                        true),
+                        Style = "expanded",
+                        IsMultiSelect = true
+                    },
                     // multiple choice control with required, multiselect, compact style
-                    new O365ConnectorCardMultichoiceInput(
-                        O365ConnectorCardMultichoiceInput.Type,
-                        "Teams",
-                        true,
-                        "Pick multiple options",
-                        null,
-                        new List<O365ConnectorCardMultichoiceInputChoice>
-                        {
+                    new O365ConnectorCardMultichoiceInput(O365ConnectorCardMultichoiceInput.Type)
+                    {
+                       Id = "Teams",
+                       IsRequired = true,
+                       Title = "Pick multiple options",
+                       Value = null,
+                       Choices = new List<O365ConnectorCardMultichoiceInputChoice>
+                       {
                             new O365ConnectorCardMultichoiceInputChoice("Bot", "Bot"),
                             new O365ConnectorCardMultichoiceInputChoice("Tab", "Tab"),
                             new O365ConnectorCardMultichoiceInputChoice("Connector", "Connector"),
                             new O365ConnectorCardMultichoiceInputChoice("Compose Extension", "Compose Extension")
-                        },
-                        "compact",
-                        true),
+                       },
+                       Style = "compact",
+                       IsMultiSelect = true
+                    },
                     // multiple choice control with single item select, expanded style
-                    new O365ConnectorCardMultichoiceInput(
-                        O365ConnectorCardMultichoiceInput.Type,
-                        "Apps",
-                        false,
-                        "Pick an App",
-                        null,
-                        new List<O365ConnectorCardMultichoiceInputChoice>
-                        {
+                    new O365ConnectorCardMultichoiceInput(O365ConnectorCardMultichoiceInput.Type)
+                    {
+                       Id = "Apps",
+                       IsRequired = false,
+                       Title = "Pick an App",
+                       Value = null,
+                       Choices = new List<O365ConnectorCardMultichoiceInputChoice>
+                       {
                             new O365ConnectorCardMultichoiceInputChoice("VSTS", "VSTS"),
                             new O365ConnectorCardMultichoiceInputChoice("Wiki", "Wiki"),
                             new O365ConnectorCardMultichoiceInputChoice("Github", "Github")
-                        },
-                        "expanded",
-                        false),
+                       },
+                       Style = "expanded",
+                       IsMultiSelect = false
+                    },
                     // multiple choice control with single item select, compact style
-                    new O365ConnectorCardMultichoiceInput(
-                        O365ConnectorCardMultichoiceInput.Type,
-                        "OfficeProduct",
-                        false,
-                        "Pick an Office Product",
-                        null,
-                        new List<O365ConnectorCardMultichoiceInputChoice>
+                    new O365ConnectorCardMultichoiceInput(O365ConnectorCardMultichoiceInput.Type)
+                    {
+                        Id ="OfficeProduct",
+                        IsRequired = false,
+                        Title = "Pick an Office Product",
+                        Value = null,
+                        Choices = new List<O365ConnectorCardMultichoiceInputChoice>
                         {
                             new O365ConnectorCardMultichoiceInputChoice("Outlook", "Outlook"),
                             new O365ConnectorCardMultichoiceInputChoice("MS Teams", "MS Teams"),
                             new O365ConnectorCardMultichoiceInputChoice("Skype", "Skype")
                         },
-                        "compact",
-                        false)
-            },
+                        Style ="compact",
+                        IsMultiSelect = false
+                    }
+                },
 
-            new List<O365ConnectorCardActionBase>
-                  {
-                   new O365ConnectorCardHttpPOST(
-                        O365ConnectorCardHttpPOST.Type,
-                        "Send",
-                        "multichoice",
-                        @"{""CardsType"":""{{CardsType.value}}"", ""Teams"":""{{Teams.value}}"", ""Apps"":""{{Apps.value}}"", ""OfficeProduct"":""{{OfficeProduct.value}}""}")
-                 });
+                Actions = new List<O365ConnectorCardActionBase>
+                {
+                    new O365ConnectorCardHttpPOST(O365ConnectorCardHttpPOST.Type)
+                    {
+                        Name = "Send",
+                        Id = "multichoice",
+                        Body = @"{""CardsType"":""{{CardsType.value}}"", ""Teams"":""{{Teams.value}}"", ""Apps"":""{{Apps.value}}"", ""OfficeProduct"":""{{OfficeProduct.value}}""}"
+                    }
+                }
+            };
 
             #endregion
 
             #region text input examples
-            var inputCard = new O365ConnectorCardActionCard(
-                O365ConnectorCardActionCard.Type,
-                "Text Input",
-                "Input Card",
-                new List<O365ConnectorCardInputBase>
+            var inputCard = new O365ConnectorCardActionCard(O365ConnectorCardActionCard.Type)
+            {
+                Name = "Text Input",
+                Id = "Input Card",
+                Inputs = new List<O365ConnectorCardInputBase>
                 {
                     // text input control with multiline
-                    new O365ConnectorCardTextInput(
-                        O365ConnectorCardTextInput.Type,
-                        "text-1",
-                        false,
-                        "multiline, no maxLength",
-                        null,
-                        true,
-                        null),
+                    new O365ConnectorCardTextInput(O365ConnectorCardTextInput.Type)
+                    {
+                        Id = "text-1",
+                        IsRequired = false,
+                        Title = "multiline, no maxLength",
+                        Value = null,
+                        IsMultiline = true,
+                        MaxLength = null
+                    },
                     // text input control without multiline
-                    new O365ConnectorCardTextInput(
-                        O365ConnectorCardTextInput.Type,
-                        "text-2",
-                        false,
-                        "single line, no maxLength",
-                        null,
-                        false,
-                        null),
+                    new O365ConnectorCardTextInput(O365ConnectorCardTextInput.Type)
+                    {
+                        Id = "text-2",
+                        IsRequired = false,
+                        Title = "single line, no maxLength",
+                        Value = null,
+                        IsMultiline = false,
+                        MaxLength = null
+                    },
                     // text input control with multiline, reuired,
                     // and control the length of input box
-                    new O365ConnectorCardTextInput(
-                        O365ConnectorCardTextInput.Type,
-                        "text-3",
-                        true,
-                        "multiline, max len = 10, isRequired",
-                        null,
-                        true,
-                        10),
+                    new O365ConnectorCardTextInput(O365ConnectorCardTextInput.Type)
+                    {
+                       Id = "text-3",
+                       IsRequired = true,
+                       Title = "multiline, max len = 10, isRequired",
+                       Value = null,
+                       IsMultiline = true,
+                       MaxLength = 10
+                    },
                     // text input control without multiline, reuired,
                     // and control the length of input box
-                    new O365ConnectorCardTextInput(
-                        O365ConnectorCardTextInput.Type,
-                        "text-4",
-                        true,
-                        "single line, max len = 10, isRequired",
-                        null,
-                        false,
-                        10)
+                    new O365ConnectorCardTextInput(O365ConnectorCardTextInput.Type)
+                    {
+                       Id = "text-4",
+                       IsRequired = true,
+                       Title = "single line, max len = 10, isRequired",
+                       Value = null,
+                       IsMultiline = false,
+                       MaxLength = 10
+                    }
                 },
-                new List<O365ConnectorCardActionBase>
+                Actions = new List<O365ConnectorCardActionBase>
                 {
-                    new O365ConnectorCardHttpPOST(
-                        O365ConnectorCardHttpPOST.Type,
-                        "Send",
-                        "inputText",
-                        @"{""text1"":""{{text-1.value}}"", ""text2"":""{{text-2.value}}"", ""text3"":""{{text-3.value}}"", ""text4"":""{{text-4.value}}""}")
-                });
+                    new O365ConnectorCardHttpPOST(O365ConnectorCardHttpPOST.Type)
+                    {
+                        Name = "Send",
+                        Id = "inputText",
+                        Body = @"{""text1"":""{{text-1.value}}"", ""text2"":""{{text-2.value}}"", ""text3"":""{{text-3.value}}"", ""text4"":""{{text-4.value}}""}"
+                    }
+                }
+            };
             #endregion
 
             #region date/time input examples
-            var dateCard = new O365ConnectorCardActionCard(
-                O365ConnectorCardActionCard.Type,
-                "Date Input",
-                "Date Card",
-                new List<O365ConnectorCardInputBase>
+            var dateCard = new O365ConnectorCardActionCard (O365ConnectorCardActionCard.Type)
+            {
+                Name = "Date Input",
+                Id = "Date Card",
+                Inputs = new List<O365ConnectorCardInputBase>
                 {
                     // date input control, with date and time, required
-                    new O365ConnectorCardDateInput(
-                        O365ConnectorCardDateInput.Type,
-                        "date-1",
-                        true,
-                        "date with time",
-                        null,
-                        true),
+                    new O365ConnectorCardDateInput (O365ConnectorCardDateInput.Type)
+                    {
+                        Id = "date-1",
+                        IsRequired = true,
+                        Title = "date with time",
+                        Value = null,
+                        IncludeTime = true
+                    },
                     // date input control, only date, no time, not required
-                    new O365ConnectorCardDateInput(
-                        O365ConnectorCardDateInput.Type,
-                        "date-2",
-                        false,
-                        "date only",
-                        null,
-                        false)
+                    new O365ConnectorCardDateInput (O365ConnectorCardDateInput.Type)
+                    {
+                       Id = "date-2",
+                       IsRequired = false,
+                       Title = "date only",
+                       Value = null,
+                       IncludeTime = false
+                    }
                 },
-                new List<O365ConnectorCardActionBase>
+                Actions = new List<O365ConnectorCardActionBase>
                 {
-                    new O365ConnectorCardHttpPOST(
-                        O365ConnectorCardHttpPOST.Type,
-                        "Send",
-                        "dateInput",
-                        @"{""date1"":""{{date-1.value}}"", ""date2"":""{{date-2.value}}""}")
-                });
+                    new O365ConnectorCardHttpPOST (O365ConnectorCardHttpPOST.Type)
+                    {
+                        Name = "Send",
+                        Id = "dateInput",
+                        Body = @"{""date1"":""{{date-1.value}}"", ""date2"":""{{date-2.value}}""}"
+                    }
+                }
+            };
             #endregion
 
             var section = new O365ConnectorCardSection
@@ -251,8 +264,16 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
                 Markdown = true,
                 Facts = new List<O365ConnectorCardFact>
                 {
-                    new O365ConnectorCardFact("Fact name 1", "Fact value 1"),
-                    new O365ConnectorCardFact("Fact name 2", "Fact value 2"),
+                    new O365ConnectorCardFact
+                    {
+                        Name = "Fact name 1",
+                        Value = "Fact value 1"
+                    },
+                    new O365ConnectorCardFact
+                    {
+                        Name = "Fact name 2",
+                        Value = "Fact value 2"
+                    },
                 },
                 Images = new List<O365ConnectorCardImage>
                 {
@@ -286,19 +307,20 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
                     multichoice,
                     inputCard,
                     dateCard,
-                    new O365ConnectorCardViewAction(
-                        O365ConnectorCardViewAction.Type,
-                        "View Action",
-                        null,
-                        new List<string>
+                    new O365ConnectorCardViewAction (O365ConnectorCardViewAction.Type)
+                    {
+                        Name = "View Action",
+                        Id = null,
+                        Target = new List<string>
                         {
                             "http://microsoft.com"
-                        }),
-                    new O365ConnectorCardOpenUri(
-                        O365ConnectorCardOpenUri.Type,
-                        "Open Uri",
-                        "open-uri",
-                        new List<O365ConnectorCardOpenUriTarget>
+                        }
+                    },
+                    new O365ConnectorCardOpenUri (O365ConnectorCardOpenUri.Type)
+                    {
+                        Name = "Open Uri",
+                        Id = "open-uri",
+                        Targets = new List<O365ConnectorCardOpenUriTarget>
                         {
                             new O365ConnectorCardOpenUriTarget
                             {
@@ -320,7 +342,8 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
                                 Os = "windows",
                                 Uri = "http://microsoft.com"
                             }
-                        })
+                        }
+                    }
                 }
             };
 
@@ -333,42 +356,44 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
         /// </summary>
         /// <returns>The result card with actions.</returns>
         /// 
-        public static Attachment O365ActionableCardMultipleSection(string baseUri)
+        public static Attachment O365ActionableCardMultipleSection()
         {
             #region Section1
+
             #region Multichoice Card
-            // multiple choice control with required, multiselect, compact style
-            var multichoiceCardSection1 = new O365ConnectorCardActionCard(
-                O365ConnectorCardActionCard.Type,
-                "Multiple Choice",
-                "Multiple Choice Card",
-                new List<O365ConnectorCardInputBase>
+            // multiple choice control with required, multiselect, compact style            
+            var multichoiceCardSection1 = new O365ConnectorCardActionCard (O365ConnectorCardActionCard.Type)
+            {
+                Name = "Multiple Choice",
+                Id = "Multiple Choice Card",
+                Inputs = new List<O365ConnectorCardInputBase>
                 {
-                    new O365ConnectorCardMultichoiceInput(
-                        O365ConnectorCardMultichoiceInput.Type,
-                        "CardsType",
-                        true,
-                        "Pick multiple options",
-                        null,
-                        new List<O365ConnectorCardMultichoiceInputChoice>
+                    new O365ConnectorCardMultichoiceInput (O365ConnectorCardMultichoiceInput.Type)
+                    {
+                        Id = "cardstype",
+                        IsRequired = true,
+                        Title = "Pick multiple options",
+                        Value = null,
+                        Choices = new List<O365ConnectorCardMultichoiceInputChoice>
                         {
                             new O365ConnectorCardMultichoiceInputChoice("Hero Card", "Hero Card"),
                             new O365ConnectorCardMultichoiceInputChoice("Thumbnail Card", "Thumbnail Card"),
                             new O365ConnectorCardMultichoiceInputChoice("O365 Connector Card", "O365 Connector Card")
                         },
-                        "compact",
-                        true)
+                        Style = "compact",
+                        IsMultiSelect = true
+                    },
                 },
-
-                new List<O365ConnectorCardActionBase>
+                Actions = new List<O365ConnectorCardActionBase>
                 {
-                new O365ConnectorCardHttpPOST
-                (
-                    O365ConnectorCardHttpPOST.Type,
-                    "Send",
-                    "multichoice",
-                    @"{""CardsType"":""{{CardsType.value}}""")
-                });
+                    new O365ConnectorCardHttpPOST (O365ConnectorCardHttpPOST.Type)
+                    {
+                        Name = "send",
+                        Id = "multichoice",
+                        Body = @"{""cardstype"":""{{cardstype.value}}"""
+                    }
+                }
+            };
 
             #endregion
 
@@ -397,65 +422,69 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
 
             #region Input Card
             // text input examples
-            var inputCard = new O365ConnectorCardActionCard(
-                O365ConnectorCardActionCard.Type,
-                "Text Input",
-                "Input Card",
+            var inputCard = new O365ConnectorCardActionCard (O365ConnectorCardActionCard.Type)
+            {
+                Id = "Text Input",
+                Name = "Input Card",
                 // text input control with multiline
-                new List<O365ConnectorCardInputBase>
+                Inputs = new List<O365ConnectorCardInputBase>
                 {
-                    new O365ConnectorCardTextInput(
-                        O365ConnectorCardTextInput.Type,
-                        "text-1",
-                        false,
-                        "This is the title of text box",
-                        null,
-                        true,
-                        null)
+                    new O365ConnectorCardTextInput (O365ConnectorCardTextInput.Type)
+                    {
+                       Id = "text-1",
+                       IsRequired = false,
+                       Title = "This is the title of text box",
+                       Value = null,
+                       IsMultiline = true,
+                       MaxLength = null
+                    }
                 },
-                new List<O365ConnectorCardActionBase>
+                Actions = new List<O365ConnectorCardActionBase>
                 {
-                    new O365ConnectorCardHttpPOST(
-                        O365ConnectorCardHttpPOST.Type,
-                        "Send",
-                        "inputText",
-                        @"{""text1"":""{{text-1.value}}""}")
-                });
+                    new O365ConnectorCardHttpPOST (O365ConnectorCardHttpPOST.Type)
+                    {
+                        Name = "Send",
+                        Id = "inputText",
+                        Body = @"{""text1"":""{{text-1.value}}""}"
+                    }
+                }
+            };
             #endregion
 
             #region Multichoice Card For Section2
             // multiple choice control with not required, multiselect, compact style
-            var multichoiceCardSection2 = new O365ConnectorCardActionCard(
-                O365ConnectorCardActionCard.Type,
-                "Multiple Choice",
-                "Multiple Choice Card",
-                new List<O365ConnectorCardInputBase>
+            var multichoiceCardSection2 = new O365ConnectorCardActionCard (O365ConnectorCardActionCard.Type)
+            {
+                Name = "Multiple Choice",
+                Id = "Multiple Choice Card",
+                Inputs = new List<O365ConnectorCardInputBase>
                 {
-                    new O365ConnectorCardMultichoiceInput(
-                        O365ConnectorCardMultichoiceInput.Type,
-                        "CardsTypesection1", //please make sure that id of the control must be unique across card to work properly
-                        false,
-                        "This is a title of combo box",
-                        "",
-                        new List<O365ConnectorCardMultichoiceInputChoice>
+                    new O365ConnectorCardMultichoiceInput (O365ConnectorCardMultichoiceInput.Type)
+                    {
+                        Id = "CardsTypesection1", //please make sure that id of the control must be unique across card to work properly
+                        IsRequired = false,
+                        Title = "This is a title of combo box",
+                        Value = null,
+                        Choices = new List<O365ConnectorCardMultichoiceInputChoice>
                         {
                             new O365ConnectorCardMultichoiceInputChoice("Hero Card", "Hero Card"),
                             new O365ConnectorCardMultichoiceInputChoice("Thumbnail Card", "Thumbnail Card"),
                             new O365ConnectorCardMultichoiceInputChoice("O365 Connector Card", "O365 Connector Card")
                         },
-                        "compact",
-                        true)
+                        Style = "compact",
+                        IsMultiSelect = true
+                    }
                 },
-                new List<O365ConnectorCardActionBase>
+                Actions = new List<O365ConnectorCardActionBase>
                 {
-                    new O365ConnectorCardHttpPOST
-                    (
-                        O365ConnectorCardHttpPOST.Type,
-                        "Send",
-                        "multichoice",
-                        @"{""CardsTypesection1"":""{{CardsTypesection1.value}}""")
-                });
-
+                    new O365ConnectorCardHttpPOST (O365ConnectorCardHttpPOST.Type)
+                    {
+                        Name= "Send",
+                        Id ="multichoice",
+                        Body = @"{""CardsTypesection1"":""{{CardsTypesection1.value}}"""
+                    }
+                }
+            };
             #endregion
 
             // please always attach new potential action to individual sections

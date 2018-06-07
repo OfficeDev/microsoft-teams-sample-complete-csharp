@@ -50,7 +50,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
                     break;
                 default:
                 case "1":
-                    attachment = O365ConnectorCardDeafult();
+                    attachment = O365ConnectorCardDefault();
                     break;
             }
 
@@ -65,7 +65,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
         /// Connector card with text in section with card title sample
         /// </summary>
         /// <returns></returns>
-        public static Attachment O365ConnectorCardDeafult()
+        public static Attachment O365ConnectorCardDefault()
         {
             var o365connector = new O365ConnectorCard
             {

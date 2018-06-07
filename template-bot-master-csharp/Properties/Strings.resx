@@ -741,7 +741,7 @@
   <data name="ComposeExtensionQuerySettingUrl" xml:space="preserve">
     <value>composeextension/querysettingurl</value>
   </data>
-  <data name="DisplayCardO365ConnectorActionableCardDeafult" xml:space="preserve">
+  <data name="DisplayCardO365ConnectorActionableCardDefault" xml:space="preserve">
     <value>Connector Card Actions</value>
   </data>
   <data name="cmdO365ConnectorCardActionableMessages" xml:space="preserve">

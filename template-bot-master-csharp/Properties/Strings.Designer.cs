@@ -531,9 +531,9 @@ namespace Microsoft.Teams.TemplateBotCSharp.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Connector Card Actions.
         /// </summary>
-        internal static string DisplayCardO365ConnectorActionableCardDeafult {
+        internal static string DisplayCardO365ConnectorActionableCardDefault {
             get {
-                return ResourceManager.GetString("DisplayCardO365ConnectorActionableCardDeafult", resourceCulture);
+                return ResourceManager.GetString("DisplayCardO365ConnectorActionableCardDefault", resourceCulture);
             }
         }
         
