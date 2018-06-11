@@ -816,4 +816,13 @@
   <data name="EndDialogTitleMsg" xml:space="preserve">
     <value>Thanks for using Sample App</value>
   </data>
+  <data name="cmdGetAADId" xml:space="preserve">
+    <value>aadid</value>
+  </data>
+  <data name="HelpCaptionGetAADId" xml:space="preserve">
+    <value>AAD Id</value>
+  </data>
+  <data name="LastDialogFetchTeamInfoDialog" xml:space="preserve">
+    <value>FetchTeamInfoDialog</value>
+  </data>
 </root>

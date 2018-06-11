@@ -178,6 +178,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="src\dialogs\examples\teams\FetchTeamsInfoDialog.cs" />
     <Compile Include="utility\InvokeHandler.cs" />
     <Compile Include="middleware\Middleware.cs" />
     <Compile Include="Properties\Strings.Designer.cs">

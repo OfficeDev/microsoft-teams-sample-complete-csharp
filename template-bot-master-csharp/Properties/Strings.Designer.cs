@@ -196,6 +196,15 @@ namespace Microsoft.Teams.TemplateBotCSharp.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to aadid.
+        /// </summary>
+        internal static string cmdGetAADId {
+            get {
+                return ResourceManager.GetString("cmdGetAADId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to hi.
         /// </summary>
         internal static string cmdHelloDialog {
@@ -808,6 +817,15 @@ namespace Microsoft.Teams.TemplateBotCSharp.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to AAD Id.
+        /// </summary>
+        internal static string HelpCaptionGetAADId {
+            get {
+                return ResourceManager.GetString("HelpCaptionGetAADId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Hello Dialog.
         /// </summary>
         internal static string HelpCaptionHelloDialog {
@@ -1092,6 +1110,15 @@ namespace Microsoft.Teams.TemplateBotCSharp.Properties {
         internal static string LastDialogFetchRosterDialog {
             get {
                 return ResourceManager.GetString("LastDialogFetchRosterDialog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to FetchTeamInfoDialog.
+        /// </summary>
+        internal static string LastDialogFetchTeamInfoDialog {
+            get {
+                return ResourceManager.GetString("LastDialogFetchTeamInfoDialog", resourceCulture);
             }
         }
         

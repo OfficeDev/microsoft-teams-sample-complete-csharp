@@ -52,7 +52,8 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
                         new CardAction(ActionTypes.ImBack, Strings.HelpCaptionAuthSample, value: Strings.cmdAuthSampleDialog),
                         new CardAction(ActionTypes.ImBack, Strings.HelpLocalTimeZone, value: Strings.cmdLocalTime),
                         new CardAction(ActionTypes.ImBack, Strings.HelpCaptionMessageBack, value: Strings.cmdMessageBack),
-                        new CardAction(ActionTypes.ImBack, Strings.HelpCaptionPopUpSignIn, value: Strings.cmdPopUpSignIn)
+                        new CardAction(ActionTypes.ImBack, Strings.HelpCaptionPopUpSignIn, value: Strings.cmdPopUpSignIn),
+                        new CardAction(ActionTypes.ImBack, Strings.HelpCaptionGetAADId, value: Strings.cmdGetAADId)
                     }
                 }.ToAttachment()
             };
