@@ -61,6 +61,15 @@ namespace Microsoft.Teams.TemplateBotCSharp.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to AAD Group Id doesn&apos;t exists for one to one conversation..
+        /// </summary>
+        internal static string AADId1To1ConversationError {
+            get {
+                return ResourceManager.GetString("AADId1To1ConversationError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cannot resume!.
         /// </summary>
         internal static string AuthCallbackResumeError {

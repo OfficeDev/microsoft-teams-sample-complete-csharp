@@ -825,4 +825,7 @@
   <data name="LastDialogFetchTeamInfoDialog" xml:space="preserve">
     <value>FetchTeamInfoDialog</value>
   </data>
+  <data name="AADId1To1ConversationError" xml:space="preserve">
+    <value>AAD Group Id doesn't exists for one to one conversation.</value>
+  </data>
 </root>

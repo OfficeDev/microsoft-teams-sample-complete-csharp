@@ -23,16 +23,25 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
 
             var connectorClient = new ConnectorClient(new Uri(context.Activity.ServiceUrl));
 
-            TeamDetails teamDetails = await connectorClient.GetTeamsConnectorClient().Teams.FetchTeamDetailsAsync(context.Activity.GetChannelData<TeamsChannelData>().Team.Id);
+            if (context.Activity.GetChannelData<TeamsChannelData>().Team == null)
+            {
+                // Handle for 1 to 1 bot conversation
+                await context.PostAsync(Strings.AADId1To1ConversationError);
+            }
+            else
+            {
+                // Handle for channel conversation, aad group id only exists within channel
+                TeamDetails teamDetails = await connectorClient.GetTeamsConnectorClient().Teams.FetchTeamDetailsAsync(context.Activity.GetChannelData<TeamsChannelData>().Team.Id);
 
-            var message = context.MakeMessage();
+                var message = context.MakeMessage();
+                message.Text = GenerateTable(teamDetails);
 
-            message.Text = GenerateTable(teamDetails);
+                await context.PostAsync(message);
+            }
 
             //Set the Last Dialog in Conversation Data
             context.UserData.SetValue(Strings.LastDialogKey, Strings.LastDialogFetchTeamInfoDialog);
 
-            await context.PostAsync(message);
             context.Done<object>(null);
         }
 
