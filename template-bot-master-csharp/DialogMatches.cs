@@ -69,6 +69,5 @@
         public const string PopUpSignIn = "signin";
 
         public const string TeamInfo = "team info";
-        public const string TeamsInfo = "teams info";
     }
 }

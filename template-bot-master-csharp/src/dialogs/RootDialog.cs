@@ -459,7 +459,6 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
 
         #region Team Info
 
-        [RegexPattern(DialogMatches.TeamsInfo)]
         [RegexPattern(DialogMatches.TeamInfo)]
         [ScorableGroup(1)]
         public void TeamsInfo(IDialogContext context, IActivity activity)

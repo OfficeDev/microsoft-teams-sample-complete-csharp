@@ -820,7 +820,7 @@
     <value>team info</value>
   </data>
   <data name="HelpCaptionTeamInfo" xml:space="preserve">
-    <value>Teams Info</value>
+    <value>Team Info</value>
   </data>
   <data name="LastDialogFetchTeamInfoDialog" xml:space="preserve">
     <value>FetchTeamInfoDialog</value>

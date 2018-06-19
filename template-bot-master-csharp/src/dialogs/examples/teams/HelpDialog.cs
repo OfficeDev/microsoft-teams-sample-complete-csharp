@@ -27,7 +27,6 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
             context.UserData.SetValue(Strings.LastDialogKey, Strings.LastDialogHelpDialog);
 
             // This will create Interactive Card with help command buttons
-            message.AttachmentLayout = AttachmentLayoutTypes.Carousel;
 
             message.Attachments = new List<Attachment>
             {

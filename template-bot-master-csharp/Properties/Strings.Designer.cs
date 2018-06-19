@@ -907,7 +907,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Teams Info.
+        ///   Looks up a localized string similar to Team Info.
         /// </summary>
         internal static string HelpCaptionTeamInfo {
             get {

@@ -5,6 +5,7 @@ using Microsoft.Bot.Connector.Teams.Models;
 using Microsoft.Teams.TemplateBotCSharp.Properties;
 using System;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
 {
@@ -60,9 +61,9 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
             }
 
             string tableHtml = $@"<table border='1'>
-                                    <tr><td> Team id    </td><td>{teamDetails.Id}</td><tr>
-                                    <tr><td> Team name </td><td>{teamDetails.Name}</td></tr>
-                                    <tr><td> AAD group id </td><td>{teamDetails.AadGroupId}</td><tr>
+                                    <tr><td> Team id </td><td>{HttpUtility.HtmlEncode(teamDetails.Id)}</td><tr>
+                                    <tr><td> Team name </td><td>{HttpUtility.HtmlEncode(teamDetails.Name)}</td></tr>
+                                    <tr><td> AAD group id </td><td>{HttpUtility.HtmlEncode(teamDetails.AadGroupId)}</td><tr>
                                   </table>";
             return tableHtml;
         }
