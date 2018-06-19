@@ -816,16 +816,16 @@
   <data name="EndDialogTitleMsg" xml:space="preserve">
     <value>Thanks for using Sample App</value>
   </data>
-  <data name="cmdGetAADId" xml:space="preserve">
-    <value>aadid</value>
+  <data name="cmdGetTeamInfo" xml:space="preserve">
+    <value>team info</value>
   </data>
-  <data name="HelpCaptionGetAADId" xml:space="preserve">
-    <value>AAD Id</value>
+  <data name="HelpCaptionTeamInfo" xml:space="preserve">
+    <value>Teams Info</value>
   </data>
   <data name="LastDialogFetchTeamInfoDialog" xml:space="preserve">
     <value>FetchTeamInfoDialog</value>
   </data>
-  <data name="AADId1To1ConversationError" xml:space="preserve">
-    <value>AAD Group Id doesn't exists for one to one conversation.</value>
+  <data name="TeamInfo1To1ConversationError" xml:space="preserve">
+    <value>This command only works in channels</value>
   </data>
 </root>

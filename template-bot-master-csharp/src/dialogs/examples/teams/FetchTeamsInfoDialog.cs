@@ -21,22 +21,24 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
                 throw new ArgumentNullException(nameof(context));
             }
 
-            var connectorClient = new ConnectorClient(new Uri(context.Activity.ServiceUrl));
+            var team = context.Activity.GetChannelData<TeamsChannelData>().Team;
 
-            if (context.Activity.GetChannelData<TeamsChannelData>().Team == null)
+            if (team != null)
             {
-                // Handle for 1 to 1 bot conversation
-                await context.PostAsync(Strings.AADId1To1ConversationError);
-            }
-            else
-            {
+                var connectorClient = new ConnectorClient(new Uri(context.Activity.ServiceUrl));
+
                 // Handle for channel conversation, aad group id only exists within channel
-                TeamDetails teamDetails = await connectorClient.GetTeamsConnectorClient().Teams.FetchTeamDetailsAsync(context.Activity.GetChannelData<TeamsChannelData>().Team.Id);
+                TeamDetails teamDetails = await connectorClient.GetTeamsConnectorClient().Teams.FetchTeamDetailsAsync(team.Id);
 
                 var message = context.MakeMessage();
                 message.Text = GenerateTable(teamDetails);
 
                 await context.PostAsync(message);
+            }
+            else
+            {
+                // Handle for 1 to 1 bot conversation
+                await context.PostAsync(Strings.TeamInfo1To1ConversationError);
             }
 
             //Set the Last Dialog in Conversation Data
@@ -57,12 +59,11 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
                 return string.Empty;
             }
 
-            string tableHtml = "<html><table border='1'><tbody><tr style='font-weight:bold'><td> TeamId </td><td> Team Name </td><td> AAD Group Id </td><tr>";
-
-            tableHtml += "<tr><td>" + teamDetails.Id + "</td><td>" + teamDetails.Name + "</td><td>" + teamDetails.AadGroupId + "</td></tr>";
-
-            tableHtml += "</tbody></table></html>";
-
+            string tableHtml = $@"<table border='1'>
+                                    <tr><td> Team id    </td><td>{teamDetails.Id}</td><tr>
+                                    <tr><td> Team name </td><td>{teamDetails.Name}</td></tr>
+                                    <tr><td> AAD group id </td><td>{teamDetails.AadGroupId}</td><tr>
+                                  </table>";
             return tableHtml;
         }
     }

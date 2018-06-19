@@ -457,11 +457,12 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
 
         #endregion
 
-        #region AAD Id
+        #region Team Info
 
-        [RegexPattern(DialogMatches.AADId)]
+        [RegexPattern(DialogMatches.TeamsInfo)]
+        [RegexPattern(DialogMatches.TeamInfo)]
         [ScorableGroup(1)]
-        public void GetAADId(IDialogContext context, IActivity activity)
+        public void TeamsInfo(IDialogContext context, IActivity activity)
         {
             context.Call(new FetchTeamsInfoDialog(), this.EndDialog);
         }

@@ -27,6 +27,8 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
             context.UserData.SetValue(Strings.LastDialogKey, Strings.LastDialogHelpDialog);
 
             // This will create Interactive Card with help command buttons
+            message.AttachmentLayout = AttachmentLayoutTypes.Carousel;
+
             message.Attachments = new List<Attachment>
             {
                 new HeroCard(Strings.HelpTitle)
@@ -53,7 +55,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
                         new CardAction(ActionTypes.ImBack, Strings.HelpLocalTimeZone, value: Strings.cmdLocalTime),
                         new CardAction(ActionTypes.ImBack, Strings.HelpCaptionMessageBack, value: Strings.cmdMessageBack),
                         new CardAction(ActionTypes.ImBack, Strings.HelpCaptionPopUpSignIn, value: Strings.cmdPopUpSignIn),
-                        new CardAction(ActionTypes.ImBack, Strings.HelpCaptionGetAADId, value: Strings.cmdGetAADId)
+                        new CardAction(ActionTypes.ImBack, Strings.HelpCaptionTeamInfo, value: Strings.cmdGetTeamInfo)
                     }
                 }.ToAttachment()
             };

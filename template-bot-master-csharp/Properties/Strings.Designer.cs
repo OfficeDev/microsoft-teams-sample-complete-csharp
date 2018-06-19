@@ -61,15 +61,6 @@ namespace Microsoft.Teams.TemplateBotCSharp.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to AAD Group Id doesn&apos;t exists for one to one conversation..
-        /// </summary>
-        internal static string AADId1To1ConversationError {
-            get {
-                return ResourceManager.GetString("AADId1To1ConversationError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Cannot resume!.
         /// </summary>
         internal static string AuthCallbackResumeError {
@@ -205,11 +196,11 @@ namespace Microsoft.Teams.TemplateBotCSharp.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to aadid.
+        ///   Looks up a localized string similar to team info.
         /// </summary>
-        internal static string cmdGetAADId {
+        internal static string cmdGetTeamInfo {
             get {
-                return ResourceManager.GetString("cmdGetAADId", resourceCulture);
+                return ResourceManager.GetString("cmdGetTeamInfo", resourceCulture);
             }
         }
         
@@ -826,15 +817,6 @@ namespace Microsoft.Teams.TemplateBotCSharp.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to AAD Id.
-        /// </summary>
-        internal static string HelpCaptionGetAADId {
-            get {
-                return ResourceManager.GetString("HelpCaptionGetAADId", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Hello Dialog.
         /// </summary>
         internal static string HelpCaptionHelloDialog {
@@ -921,6 +903,15 @@ namespace Microsoft.Teams.TemplateBotCSharp.Properties {
         internal static string HelpCaptionSetupMessage {
             get {
                 return ResourceManager.GetString("HelpCaptionSetupMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Teams Info.
+        /// </summary>
+        internal static string HelpCaptionTeamInfo {
+            get {
+                return ResourceManager.GetString("HelpCaptionTeamInfo", resourceCulture);
             }
         }
         
@@ -1929,6 +1920,15 @@ namespace Microsoft.Teams.TemplateBotCSharp.Properties {
         internal static string SetUpMsgKey {
             get {
                 return ResourceManager.GetString("SetUpMsgKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This command only works in channels.
+        /// </summary>
+        internal static string TeamInfo1To1ConversationError {
+            get {
+                return ResourceManager.GetString("TeamInfo1To1ConversationError", resourceCulture);
             }
         }
         
