@@ -456,5 +456,16 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
         }
 
         #endregion
+
+        #region Team Info
+
+        [RegexPattern(DialogMatches.TeamInfo)]
+        [ScorableGroup(1)]
+        public void TeamsInfo(IDialogContext context, IActivity activity)
+        {
+            context.Call(new FetchTeamsInfoDialog(), this.EndDialog);
+        }
+
+        #endregion
     }
 }

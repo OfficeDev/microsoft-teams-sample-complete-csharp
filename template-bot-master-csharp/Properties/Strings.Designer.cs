@@ -196,6 +196,15 @@ namespace Microsoft.Teams.TemplateBotCSharp.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to team info.
+        /// </summary>
+        internal static string cmdGetTeamInfo {
+            get {
+                return ResourceManager.GetString("cmdGetTeamInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to hi.
         /// </summary>
         internal static string cmdHelloDialog {
@@ -898,6 +907,15 @@ namespace Microsoft.Teams.TemplateBotCSharp.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Team Info.
+        /// </summary>
+        internal static string HelpCaptionTeamInfo {
+            get {
+                return ResourceManager.GetString("HelpCaptionTeamInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Update Card.
         /// </summary>
         internal static string HelpCaptionUpdateCard {
@@ -1092,6 +1110,15 @@ namespace Microsoft.Teams.TemplateBotCSharp.Properties {
         internal static string LastDialogFetchRosterDialog {
             get {
                 return ResourceManager.GetString("LastDialogFetchRosterDialog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to FetchTeamInfoDialog.
+        /// </summary>
+        internal static string LastDialogFetchTeamInfoDialog {
+            get {
+                return ResourceManager.GetString("LastDialogFetchTeamInfoDialog", resourceCulture);
             }
         }
         
@@ -1893,6 +1920,15 @@ namespace Microsoft.Teams.TemplateBotCSharp.Properties {
         internal static string SetUpMsgKey {
             get {
                 return ResourceManager.GetString("SetUpMsgKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This command only works in channels.
+        /// </summary>
+        internal static string TeamInfo1To1ConversationError {
+            get {
+                return ResourceManager.GetString("TeamInfo1To1ConversationError", resourceCulture);
             }
         }
         

@@ -67,5 +67,7 @@
         public const string O365ConnectorCardActionableCards = "connector card actions (.*)";
 
         public const string PopUpSignIn = "signin";
+
+        public const string TeamInfo = "team info";
     }
 }

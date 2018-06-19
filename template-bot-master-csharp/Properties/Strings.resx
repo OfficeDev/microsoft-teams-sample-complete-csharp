@@ -816,4 +816,16 @@
   <data name="EndDialogTitleMsg" xml:space="preserve">
     <value>Thanks for using Sample App</value>
   </data>
+  <data name="cmdGetTeamInfo" xml:space="preserve">
+    <value>team info</value>
+  </data>
+  <data name="HelpCaptionTeamInfo" xml:space="preserve">
+    <value>Team Info</value>
+  </data>
+  <data name="LastDialogFetchTeamInfoDialog" xml:space="preserve">
+    <value>FetchTeamInfoDialog</value>
+  </data>
+  <data name="TeamInfo1To1ConversationError" xml:space="preserve">
+    <value>This command only works in channels</value>
+  </data>
 </root>
