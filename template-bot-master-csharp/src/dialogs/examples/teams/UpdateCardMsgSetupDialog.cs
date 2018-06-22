@@ -30,9 +30,6 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
             //Set the Last Dialog in Conversation Data
             context.UserData.SetValue(Strings.LastDialogKey, Strings.LastDialogSetupUpdateCard);
 
-            //Set the Last Dialog in Conversation Data
-            context.UserData.SetValue(Strings.SetUpMsgKey, resp.Id.ToString());
-
             context.Wait(this.MessageReceivedAsync);
         }
 
@@ -45,23 +42,18 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
 
             var activity = await result;
 
-            if (activity.Text.ToLower() == "update")
+            if (!string.IsNullOrEmpty(context.Activity.ReplyToId))
             {
-                string cachedMessage = string.Empty;
+                var updatedMessage = UpdateMessage(context);
 
-                if (context.UserData.TryGetValue(Strings.SetUpMsgKey, out cachedMessage))
-                {
-                    var updatedMessage = UpdateMessage(context);
+                ConnectorClient client = new ConnectorClient(new Uri(context.Activity.ServiceUrl));
+                ResourceResponse resp = await client.Conversations.UpdateActivityAsync(context.Activity.Conversation.Id, context.Activity.ReplyToId, (Activity)updatedMessage);
 
-                    ConnectorClient client = new ConnectorClient(new Uri(context.Activity.ServiceUrl));
-                    ResourceResponse resp = await client.Conversations.UpdateActivityAsync(context.Activity.Conversation.Id, cachedMessage, (Activity)updatedMessage);
-
-                    await context.PostAsync(Strings.UpdateCardMessageConfirmation);
-                }
-                else
-                {
-                    await context.PostAsync(Strings.ErrorTextMessageUpdate);
-                }
+                await context.PostAsync(Strings.UpdateCardMessageConfirmation);
+            }
+            else
+            {
+                await context.PostAsync(Strings.ErrorTextMessageUpdate);
             }
 
             context.Done<object>(null);
@@ -80,12 +72,12 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
         {
             return new HeroCard
             {
-                Title = "This is New Card",
-                Subtitle = "This Card is Setup Now to Update",
+                Title = Strings.UpdateCardTitle,
+                Subtitle = Strings.UpdateCardSubTitle,
                 Images = new List<CardImage> { new CardImage("https://sec.ch9.ms/ch9/7ff5/e07cfef0-aa3b-40bb-9baa-7c9ef8ff7ff5/buildreactionbotframework_960.jpg") },
                 Buttons = new List<CardAction>
                 {
-                   new CardAction(ActionTypes.ImBack, "Update Card", value: "Update")
+                   new CardAction(ActionTypes.MessageBack, Strings.UpdateCardButtonCaption, value: "Update")
                 }
             }.ToAttachment();
         }
@@ -104,12 +96,12 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
         {
             return new HeroCard
             {
-                Title = "This is Updated Card",
-                Subtitle = "This Card is Updated Now.",
+                Title = Strings.UpdatedCardTitle,
+                Subtitle = Strings.UpdatedCardSubTitle,
                 Images = new List<CardImage> { new CardImage(ConfigurationManager.AppSettings["BaseUri"].ToString() + "/public/assets/computer_person.jpg") },
                 Buttons = new List<CardAction>
                 {
-                   new CardAction(ActionTypes.ImBack, "Update" + (updateCounter++), value: "Update")
+                   new CardAction(ActionTypes.OpenUrl, Strings.UpdatedCardButtonCaption, value: "https://docs.microsoft.com/en-us/microsoftteams/platform/concepts/bots/bot-conversations/bots-conversations#updating-messages"),
                 }
             }.ToAttachment();
         }

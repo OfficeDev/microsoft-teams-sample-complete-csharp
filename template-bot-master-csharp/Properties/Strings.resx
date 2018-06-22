@@ -828,4 +828,22 @@
   <data name="TeamInfo1To1ConversationError" xml:space="preserve">
     <value>This command only works in channels</value>
   </data>
+  <data name="UpdateCardButtonCaption" xml:space="preserve">
+    <value>Update Card</value>
+  </data>
+  <data name="UpdateCardSubTitle" xml:space="preserve">
+    <value>This Card is Setup Now to Update</value>
+  </data>
+  <data name="UpdateCardTitle" xml:space="preserve">
+    <value>This is New Card</value>
+  </data>
+  <data name="UpdatedCardButtonCaption" xml:space="preserve">
+    <value>MSDN</value>
+  </data>
+  <data name="UpdatedCardSubTitle" xml:space="preserve">
+    <value>This Card is Updated Now</value>
+  </data>
+  <data name="UpdatedCardTitle" xml:space="preserve">
+    <value>This is Updated Card</value>
+  </data>
 </root>

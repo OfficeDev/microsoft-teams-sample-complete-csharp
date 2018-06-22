@@ -2005,11 +2005,65 @@ namespace Microsoft.Teams.TemplateBotCSharp.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Update Card.
+        /// </summary>
+        internal static string UpdateCardButtonCaption {
+            get {
+                return ResourceManager.GetString("UpdateCardButtonCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Card updated - see above.
         /// </summary>
         internal static string UpdateCardMessageConfirmation {
             get {
                 return ResourceManager.GetString("UpdateCardMessageConfirmation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This Card is Setup Now to Update.
+        /// </summary>
+        internal static string UpdateCardSubTitle {
+            get {
+                return ResourceManager.GetString("UpdateCardSubTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This is New Card.
+        /// </summary>
+        internal static string UpdateCardTitle {
+            get {
+                return ResourceManager.GetString("UpdateCardTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MSDN.
+        /// </summary>
+        internal static string UpdatedCardButtonCaption {
+            get {
+                return ResourceManager.GetString("UpdatedCardButtonCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This Card is Updated Now.
+        /// </summary>
+        internal static string UpdatedCardSubTitle {
+            get {
+                return ResourceManager.GetString("UpdatedCardSubTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This is Updated Card.
+        /// </summary>
+        internal static string UpdatedCardTitle {
+            get {
+                return ResourceManager.GetString("UpdatedCardTitle", resourceCulture);
             }
         }
         
