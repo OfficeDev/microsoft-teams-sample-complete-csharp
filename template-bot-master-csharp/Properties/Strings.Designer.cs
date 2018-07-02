@@ -331,7 +331,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to update card message.
+        ///   Looks up a localized string similar to setup card message.
         /// </summary>
         internal static string cmdUpdateCard {
             get {
@@ -619,7 +619,16 @@ namespace Microsoft.Teams.TemplateBotCSharp.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to There is some error updating last message.
+        ///   Looks up a localized string similar to Please setup card message using &quot;setup card message&quot; command before updating card..
+        /// </summary>
+        internal static string ErrorCardMessageUpdate {
+            get {
+                return ResourceManager.GetString("ErrorCardMessageUpdate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please setup card message using &quot;setup text message&quot; command before updating card..
         /// </summary>
         internal static string ErrorTextMessageUpdate {
             get {
@@ -1843,7 +1852,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Thanks for Playing Fun Quiz!!.
+        ///   Looks up a localized string similar to Thanks for playing fun quiz!!.
         /// </summary>
         internal static string QuizThanksTitleMsg {
             get {
@@ -1852,7 +1861,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Hi, Welcome to the Fun Quiz. Let&apos;s get started...
+        ///   Looks up a localized string similar to Hi, Welcome to the fun quiz. Let&apos;s get started...
         /// </summary>
         internal static string QuizTitleWelcomeMsg {
             get {
@@ -1870,7 +1879,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Here are the User Information.
+        ///   Looks up a localized string similar to Here are the user information.
         /// </summary>
         internal static string RosterTitle {
             get {
@@ -1879,7 +1888,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Processing the Request for Roster Api User Information!!.
+        ///   Looks up a localized string similar to Processing the request for roster api user information!!.
         /// </summary>
         internal static string RosterWelcomeMsgTitle {
             get {
@@ -1902,6 +1911,24 @@ namespace Microsoft.Teams.TemplateBotCSharp.Properties {
         internal static string Send1on1Prompt {
             get {
                 return ResourceManager.GetString("Send1on1Prompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This card is setup now to update.
+        /// </summary>
+        internal static string SetupCardSubTitle {
+            get {
+                return ResourceManager.GetString("SetupCardSubTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This is new card.
+        /// </summary>
+        internal static string SetUpCardTitle {
+            get {
+                return ResourceManager.GetString("SetUpCardTitle", resourceCulture);
             }
         }
         
@@ -2014,29 +2041,20 @@ namespace Microsoft.Teams.TemplateBotCSharp.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to update card message.
+        /// </summary>
+        internal static string UpdateCardButtonText {
+            get {
+                return ResourceManager.GetString("UpdateCardButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Card updated - see above.
         /// </summary>
         internal static string UpdateCardMessageConfirmation {
             get {
                 return ResourceManager.GetString("UpdateCardMessageConfirmation", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to This Card is Setup Now to Update.
-        /// </summary>
-        internal static string UpdateCardSubTitle {
-            get {
-                return ResourceManager.GetString("UpdateCardSubTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to This is New Card.
-        /// </summary>
-        internal static string UpdateCardTitle {
-            get {
-                return ResourceManager.GetString("UpdateCardTitle", resourceCulture);
             }
         }
         
@@ -2050,7 +2068,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This Card is Updated Now.
+        ///   Looks up a localized string similar to This card is updated now.
         /// </summary>
         internal static string UpdatedCardSubTitle {
             get {
@@ -2086,7 +2104,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Here is UTC Time -.
+        ///   Looks up a localized string similar to Here is UTC time -.
         /// </summary>
         internal static string UTCTimeZonePrompt {
             get {

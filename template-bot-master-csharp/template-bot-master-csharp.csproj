@@ -179,6 +179,7 @@
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="src\dialogs\examples\teams\FetchTeamsInfoDialog.cs" />
+    <Compile Include="src\dialogs\examples\teams\UpdateCardMsgSetupDialog.cs" />
     <Compile Include="utility\InvokeHandler.cs" />
     <Compile Include="middleware\Middleware.cs" />
     <Compile Include="Properties\Strings.Designer.cs">
@@ -216,7 +217,7 @@
     <Compile Include="src\dialogs\examples\teams\HelpDialog.cs" />
     <Compile Include="src\dialogs\examples\teams\ProactiveMsgTo1to1Dialog.cs" />
     <Compile Include="src\dialogs\RootDialog.cs" />
-    <Compile Include="src\dialogs\examples\teams\UpdateCardMsgSetupDialog.cs" />
+    <Compile Include="src\dialogs\examples\teams\UpdateCardMsgDialog.cs" />
     <Compile Include="src\dialogs\examples\teams\UpdateTextMsgDialog.cs" />
     <Compile Include="src\dialogs\examples\teams\UpdateTextMsgSetupDialog.cs" />
     <Compile Include="Global.asax.cs">
