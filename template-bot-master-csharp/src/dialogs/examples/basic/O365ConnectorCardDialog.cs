@@ -56,7 +56,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
 
             var message = context.MakeMessage();
             message.Attachments.Add(attachment);
-            await context.PostAsync((message));
+            await context.PostAsync(message);
 
             context.Done<object>(null);
         }

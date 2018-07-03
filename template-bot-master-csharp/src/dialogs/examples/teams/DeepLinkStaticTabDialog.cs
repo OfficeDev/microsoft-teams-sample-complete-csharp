@@ -31,7 +31,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
                 throw new ArgumentNullException(nameof(context));
             }
 
-            BotId = ConfigurationManager.AppSettings["MicrosoftAppId"].ToString();
+            BotId = ConfigurationManager.AppSettings["MicrosoftAppId"];
 
             GetChannelID(context);
 
