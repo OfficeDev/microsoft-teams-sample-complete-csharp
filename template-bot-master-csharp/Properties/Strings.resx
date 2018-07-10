@@ -832,10 +832,10 @@
     <value>Update Card</value>
   </data>
   <data name="SetupCardSubTitle" xml:space="preserve">
-    <value>This card is setup now to update</value>
+    <value>Subtitle</value>
   </data>
   <data name="SetUpCardTitle" xml:space="preserve">
-    <value>This is new card</value>
+    <value>Title</value>
   </data>
   <data name="UpdatedCardButtonCaption" xml:space="preserve">
     <value>MSDN</value>
@@ -844,12 +844,12 @@
     <value>This card is updated now</value>
   </data>
   <data name="UpdatedCardTitle" xml:space="preserve">
-    <value>This is Updated Card</value>
+    <value>Updated card </value>
   </data>
-  <data name="ErrorCardMessageUpdate" xml:space="preserve">
-    <value>Please setup card message using "setup card message" command before updating card.</value>
+  <data name="NoMsgToUpdate" xml:space="preserve">
+    <value>No message to update.</value>
   </data>
-  <data name="UpdateCardButtonText" xml:space="preserve">
-    <value>update card message</value>
+  <data name="ErrorUpdatingCard" xml:space="preserve">
+    <value>Error updating card message: </value>
   </data>
 </root>

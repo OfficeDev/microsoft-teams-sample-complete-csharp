@@ -9,13 +9,13 @@ using System.Threading.Tasks;
 namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
 {
     /// <summary>
-    /// This is setup card dialog class. Main purpose of this class is to setup the card message and then user ca update the card using below update dialog file
+    /// This is setup card dialog class. Main purpose of this class is to setup the card message and then user can update the card using below update dialog file
     /// microsoft-teams-sample-complete-csharp\template-bot-master-csharp\src\dialogs\examples\teams\UpdateCardMsgDialog.cs
     /// </summary>
     [Serializable]
     public class UpdateCardMsgSetupDialog : IDialog<object>
     {
-        public int updateCounter = 1;
+        public int updateCounter = 0;
         public async Task StartAsync(IDialogContext context)
         {
             if (context == null)
@@ -50,7 +50,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
                 Images = new List<CardImage> { new CardImage("https://sec.ch9.ms/ch9/7ff5/e07cfef0-aa3b-40bb-9baa-7c9ef8ff7ff5/buildreactionbotframework_960.jpg") },
                 Buttons = new List<CardAction>
                 {
-                    new CardAction(ActionTypes.MessageBack, Strings.UpdateCardButtonCaption + " " + updateCounter, value: "{\"updateKey\": \"" + ++updateCounter + "\"}", text: Strings.UpdateCardButtonText)
+                    new CardAction(ActionTypes.MessageBack, Strings.UpdateCardButtonCaption, value: "{\"updateKey\": \"" + ++updateCounter + "\"}", text: DialogMatches.UpdateCard)
                 }
             }.ToAttachment();
         }

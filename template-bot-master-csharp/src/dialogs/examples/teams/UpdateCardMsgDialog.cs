@@ -33,13 +33,20 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
                 var updatedMessage = CreateUpdatedMessage(context);
 
                 ConnectorClient client = new ConnectorClient(new Uri(context.Activity.ServiceUrl));
-                ResourceResponse resp = await client.Conversations.UpdateActivityAsync(context.Activity.Conversation.Id, context.Activity.ReplyToId, (Activity)updatedMessage);
 
-                await context.PostAsync(Strings.UpdateCardMessageConfirmation);
+                try
+                {
+                    ResourceResponse resp = await client.Conversations.UpdateActivityAsync(context.Activity.Conversation.Id, context.Activity.ReplyToId, (Activity)updatedMessage);
+                    await context.PostAsync(Strings.UpdateCardMessageConfirmation);
+                }
+                catch (Exception ex)
+                {
+                    await context.PostAsync(Strings.ErrorUpdatingCard + ex.Message);
+                }
             }
             else
             {
-                await context.PostAsync(Strings.ErrorCardMessageUpdate);
+                await context.PostAsync(Strings.NoMsgToUpdate);
             }
 
             context.Done<object>(null);
@@ -61,12 +68,12 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
         {
             return new HeroCard
             {
-                Title = Strings.UpdatedCardTitle,
+                Title = Strings.UpdatedCardTitle + " " + updateCounter,
                 Subtitle = Strings.UpdatedCardSubTitle,
                 Images = new List<CardImage> { new CardImage(ConfigurationManager.AppSettings["BaseUri"].ToString() + "/public/assets/computer_person.jpg") },
                 Buttons = new List<CardAction>
                 {
-                   new CardAction(ActionTypes.MessageBack, Strings.UpdateCardButtonCaption + " " + updateCounter, value: "{\"updateKey\": \"" + ++updateCounter + "\"}", text: Strings.UpdateCardButtonText)
+                   new CardAction(ActionTypes.MessageBack, Strings.UpdateCardButtonCaption, value: "{\"updateKey\": \"" + ++updateCounter + "\"}", text: DialogMatches.UpdateCard)
                 }
             }.ToAttachment();
         }
