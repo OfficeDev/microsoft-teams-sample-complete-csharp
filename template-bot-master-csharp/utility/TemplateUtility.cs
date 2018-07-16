@@ -151,6 +151,26 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
             return null;
         }
 
+        /// <summary>
+        /// Parse the Update card  message back json value returned the updated counter
+        /// </summary>
+        /// <param name="inputString"></param>
+        /// <returns></returns>
+        public static int ParseUpdateCounterJson(Activity activity)
+        {
+            if (activity != null && activity.Value != null)
+            {
+                JObject invokeObjects = JObject.Parse(Convert.ToString(activity.Value));
+
+                if (invokeObjects.Count > 0)
+                {
+                    return invokeObjects["updateKey"].Value<int>();
+                }
+            }
+
+            return 0;
+        }
+
         public static async Task<BotData> GetBotUserDataObject(IBotDataStore<BotData> botDataStore, Activity activity)
         {
             IAddress key = Address.FromActivity(activity);

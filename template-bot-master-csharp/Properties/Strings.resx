@@ -199,10 +199,10 @@
     <value>quiz</value>
   </data>
   <data name="QuizThanksTitleMsg" xml:space="preserve">
-    <value>Thanks for Playing Fun Quiz!!</value>
+    <value>Thanks for playing fun quiz!!</value>
   </data>
   <data name="QuizTitleWelcomeMsg" xml:space="preserve">
-    <value>Hi, Welcome to the Fun Quiz. Let's get started..</value>
+    <value>Hi, Welcome to the fun quiz. Let's get started..</value>
   </data>
   <data name="HelpCaptionRosterPayload" xml:space="preserve">
     <value>Fetch Roster Payload</value>
@@ -211,10 +211,10 @@
     <value>roster</value>
   </data>
   <data name="RosterTitle" xml:space="preserve">
-    <value>Here are the User Information</value>
+    <value>Here are the user information</value>
   </data>
   <data name="RosterWelcomeMsgTitle" xml:space="preserve">
-    <value>Processing the Request for Roster Api User Information!!</value>
+    <value>Processing the request for roster api user information!!</value>
   </data>
   <data name="cmdRunAtMentionDialog" xml:space="preserve">
     <value>at mention</value>
@@ -337,7 +337,7 @@
     <value>update text message</value>
   </data>
   <data name="ErrorTextMessageUpdate" xml:space="preserve">
-    <value>There is some error updating last message</value>
+    <value>Please setup card message using "setup text message" command before updating card.</value>
   </data>
   <data name="HelpCaptionSetupMessage" xml:space="preserve">
     <value>Setup Message</value>
@@ -382,7 +382,7 @@
     <value>FetchLastDialogName</value>
   </data>
   <data name="cmdUpdateCard" xml:space="preserve">
-    <value>update card message</value>
+    <value>setup card message</value>
   </data>
   <data name="HelpCaptionUpdateCard" xml:space="preserve">
     <value>Update Card</value>
@@ -709,7 +709,7 @@
     <value>This is Message Back PayLoad Text.</value>
   </data>
   <data name="UTCTimeZonePrompt" xml:space="preserve">
-    <value>Here is UTC Time -</value>
+    <value>Here is UTC time -</value>
   </data>
   <data name="ComposeExtensionCardTypeKeyword" xml:space="preserve">
     <value>composeExtensionCardType</value>
@@ -827,5 +827,29 @@
   </data>
   <data name="TeamInfo1To1ConversationError" xml:space="preserve">
     <value>This command only works in channels</value>
+  </data>
+  <data name="UpdateCardButtonCaption" xml:space="preserve">
+    <value>Update Card</value>
+  </data>
+  <data name="SetupCardSubTitle" xml:space="preserve">
+    <value>Subtitle</value>
+  </data>
+  <data name="SetUpCardTitle" xml:space="preserve">
+    <value>Title</value>
+  </data>
+  <data name="UpdatedCardButtonCaption" xml:space="preserve">
+    <value>MSDN</value>
+  </data>
+  <data name="UpdatedCardSubTitle" xml:space="preserve">
+    <value>This card is updated now</value>
+  </data>
+  <data name="UpdatedCardTitle" xml:space="preserve">
+    <value>Updated card </value>
+  </data>
+  <data name="NoMsgToUpdate" xml:space="preserve">
+    <value>No message to update.</value>
+  </data>
+  <data name="ErrorUpdatingCard" xml:space="preserve">
+    <value>Error updating card message: </value>
   </data>
 </root>

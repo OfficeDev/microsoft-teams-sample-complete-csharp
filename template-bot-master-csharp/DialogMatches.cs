@@ -36,7 +36,7 @@
         public const string SetUpTextMsg = "setup text message";
         public const string UpdateLastSetupTextMsg = "update text message";
 
-        public const string SetUpNUpdateCard = "update card message";
+        public const string SetUpCardMsg = "setup card message";
 
         public const string DisplayCards = "display cards";
         public const string StopShowingCards = "no";
@@ -69,5 +69,7 @@
         public const string PopUpSignIn = "signin";
 
         public const string TeamInfo = "team info";
+
+        public const string UpdateCard = "update card message";
     }
 }

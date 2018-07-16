@@ -3,6 +3,7 @@ using Microsoft.Bot.Builder.Scorables;
 using Microsoft.Bot.Connector;
 using Microsoft.Bot.Connector.Teams.Models;
 using Microsoft.Teams.TemplateBotCSharp.Properties;
+using Microsoft.Teams.TemplateBotCSharp.Utility;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -176,16 +177,16 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
             context.Call(new HelpDialog(), this.EndDefaultDialog);
         }
 
-        public async Task EndDefaultDialog(IDialogContext context, IAwaitable<object> result)
+        public Task EndDefaultDialog(IDialogContext context, IAwaitable<object> result)
         {
-            await context.PostAsync(Strings.DefaultDialogTitleMsg);
             context.Done<object>(null);
+            return Task.CompletedTask;
         }
 
-        public async Task EndDialog(IDialogContext context, IAwaitable<object> result)
+        public Task EndDialog(IDialogContext context, IAwaitable<object> result)
         {
-            await context.PostAsync(Strings.EndDialogTitleMsg);
             context.Done<object>(null);
+            return Task.CompletedTask;
         }
 
         #endregion
@@ -237,11 +238,18 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
 
         #region Set Up & Update Card
 
-        [RegexPattern(DialogMatches.SetUpNUpdateCard)]
+        [RegexPattern(DialogMatches.SetUpCardMsg)]
         [ScorableGroup(1)]
-        public void SetUpNUpdateCardMessage(IDialogContext context, IActivity activity)
+        public void SetUpCardMessage(IDialogContext context, IActivity activity)
         {
             context.Call(new UpdateCardMsgSetupDialog(), this.EndDialog);
+        }
+
+        [RegexPattern(DialogMatches.UpdateCard)]
+        [ScorableGroup(1)]
+        public void UpdateCardMessage(IDialogContext context, IActivity activity)
+        {
+            context.Call(new UpdateCardMsgDialog(), this.EndDialog);
         }
 
         #endregion
