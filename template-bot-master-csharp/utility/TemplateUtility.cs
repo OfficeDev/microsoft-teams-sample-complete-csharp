@@ -156,7 +156,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
         /// </summary>
         /// <param name="inputString"></param>
         /// <returns></returns>
-        public static string ParseUpdateCounterJson(Activity activity)
+        public static int ParseUpdateCounterJson(Activity activity)
         {
             if (activity != null && activity.Value != null)
             {
@@ -164,11 +164,11 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
 
                 if (invokeObjects.Count > 0)
                 {
-                    return invokeObjects["updateKey"].Value<string>();
+                    return invokeObjects["updateKey"].Value<int>();
                 }
             }
 
-            return null;
+            return 0;
         }
 
         public static async Task<BotData> GetBotUserDataObject(IBotDataStore<BotData> botDataStore, Activity activity)

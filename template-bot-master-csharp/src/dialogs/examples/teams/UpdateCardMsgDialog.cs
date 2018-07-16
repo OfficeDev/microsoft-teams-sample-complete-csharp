@@ -28,7 +28,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
             if (!string.IsNullOrEmpty(context.Activity.ReplyToId))
             {
                 Activity activity = context.Activity as Activity;
-                updateCounter = Convert.ToInt32(TemplateUtility.ParseUpdateCounterJson(activity));
+                updateCounter = TemplateUtility.ParseUpdateCounterJson(activity);
 
                 var updatedMessage = CreateUpdatedMessage(context);
 
