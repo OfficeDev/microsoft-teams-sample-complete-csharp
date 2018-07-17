@@ -475,5 +475,16 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
         }
 
         #endregion
+
+        #region Adaptive Card
+
+        [RegexPattern(DialogMatches.AdaptiveCard)]
+        [ScorableGroup(1)]
+        public void AdaptiveCard(IDialogContext context, IActivity activity)
+        {
+            context.Call(new AdaptiveCardDialog(), this.EndDialog);
+        }
+
+        #endregion
     }
 }

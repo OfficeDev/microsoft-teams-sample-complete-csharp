@@ -56,6 +56,12 @@ namespace Microsoft.Teams.TemplateBotCSharp
                     return Request.CreateResponse(HttpStatusCode.OK);
                 }
 
+                // Adaptive Card Submit Action
+                if (string.IsNullOrEmpty(activity.Text))
+                {
+                    return await SendAdaptiveCardValues(activity);
+                }
+
                 await Conversation.SendAsync(activity, () => new Dialogs.RootDialog());
             }
             else if (activity.Type == ActivityTypes.MessageReaction)
@@ -311,6 +317,24 @@ namespace Microsoft.Teams.TemplateBotCSharp
             Activity replyActivity = activity.CreateReply();
 
             replyActivity.Text = $@"Authentication Successful";
+
+            await connectorClient.Conversations.ReplyToActivityWithRetriesAsync(replyActivity);
+
+            return new HttpResponseMessage(HttpStatusCode.OK);
+        }
+
+        /// <summary>
+        /// Handle Adaptive Cards requests
+        /// </summary>
+        /// <param name="activity"></param>
+        /// <returns></returns>
+        private static async Task<HttpResponseMessage> SendAdaptiveCardValues(Activity activity)
+        {
+            var connectorClient = new ConnectorClient(new Uri(activity.ServiceUrl));
+
+            Activity replyActivity = activity.CreateReply();
+
+            replyActivity.Text = Convert.ToString(activity.Value);
 
             await connectorClient.Conversations.ReplyToActivityWithRetriesAsync(replyActivity);
 
