@@ -41,44 +41,42 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
         {
             var card = new AdaptiveCard()
             {
-                Version = "1.0", // version is mandatory field
-                Body = new List<CardElement>()
+                Body = new List<AdaptiveElement>()
                 {
-                    new Container()
+                    new AdaptiveContainer()
                     {
-                        Items = new List<CardElement>()
+                        Items = new List<AdaptiveElement>()
                         {
                             // TextBlock Item allows for the inclusion of text, with various font sizes, weight and color,
-                            new TextBlock()
+                            new AdaptiveTextBlock()
                             {
                                 Text = "Adaptive Card!",
-                                Speak = "Adaptive card!",
-                                Weight = TextWeight.Bolder, // set the weight of text e.g. Bolder, Light, Normal
-                                Size = TextSize.Large, // set the size of text e.g. Extra Large, Large, Medium, Normal, Small
+                                Weight = AdaptiveTextWeight.Bolder, // set the weight of text e.g. Bolder, Light, Normal
+                                Size = AdaptiveTextSize.Large, // set the size of text e.g. Extra Large, Large, Medium, Normal, Small
                             },
-                            // FactSet item makes it simple to display a series of facts (e.g. name/value pairs) in a tabular form
-                            new FactSet
+                            // Adaptive FactSet item makes it simple to display a series of facts (e.g. name/value pairs) in a tabular form
+                            new AdaptiveFactSet
                             {
-                                Separation = SeparationStyle.Default,
+                                Separator = true,
                                 Facts =
                                 {
-                                    // Describes a fact in a FactSet as a key/value pair
-                                    new AdaptiveCards.Fact
+                                    // Describes a fact in a Adaptive FactSet as a key/value pair
+                                    new AdaptiveFact
                                     {
                                         Title = "Board:",
                                         Value = "Adaptive Card"
                                     },
-                                    new AdaptiveCards.Fact
+                                    new AdaptiveFact
                                     {
                                         Title = "List:",
                                         Value = "Backlog"
                                     },
-                                    new AdaptiveCards.Fact
+                                    new AdaptiveFact
                                     {
                                         Title = "Assigned to:",
                                         Value = "Matt Hidinger"
                                     },
-                                    new AdaptiveCards.Fact
+                                    new AdaptiveFact
                                     {
                                         Title = "Due date:",
                                         Value = "Not set"
@@ -86,164 +84,161 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
                                 }
                             },
                             // ImageSet allows for the inclusion of a collection images like a photogallery
-                            new ImageSet
+                            new AdaptiveImageSet
                             {
-                                ImageSize = ImageSize.Medium,
+                                ImageSize = AdaptiveImageSize.Medium,
                                 Images =
                                 {
                                     // Image Item allows for the inclusion of images
-                                    new Image
+                                    new AdaptiveImage
                                     {
-                                        Url = "http://contososcubabot.azurewebsites.net/assets/steak.jpg"
+                                        Url = new Uri("http://contososcubabot.azurewebsites.net/assets/steak.jpg")
                                     },
-                                    new Image
+                                    new AdaptiveImage
                                     {
-                                        Url = "http://contososcubabot.azurewebsites.net/assets/chicken.jpg"
+                                        Url = new Uri("http://contososcubabot.azurewebsites.net/assets/chicken.jpg")
                                     },
-                                    new Image
+                                    new AdaptiveImage
                                     {
-                                        Url = "http://contososcubabot.azurewebsites.net/assets/tofu.jpg"
+                                        Url = new Uri("http://contososcubabot.azurewebsites.net/assets/tofu.jpg")
                                     },
                                 }
                             },// wrap the text in textblock
-                            new TextBlock()
+                            new AdaptiveTextBlock()
                             {
-                                // mardown example for bold text
-                                Text = "'**Matt H. said** \"I'm compelled to give this place 5 stars due to the number of times I've chosen to eat here this past year!\',", 
+                                // markdown example for bold text
+                                Text = "'**Matt H. said** \"I'm compelled to give this place 5 stars due to the number of times I've chosen to eat here this past year!\',",
                                 Wrap = true, // True if text is allowed to wrap
                             },
-                            new TextBlock()
+                            new AdaptiveTextBlock()
                             {
-                                Text = "Place your text here:"
+                                Text = "Place your text here:",
+                                Separator = true,
                             },
                             // text input collects text from the user
-                            new TextInput()
+                            new AdaptiveTextInput()
                             {
                                 Id = "textInputId",
-                                Speak = "<s>Please enter your text here</s>",
                                 Placeholder = "Text Input",
-                                Style = TextInputStyle.Text // set the type of input box e.g Text, Tel, Email, Url
+                                Style = AdaptiveTextInputStyle.Text // set the type of input box e.g Text, Tel, Email, Url
                             },
-                            new TextBlock()
+                            new AdaptiveTextBlock()
                             {
                                 Text = "Please select Date here?"
                             },
                             // date input collects Date from the user
-                            new DateInput()
+                            new AdaptiveDateInput()
                             {
                                 Id = "dateInput",
-                                Speak = "<s>Please select Date here?</s>",
                             },
-                            new TextBlock()
+                            new AdaptiveTextBlock()
                             {
                                 Text = "Please enter time here?"
                             },
                             // time input collects time from the user
-                            new TimeInput()
+                            new AdaptiveTimeInput()
                             {
-                                Id = "timeInput"                                
+                                Id = "timeInput"
                             },
-                            new TextBlock()
+                            new AdaptiveTextBlock()
                             {
-                                Separation = SeparationStyle.Default,
+                                Separator = true,
                                 Text = "Please select your choice here? (Compact Dropdown)"
                             },
                             // Shows an array of Choice objects
-                            new ChoiceSet()
+                            new AdaptiveChoiceSetInput()
                             {
                                Id = "choiceSetCompact",
                                Value = "1", // please set default value here
-                               Style = ChoiceInputStyle.Compact, // set the style of Choice set to compact
+                               Style = AdaptiveChoiceInputStyle.Compact, // set the style of Choice set to compact
                                Choices =
                                {
                                   // describes a choice input. the value should be a simple string without a ","
-                                  new Choice
+                                  new AdaptiveChoice
                                   {
                                       Title = "Red",
                                       Value = "1" // do not use a “,” in the value, since MultiSelect ChoiceSet returns a comma-delimited string of choice values
                                   },
-                                  new Choice
+                                  new AdaptiveChoice
                                   {
                                       Title = "Green",
                                       Value = "2"
                                   },
-                                  new Choice
+                                  new AdaptiveChoice
                                   {
                                       Title = "Blue",
                                       Value = "3"
                                   },
-                                  new Choice
+                                  new AdaptiveChoice
                                   {
                                       Title = "White",
                                       Value = "4"
                                   }
                                 }
                             },
-                            new TextBlock()
+                            new AdaptiveTextBlock()
                             {
-                                Separation = SeparationStyle.Default,
                                 Text = "Please select your choice here? (Expanded Dropdown)"
                             },
                             // Shows an array of Choice objects
-                            new ChoiceSet()
+                            new AdaptiveChoiceSetInput()
                             {
                                Id= "choiceSetExpandedRequired",
                                Value = "1", // please set default value here
-                               Style = ChoiceInputStyle.Expanded, // set the style of Choice set to expanded
-                               IsRequired = true, // set required value here
+                               Style = AdaptiveChoiceInputStyle.Expanded, // set the style of Choice set to expanded
                                Choices =
                                {
-                                    new Choice
+                                    new AdaptiveChoice
                                     {
                                         Title = "Red",
                                         Value = "1"
                                     },
-                                    new Choice
+                                    new AdaptiveChoice
                                     {
                                         Title = "Green",
                                         Value = "2"
                                     },
-                                    new Choice
+                                    new AdaptiveChoice
                                     {
                                         Title = "Blue",
                                         Value = "3"
                                     },
-                                    new Choice
+                                    new AdaptiveChoice
                                     {
                                         Title = "White",
                                         Value = "4"
                                     }
                                }
                             },
-                            new TextBlock()
+                            new AdaptiveTextBlock()
                             {
                                 Text = "Please select multiple items here? (Multiselect Dropdown)"
                             },
                             // Shows an array of Choice objects (Multichoice)
-                            new ChoiceSet()
+                            new AdaptiveChoiceSetInput()
                             {
                                Id = "choiceSetExpanded",
                                Value = "1,2", // The initial choice (or set of choices) that should be selected. For multi-select, specifcy a comma-separated string of values
-                               Style = ChoiceInputStyle.Expanded, // // set the style of Choice set to expanded
+                               Style = AdaptiveChoiceInputStyle.Expanded, // // set the style of Choice set to expanded
                                IsMultiSelect = true, // allow multiple choices to be selected
                                Choices =
                                {
-                                    new Choice
+                                    new AdaptiveChoice
                                     {
                                         Title = "Red",
                                         Value = "1"
                                     },
-                                    new Choice
+                                    new AdaptiveChoice
                                     {
                                         Title = "Green",
                                         Value = "2"
                                     },
-                                    new Choice
+                                    new AdaptiveChoice
                                     {
                                         Title = "Blue",
                                         Value = "3"
                                     },
-                                    new Choice
+                                    new AdaptiveChoice
                                     {
                                         Title = "White",
                                         Value = "4"
@@ -251,36 +246,35 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
                                }
                             },                            
                             // column set divides a region into Column's allowing elements to sit side-by-side
-                            new ColumnSet()
+                            new AdaptiveColumnSet()
                             {
-                                Columns = new List<Column>()
+                                Separator = true,
+                                Columns = new List<AdaptiveColumn>()
                                 {
                                     // defines a container that is part of a column set
-                                    new Column()
+                                    new AdaptiveColumn()
                                     {
-                                        Size = ColumnSize.Auto, // “auto”, “stretch”, or a number representing relative width of the column in the column group
-                                        Items = new List<CardElement>()
+                                        Items = new List<AdaptiveElement>()
                                         {
-                                            new Image()
+                                            new AdaptiveImage()
                                             {
-                                                Url = "https://placeholdit.imgix.net/~text?txtsize=65&txt=Adaptive+Cards&w=300&h=300",
-                                                Size = ImageSize.Medium,
-                                                Style = ImageStyle.Person
+                                                Url = new Uri("https://placeholdit.imgix.net/~text?txtsize=65&txt=Adaptive+Cards&w=300&h=300"),
+                                                Size = AdaptiveImageSize.Medium,
+                                                Style = AdaptiveImageStyle.Person
                                             }
                                         }
                                     },
-                                    new Column()
+                                    new AdaptiveColumn()
                                     {
-                                        Size = ColumnSize.Stretch, // “auto”, “stretch”, or a number representing relative width of the column in the column group
-                                        Items = new List<CardElement>()
+                                        Items = new List<AdaptiveElement>()
                                         {
-                                            new TextBlock()
+                                            new AdaptiveTextBlock()
                                             {
                                                 Text =  "Hello!",
-                                                Weight = TextWeight.Bolder,
+                                                Weight = AdaptiveTextWeight.Bolder,
                                                 IsSubtle = true
                                             },
-                                            new TextBlock()
+                                            new AdaptiveTextBlock()
                                             {
                                                 Text = "Are you looking for a Tab or Bot?",
                                                 Wrap = true
@@ -290,7 +284,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
                                 }
                             },
                             //  input toggle collects a true/false response from the user
-                            new ToggleInput
+                            new AdaptiveToggleInput
                             {
                                 Id = "AcceptsTerms",
                                 Title = "I accept the terms and conditions (True/False)",
@@ -300,51 +294,50 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
                         }
                     }
                 },
-                Actions = new List<ActionBase>()
+                Actions = new List<AdaptiveAction>()
                 {
                     // submit action gathers up input fields, merges with optional data field and generates event to client asking for data to be submitted
-                    new SubmitAction()
+                    new AdaptiveSubmitAction()
                     {
                         Title = "Submit",
-                        Speak = "<s>Search</s>"
+                        DataJson = "{\"adaptiveCardActionKey\": \"adaptiveCardActionValue\"}",
                     },
                     // show action defines an inline AdaptiveCard which is shown to the user when it is clicked
-                    new ShowCardAction()
+                    new AdaptiveShowCardAction()
                     {
                         Card = new AdaptiveCard()
                         {
                             Version = "1.0",
-                            Body = new List<CardElement>()
+                            Body = new List<AdaptiveElement>()
                             {
-                                new Container()
+                                new AdaptiveContainer()
                                 {
-                                    Items = new List<CardElement>()
+                                    Items = new List<AdaptiveElement>()
                                     {
-                                        new TextInput()
+                                        new AdaptiveTextInput()
                                         {
                                             Id = "Text",
-                                            Speak = "<s>Please enter your text here?</s>",
                                             Placeholder = "text here",
-                                            Style = TextInputStyle.Text
+                                            Style = AdaptiveTextInputStyle.Text
                                         },
                                     }
                                 }
                             },
-                            Actions = new List<ActionBase>()
+                            Actions = new List<AdaptiveAction>()
                             {
-                                new SubmitAction()
+                                new AdaptiveSubmitAction()
                                 {
                                     Title = "Submit",
-                                    Speak = "<s>Search</s>"
+                                    DataJson = "{\"adaptiveCardActionKey\": \"adaptiveCardActionValue\"}",
                                 },
                             }
                         }
                     },
                     // open url show the given url, either by launching it to an external web browser
-                    new OpenUrlAction()
+                    new AdaptiveOpenUrlAction()
                     {
                         Title = "Open Url",
-                        Url = "http://adaptivecards.io/explorer/Action.OpenUrl.html"
+                        Url = new Uri("http://adaptivecards.io/explorer/Action.OpenUrl.html")
                     }
                 }
             };

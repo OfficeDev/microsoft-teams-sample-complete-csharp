@@ -56,8 +56,9 @@ namespace Microsoft.Teams.TemplateBotCSharp
                     return Request.CreateResponse(HttpStatusCode.OK);
                 }
 
-                // Adaptive Card Submit Action
-                if (string.IsNullOrEmpty(activity.Text))
+                // Adaptive card submit action - for now this (if activity text is blank & if defined key in adaptive card DataJson is present in incoming activity value) 
+                // is the only way to check for adaptive card submit request, and it's a work around that will be cleaned up later
+                if (string.IsNullOrEmpty(activity.Text) && activity.Value != null && TemplateUtility.IsAdaptiveCardSubmitAction(activity))
                 {
                     return await SendAdaptiveCardValues(activity);
                 }
@@ -283,25 +284,16 @@ namespace Microsoft.Teams.TemplateBotCSharp
             O365ConnectorCardActionQuery o365CardQuery = activity.GetO365ConnectorCardActionQueryData();
 
             Activity replyActivity = activity.CreateReply();
-
             replyActivity.TextFormat = "xml";
 
             replyActivity.Text = $@"
-
             <h2>Thanks, {activity.From.Name}</h2><br/>
-
             <h3>Your input action ID:</h3><br/>
-
             <pre>{o365CardQuery.ActionId}</pre><br/>
-
             <h3>Your input body:</h3><br/>
-
-            <pre>{o365CardQuery.Body}</pre>
-
-        ";
+            <pre>{o365CardQuery.Body}</pre>";
 
             await connectorClient.Conversations.ReplyToActivityWithRetriesAsync(replyActivity);
-
             return new HttpResponseMessage(HttpStatusCode.OK);
         }
 
@@ -313,13 +305,10 @@ namespace Microsoft.Teams.TemplateBotCSharp
         private static async Task<HttpResponseMessage> PopUpSignInHandler(Activity activity)
         {
             var connectorClient = new ConnectorClient(new Uri(activity.ServiceUrl));
-
             Activity replyActivity = activity.CreateReply();
-
             replyActivity.Text = $@"Authentication Successful";
 
             await connectorClient.Conversations.ReplyToActivityWithRetriesAsync(replyActivity);
-
             return new HttpResponseMessage(HttpStatusCode.OK);
         }
 
@@ -331,13 +320,10 @@ namespace Microsoft.Teams.TemplateBotCSharp
         private static async Task<HttpResponseMessage> SendAdaptiveCardValues(Activity activity)
         {
             var connectorClient = new ConnectorClient(new Uri(activity.ServiceUrl));
-
             Activity replyActivity = activity.CreateReply();
-
             replyActivity.Text = Convert.ToString(activity.Value);
 
             await connectorClient.Conversations.ReplyToActivityWithRetriesAsync(replyActivity);
-
             return new HttpResponseMessage(HttpStatusCode.OK);
         }
     }

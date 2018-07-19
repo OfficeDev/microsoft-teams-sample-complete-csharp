@@ -171,6 +171,33 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
             return 0;
         }
 
+        /// <summary>
+        /// Check if submit action request is from adaptive card
+        /// </summary>
+        /// <param name="inputString"></param>
+        /// <returns></returns>
+        public static bool IsAdaptiveCardSubmitAction(Activity activity)
+        {
+            if (activity != null && activity.Value != null)
+            {
+                JObject invokeObjects = JObject.Parse(Convert.ToString(activity.Value));
+
+                if (invokeObjects.Count > 0)
+                {
+                    foreach(var item in invokeObjects)
+                    {
+                        // set "adaptiveCardActionKey" in adaptive card submit action dataJson field
+                        if (item.Key == "adaptiveCardActionKey")
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+
+            return false;
+        }
+
         public static async Task<BotData> GetBotUserDataObject(IBotDataStore<BotData> botDataStore, Activity activity)
         {
             IAddress key = Address.FromActivity(activity);
