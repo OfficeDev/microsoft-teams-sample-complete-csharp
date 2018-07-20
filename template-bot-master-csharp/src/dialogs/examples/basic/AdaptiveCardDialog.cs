@@ -2,6 +2,8 @@
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Connector;
 using Microsoft.Teams.TemplateBotCSharp.Properties;
+using Microsoft.Teams.TemplateBotCSharp.Utility;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -25,12 +27,23 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
             //Set the Last Dialog in Conversation Data
             context.UserData.SetValue(Strings.LastDialogKey, Strings.LastDialogAdaptiveCard);
 
-            var message = context.MakeMessage();
-            var attachment = GetAdaptiveCardAttachment();
+            Activity activity = context.Activity as Activity;
 
-            message.Attachments.Add(attachment);
+            // if request is from submit action, process adaptive card values
+            if (IsSubmitActivityFromExampleCard(activity))
+            {
+                // handle adaptive card submit action
+                await SendAdaptiveCardValues(context, activity);
+            }
+            else
+            {
+                // create and send adaptive card
+                var message = context.MakeMessage();
+                var attachment = GetAdaptiveCardAttachment();
 
-            await context.PostAsync((message));
+                message.Attachments.Add(attachment);
+                await context.PostAsync((message));
+            }
 
             context.Done<object>(null);
         }
@@ -300,7 +313,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
                     new AdaptiveSubmitAction()
                     {
                         Title = "Submit",
-                        DataJson = "{\"adaptiveCardActionKey\": \"adaptiveCardActionValue\"}",
+                        DataJson = "{\"" + Middleware.AdaptiveCardActionKey + "\": \"AdaptiveCardDialog\"}",
                     },
                     // show action defines an inline AdaptiveCard which is shown to the user when it is clicked
                     new AdaptiveShowCardAction()
@@ -328,7 +341,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
                                 new AdaptiveSubmitAction()
                                 {
                                     Title = "Submit",
-                                    DataJson = "{\"adaptiveCardActionKey\": \"adaptiveCardActionValue\"}",
+                                    DataJson = "{\"" + Middleware.AdaptiveCardActionKey + "\": \"AdaptiveCardDialog\"}",
                                 },
                             }
                         }
@@ -349,6 +362,41 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
             };
 
             return attachment;
+        }
+
+        /// <summary>
+        /// Check if submit action request is from an adaptive card
+        /// </summary>
+        /// <param name="activity"></param>
+        /// <returns></returns>
+        public static bool IsSubmitActivityFromExampleCard(Activity activity)
+        {
+            // if activity text is blank, activity.ReplyToId is null and if defined key in adaptive card DataJson is present in incoming activity value 
+            // to check if this is submit activity from an adaptive card, it's a work around that will be cleaned up later
+            if (activity.ReplyToId != null && activity?.Value != null)
+            {
+                JObject jsonObject = (JObject)(activity.Value);
+                JToken jtokenVal;
+
+                if (jsonObject.Count > 0)
+                {
+                    return jsonObject.TryGetValue(Middleware.AdaptiveCardActionKey, out jtokenVal);
+                }
+            }
+
+            return false;
+        }
+
+        ///// <summary>
+        ///// Handle adaptive card request
+        ///// </summary>
+        ///// <param name="activity"></param>
+        ///// <returns></returns>
+        private async Task SendAdaptiveCardValues(IDialogContext context, Activity activity)
+        {
+            var submitValue = context.MakeMessage();
+            submitValue.Text = Convert.ToString(activity.Value);
+            await context.PostAsync(submitValue);            
         }
     }
 }

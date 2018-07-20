@@ -1,4 +1,5 @@
 ﻿using Microsoft.Bot.Connector;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Configuration;
 
@@ -7,6 +8,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
     public static partial class Middleware
     {
         public static string TenantFilterSettingAny = "#ANY#";
+        public static string AdaptiveCardActionKey = "dialog";
 
         /// <summary>
         /// Here are below scenarios - 
@@ -36,6 +38,33 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
             if (activity.Text != null)
             {
                 activity.Text = activity.Text.ToLower();
+            }
+
+            return activity;
+        }
+
+        /// <summary>
+        /// Set activity text to "adaptive card", if request is from an adaptive card
+        /// </summary>
+        /// <param name="activity"></param>
+        /// <returns></returns>
+        public static Activity SetSubmitActivityFromExampleCard(Activity activity)
+        {
+            // if activity text is blank, activity.ReplyToId is null and if defined key in adaptive card DataJson is present in incoming activity value 
+            // to check if this is submit activity from an adaptive card then set activity text "adaptive card" to trigger Adaptive Card dialog, it's a work around that will be cleaned up later
+            if (string.IsNullOrEmpty(activity.Text) && activity.ReplyToId != null && activity?.Value != null)
+            {
+                JObject jsonObject = (JObject)(activity.Value);
+                JToken jtokenVal;
+
+                if (jsonObject.Count > 0)
+                {
+                    if (jsonObject.TryGetValue(AdaptiveCardActionKey, out jtokenVal))
+                    {
+                        // set activity text "adaptive card"
+                        activity.Text = DialogMatches.AdaptiveCard;
+                    }
+                }
             }
 
             return activity;

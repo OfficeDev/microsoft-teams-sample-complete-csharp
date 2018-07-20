@@ -3,7 +3,6 @@ using Microsoft.Bot.Builder.Scorables;
 using Microsoft.Bot.Connector;
 using Microsoft.Bot.Connector.Teams.Models;
 using Microsoft.Teams.TemplateBotCSharp.Properties;
-using Microsoft.Teams.TemplateBotCSharp.Utility;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;

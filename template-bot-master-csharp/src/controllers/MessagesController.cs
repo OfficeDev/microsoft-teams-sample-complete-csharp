@@ -4,6 +4,7 @@ using Microsoft.Bot.Builder.Dialogs.Internals;
 using Microsoft.Bot.Connector;
 using Microsoft.Bot.Connector.Teams;
 using Microsoft.Bot.Connector.Teams.Models;
+using Microsoft.Teams.TemplateBotCSharp.Dialogs;
 using Microsoft.Teams.TemplateBotCSharp.Properties;
 using Microsoft.Teams.TemplateBotCSharp.Utility;
 using System;
@@ -56,14 +57,10 @@ namespace Microsoft.Teams.TemplateBotCSharp
                     return Request.CreateResponse(HttpStatusCode.OK);
                 }
 
-                // Adaptive card submit action - for now this (if activity text is blank & if defined key in adaptive card DataJson is present in incoming activity value) 
-                // is the only way to check for adaptive card submit request, and it's a work around that will be cleaned up later
-                if (string.IsNullOrEmpty(activity.Text) && activity.Value != null && TemplateUtility.IsAdaptiveCardSubmitAction(activity))
-                {
-                    return await SendAdaptiveCardValues(activity);
-                }
+                // Set acitvity text if request is from an adaptive card submit action
+                activity = Middleware.SetSubmitActivityFromExampleCard(activity);
 
-                await Conversation.SendAsync(activity, () => new Dialogs.RootDialog());
+                await Conversation.SendAsync(activity, () => new RootDialog());
             }
             else if (activity.Type == ActivityTypes.MessageReaction)
             {
@@ -312,19 +309,6 @@ namespace Microsoft.Teams.TemplateBotCSharp
             return new HttpResponseMessage(HttpStatusCode.OK);
         }
 
-        /// <summary>
-        /// Handle Adaptive Cards requests
-        /// </summary>
-        /// <param name="activity"></param>
-        /// <returns></returns>
-        private static async Task<HttpResponseMessage> SendAdaptiveCardValues(Activity activity)
-        {
-            var connectorClient = new ConnectorClient(new Uri(activity.ServiceUrl));
-            Activity replyActivity = activity.CreateReply();
-            replyActivity.Text = Convert.ToString(activity.Value);
-
-            await connectorClient.Conversations.ReplyToActivityWithRetriesAsync(replyActivity);
-            return new HttpResponseMessage(HttpStatusCode.OK);
-        }
+        
     }
 }
