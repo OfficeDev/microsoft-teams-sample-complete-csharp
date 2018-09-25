@@ -57,8 +57,8 @@ namespace Microsoft.Teams.TemplateBotCSharp
                     return Request.CreateResponse(HttpStatusCode.OK);
                 }
 
-                // Set acitvity text if request is from an adaptive card submit action
-                activity = Middleware.SetSubmitActivityFromExampleCard(activity);
+                // Set activity text if request is from an adaptive card submit action
+                activity = Middleware.AdaptiveCardSubmitActionHandler(activity);
 
                 await Conversation.SendAsync(activity, () => new RootDialog());
             }

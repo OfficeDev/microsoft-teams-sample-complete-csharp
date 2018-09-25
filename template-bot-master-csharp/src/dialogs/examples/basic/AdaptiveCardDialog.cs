@@ -2,10 +2,10 @@
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Connector;
 using Microsoft.Teams.TemplateBotCSharp.Properties;
-using Microsoft.Teams.TemplateBotCSharp.Utility;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Threading.Tasks;
 
 namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
@@ -30,7 +30,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
             Activity activity = context.Activity as Activity;
 
             // if request is from submit action, process adaptive card values
-            if (IsSubmitActivityFromExampleCard(activity))
+            if (IsActivityFromAdaptiveCard(activity))
             {
                 // handle adaptive card submit action
                 await SendAdaptiveCardValues(context, activity);
@@ -52,6 +52,8 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
         // input box, date input, time input, toggle input, choice set(dropdown), choice set(dropdown) with multiselect etc.
         public static Attachment GetAdaptiveCardAttachment()
         {
+            string textToTriggerThisDialog = "adaptive card";
+
             var card = new AdaptiveCard()
             {
                 Body = new List<AdaptiveElement>()
@@ -60,7 +62,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
                     {
                         Items = new List<AdaptiveElement>()
                         {
-                            // TextBlock Item allows for the inclusion of text, with various font sizes, weight and color,
+                            // TextBlock Item allows for the inclusion of text, with various font sizes, weight and color
                             new AdaptiveTextBlock()
                             {
                                 Text = "Adaptive Card!",
@@ -105,15 +107,15 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
                                     // Image Item allows for the inclusion of images
                                     new AdaptiveImage
                                     {
-                                        Url = new Uri("http://contososcubabot.azurewebsites.net/assets/steak.jpg")
+                                        Url = new Uri(ConfigurationManager.AppSettings["BaseUri"].ToString() + "/public/assets/computer.jpg")
                                     },
                                     new AdaptiveImage
                                     {
-                                        Url = new Uri("http://contososcubabot.azurewebsites.net/assets/chicken.jpg")
+                                        Url = new Uri(ConfigurationManager.AppSettings["BaseUri"].ToString() + "/public/assets/computer_person.jpg")
                                     },
                                     new AdaptiveImage
                                     {
-                                        Url = new Uri("http://contososcubabot.azurewebsites.net/assets/tofu.jpg")
+                                        Url = new Uri(ConfigurationManager.AppSettings["BaseUri"].ToString() + "/public/assets/computer.jpg")
                                     },
                                 }
                             },// wrap the text in textblock
@@ -313,7 +315,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
                     new AdaptiveSubmitAction()
                     {
                         Title = "Submit",
-                        DataJson = "{\"" + Middleware.AdaptiveCardActionKey + "\": \"AdaptiveCardDialog\"}",
+                        DataJson = "{\"isFromAdaptiveCard\": \"true\", \"messageText\": \""+ textToTriggerThisDialog +"\" }",
                     },
                     // show action defines an inline AdaptiveCard which is shown to the user when it is clicked
                     new AdaptiveShowCardAction()
@@ -341,7 +343,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
                                 new AdaptiveSubmitAction()
                                 {
                                     Title = "Submit",
-                                    DataJson = "{\"" + Middleware.AdaptiveCardActionKey + "\": \"AdaptiveCardDialog\"}",
+                                    DataJson = "{\"isFromAdaptiveCard\": \"true\", \"messageText\": \""+ textToTriggerThisDialog +"\" }",
                                 },
                             }
                         }
@@ -369,18 +371,21 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
         /// </summary>
         /// <param name="activity"></param>
         /// <returns></returns>
-        public static bool IsSubmitActivityFromExampleCard(Activity activity)
+        public static bool IsActivityFromAdaptiveCard(Activity activity)
         {
-            // if activity text is blank, activity.ReplyToId is null and if defined key in adaptive card DataJson is present in incoming activity value 
-            // to check if this is submit activity from an adaptive card, it's a work around that will be cleaned up later
+            // Check for the property in the value set by the adaptive card submit action
             if (activity.ReplyToId != null && activity?.Value != null)
             {
-                JObject jsonObject = (JObject)(activity.Value);
-                JToken jtokenVal;
+                JObject jsonObject = activity.Value as JObject;
 
-                if (jsonObject.Count > 0)
+                if (jsonObject != null && jsonObject.Count > 0)
                 {
-                    return jsonObject.TryGetValue(Middleware.AdaptiveCardActionKey, out jtokenVal);
+                    string isFromAdaptiveCard = Convert.ToString(jsonObject["isFromAdaptiveCard"]);
+
+                    if (!string.IsNullOrEmpty(isFromAdaptiveCard) && isFromAdaptiveCard == "true")
+                    {
+                        return true;
+                    }
                 }
             }
 
