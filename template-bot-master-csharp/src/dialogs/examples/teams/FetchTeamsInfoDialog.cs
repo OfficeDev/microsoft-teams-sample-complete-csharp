@@ -28,7 +28,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
             {
                 var connectorClient = new ConnectorClient(new Uri(context.Activity.ServiceUrl));
 
-                // Handle for channel conversation, aad group id only exists within channel
+                // Handle for channel conversation, AAD GroupId only exists within channel
                 TeamDetails teamDetails = await connectorClient.GetTeamsConnectorClient().Teams.FetchTeamDetailsAsync(team.Id);
 
                 var message = context.MakeMessage();
