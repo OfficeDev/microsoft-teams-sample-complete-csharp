@@ -1,3 +1,17 @@
+---
+topic: sample
+products:
+- Microsoft Teams
+- Office 365
+languages:
+- C#
+extensions:
+  contentType: samples
+  technologies:
+  - Tabs
+  - Microsoft Bot Framework
+  createdDate: 9/22/2017 5:54:09 PM
+---
 # Steps to run locally
 
 ## Prerequisites
