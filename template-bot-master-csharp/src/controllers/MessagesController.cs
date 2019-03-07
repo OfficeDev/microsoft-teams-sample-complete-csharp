@@ -4,6 +4,7 @@ using Microsoft.Bot.Builder.Dialogs.Internals;
 using Microsoft.Bot.Connector;
 using Microsoft.Bot.Connector.Teams;
 using Microsoft.Bot.Connector.Teams.Models;
+using Microsoft.Teams.TemplateBotCSharp.Dialogs;
 using Microsoft.Teams.TemplateBotCSharp.Properties;
 using Microsoft.Teams.TemplateBotCSharp.Utility;
 using System;
@@ -56,7 +57,10 @@ namespace Microsoft.Teams.TemplateBotCSharp
                     return Request.CreateResponse(HttpStatusCode.OK);
                 }
 
-                await Conversation.SendAsync(activity, () => new Dialogs.RootDialog());
+                // Set activity text if request is from an adaptive card submit action
+                activity = Middleware.AdaptiveCardSubmitActionHandler(activity);
+
+                await Conversation.SendAsync(activity, () => new RootDialog());
             }
             else if (activity.Type == ActivityTypes.MessageReaction)
             {
@@ -277,25 +281,16 @@ namespace Microsoft.Teams.TemplateBotCSharp
             O365ConnectorCardActionQuery o365CardQuery = activity.GetO365ConnectorCardActionQueryData();
 
             Activity replyActivity = activity.CreateReply();
-
             replyActivity.TextFormat = "xml";
 
             replyActivity.Text = $@"
-
             <h2>Thanks, {activity.From.Name}</h2><br/>
-
             <h3>Your input action ID:</h3><br/>
-
             <pre>{o365CardQuery.ActionId}</pre><br/>
-
             <h3>Your input body:</h3><br/>
-
-            <pre>{o365CardQuery.Body}</pre>
-
-        ";
+            <pre>{o365CardQuery.Body}</pre>";
 
             await connectorClient.Conversations.ReplyToActivityWithRetriesAsync(replyActivity);
-
             return new HttpResponseMessage(HttpStatusCode.OK);
         }
 
@@ -307,14 +302,13 @@ namespace Microsoft.Teams.TemplateBotCSharp
         private static async Task<HttpResponseMessage> PopUpSignInHandler(Activity activity)
         {
             var connectorClient = new ConnectorClient(new Uri(activity.ServiceUrl));
-
             Activity replyActivity = activity.CreateReply();
-
             replyActivity.Text = $@"Authentication Successful";
 
             await connectorClient.Conversations.ReplyToActivityWithRetriesAsync(replyActivity);
-
             return new HttpResponseMessage(HttpStatusCode.OK);
         }
+
+        
     }
 }

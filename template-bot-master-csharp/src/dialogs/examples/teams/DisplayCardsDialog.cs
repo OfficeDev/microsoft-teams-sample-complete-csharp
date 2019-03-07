@@ -15,7 +15,7 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
 
         public DisplayCardsDialog()
         {
-            options = new List<string> { Strings.DisplayCardHeroCard, Strings.DisplayCardThumbnailCard, Strings.DisplayCardO365ConnectorCardDefault, Strings.DisplayCardO365ConnectorCard2, Strings.DisplayCardO365ConnectorCard3, Strings.DisplayCardO365ConnectorActionableCardDefault, Strings.DisplayCardO365ConnectorActionableCard2 };
+            options = new List<string> { Strings.DisplayCardHeroCard, Strings.DisplayCardThumbnailCard, Strings.DisplayCardO365ConnectorCardDefault, Strings.DisplayCardO365ConnectorCard2, Strings.DisplayCardO365ConnectorCard3, Strings.DisplayCardO365ConnectorActionableCardDefault, Strings.DisplayCardO365ConnectorActionableCard2, Strings.DisplayCardAdaptiveCard };
         }
 
         public async Task StartAsync(IDialogContext context)
@@ -70,6 +70,10 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
             else if (selectedCard.Equals(Strings.DisplayCardO365ConnectorActionableCard2))
             {
                 context.Call(new O365ConnectorCardActionsDialog(), ResumeAfterOptionDialog);
+            }
+            else if (selectedCard.Equals(Strings.DisplayCardAdaptiveCard))
+            {
+                context.Call(new AdaptiveCardDialog(), ResumeAfterOptionDialog);
             }
         }
 

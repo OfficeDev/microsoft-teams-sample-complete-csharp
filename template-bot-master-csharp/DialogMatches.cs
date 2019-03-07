@@ -71,5 +71,7 @@
         public const string TeamInfo = "team info";
 
         public const string UpdateCard = "update card message";
+
+        public const string AdaptiveCard = "adaptive card";
     }
 }

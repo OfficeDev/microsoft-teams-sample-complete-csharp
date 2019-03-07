@@ -502,6 +502,15 @@ namespace Microsoft.Teams.TemplateBotCSharp.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Adaptive Card.
+        /// </summary>
+        internal static string DisplayCardAdaptiveCard {
+            get {
+                return ResourceManager.GetString("DisplayCardAdaptiveCard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Failed with message:.
         /// </summary>
         internal static string DisplayCardErrorMsg {
@@ -1020,6 +1029,15 @@ namespace Microsoft.Teams.TemplateBotCSharp.Properties {
         internal static string LastDialogActionableMessageDialog {
             get {
                 return ResourceManager.GetString("LastDialogActionableMessageDialog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to AdaptiveCardDialog.
+        /// </summary>
+        internal static string LastDialogAdaptiveCard {
+            get {
+                return ResourceManager.GetString("LastDialogAdaptiveCard", resourceCulture);
             }
         }
         

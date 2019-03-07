@@ -45,6 +45,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AdaptiveCards, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\AdaptiveCards.1.0.3\lib\net452\AdaptiveCards.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Autofac, Version=4.6.2.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
       <HintPath>..\packages\Autofac.4.6.2\lib\net45\Autofac.dll</HintPath>
       <Private>True</Private>
@@ -178,6 +182,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="middleware\AdaptiveCardSubmitActionHandler.cs" />
+    <Compile Include="src\dialogs\examples\basic\AdaptiveCardDialog.cs" />
     <Compile Include="src\dialogs\examples\teams\FetchTeamsInfoDialog.cs" />
     <Compile Include="src\dialogs\examples\teams\UpdateCardMsgSetupDialog.cs" />
     <Compile Include="utility\InvokeHandler.cs" />

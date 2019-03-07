@@ -852,4 +852,10 @@
   <data name="ErrorUpdatingCard" xml:space="preserve">
     <value>Error updating card message: </value>
   </data>
+  <data name="DisplayCardAdaptiveCard" xml:space="preserve">
+    <value>Adaptive Card</value>
+  </data>
+  <data name="LastDialogAdaptiveCard" xml:space="preserve">
+    <value>AdaptiveCardDialog</value>
+  </data>
 </root>

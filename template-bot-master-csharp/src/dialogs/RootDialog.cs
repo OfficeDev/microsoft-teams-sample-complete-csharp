@@ -3,7 +3,6 @@ using Microsoft.Bot.Builder.Scorables;
 using Microsoft.Bot.Connector;
 using Microsoft.Bot.Connector.Teams.Models;
 using Microsoft.Teams.TemplateBotCSharp.Properties;
-using Microsoft.Teams.TemplateBotCSharp.Utility;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -472,6 +471,17 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
         public void TeamsInfo(IDialogContext context, IActivity activity)
         {
             context.Call(new FetchTeamsInfoDialog(), this.EndDialog);
+        }
+
+        #endregion
+
+        #region Adaptive Card
+
+        [RegexPattern(DialogMatches.AdaptiveCard)]
+        [ScorableGroup(1)]
+        public void AdaptiveCard(IDialogContext context, IActivity activity)
+        {
+            context.Call(new AdaptiveCardDialog(), this.EndDialog);
         }
 
         #endregion

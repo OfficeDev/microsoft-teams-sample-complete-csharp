@@ -160,9 +160,9 @@ namespace Microsoft.Teams.TemplateBotCSharp.Utility
         {
             if (activity != null && activity.Value != null)
             {
-                JObject invokeObjects = JObject.Parse(Convert.ToString(activity.Value));
+                JObject invokeObjects = activity.Value as JObject;
 
-                if (invokeObjects.Count > 0)
+                if (invokeObjects != null && invokeObjects.Count > 0)
                 {
                     return invokeObjects["updateKey"].Value<int>();
                 }
