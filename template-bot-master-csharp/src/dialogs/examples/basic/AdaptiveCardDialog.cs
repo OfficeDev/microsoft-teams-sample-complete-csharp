@@ -317,6 +317,13 @@ namespace Microsoft.Teams.TemplateBotCSharp.Dialogs
                         Title = "Submit",
                         DataJson = "{\"isFromAdaptiveCard\": \"true\", \"messageText\": \""+ textToTriggerThisDialog +"\" }",
                     },
+                    // submit action can also act similar to messageBack, with custom display text
+                    // See https://docs.microsoft.com/en-us/microsoftteams/platform/concepts/cards/cards-actions#adaptive-card-actions
+                    new AdaptiveSubmitAction()
+                    {
+                        Title = "Submit (MessageBack)",
+                        DataJson = "{\"isFromAdaptiveCard\": \"true\", \"messageText\": \""+ textToTriggerThisDialog +"\", \"msteams\":{\"type\":\"messageBack\", \"displayText\":\"Card submitted!\"}}",
+                    },
                     // show action defines an inline AdaptiveCard which is shown to the user when it is clicked
                     new AdaptiveShowCardAction()
                     {

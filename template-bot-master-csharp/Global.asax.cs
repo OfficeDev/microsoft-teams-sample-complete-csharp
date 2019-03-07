@@ -20,7 +20,7 @@ namespace Microsoft.Teams.TemplateBotCSharp
             {
                 builder.Register(c => new CachingBotDataStore(store,
                          CachingBotDataStoreConsistencyPolicy
-                         .ETagBasedConsistency))
+                         .LastWriteWins))
                          .As<IBotDataStore<BotData>>()
                          .AsSelf()
                          .InstancePerLifetimeScope();
