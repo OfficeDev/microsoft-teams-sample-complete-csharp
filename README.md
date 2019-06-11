@@ -64,7 +64,7 @@ Congratulations!!! You can now chat with the bot in the Bot Emulator!
 
 
     
-2. Register a new bot (or update an existing one) with Bot Framework by using the https endpoint started by ngrok and the extension "/api/messages" as the full endpoint for the bot's "Messaging endpoint". e.g. "https://####abcd.ngrok.io/api/messages" - Bot registration is here (open in a new browser tab): https://dev.botframework.com/bots
+2. Register a new bot (or update an existing one) with Bot Framework by using the https endpoint started by ngrok and the extension "/api/messages" as the full endpoint for the bot's "Messaging endpoint". e.g. "https://####abcd.ngrok.io/api/messages" - Bot registration is here (open in a new browser tab): https://dev.botframework.com/bots/new. Ignore the warning about migrating to Azure, it is not necessary for Teams-only bots. You can however safely migrate your bot to Azure if you so choose, or use the Azure portal to create your bot.
 
     > **NOTE**: When you create your bot you will create an App ID and App password - make sure you keep these for later.
 
