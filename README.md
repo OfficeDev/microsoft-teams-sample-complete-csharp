@@ -1,10 +1,10 @@
 ---
 topic: sample
 products:
-- Microsoft Teams
-- Office 365
+- office-teams
+- office-365
 languages:
-- C#
+- csharp
 extensions:
   contentType: samples
   technologies:
@@ -12,7 +12,7 @@ extensions:
   - Microsoft Bot Framework
   createdDate: 9/22/2017 5:54:09 PM
 ---
-# Steps to run locally
+ Steps to run locally
 
 ## Prerequisites
 
