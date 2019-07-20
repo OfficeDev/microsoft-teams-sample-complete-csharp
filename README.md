@@ -1,5 +1,5 @@
 ---
-topic: sample
+page_type: sample
 products:
 - office-teams
 - office-365
@@ -12,7 +12,10 @@ extensions:
   - Microsoft Bot Framework
   createdDate: 9/22/2017 5:54:09 PM
 ---
- Steps to run locally
+
+# Microsoft Teams Bot in C#
+
+Sample that shows how to build a bot for Microsoft Teams in C#.
 
 ## Prerequisites
 
