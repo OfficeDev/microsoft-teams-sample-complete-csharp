@@ -22,7 +22,7 @@ Sample that shows how to build a bot for Microsoft Teams in C#.
 * Install Git for windows: https://git-for-windows.github.io/
 
 * Clone this repo:<br>
-    ```
+    ```bash
     git clone https://github.com/OfficeDev/microsoft-teams-template-bot-CSharp.git
     ```
 
