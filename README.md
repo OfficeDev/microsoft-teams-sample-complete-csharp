@@ -11,6 +11,7 @@ extensions:
   - Tabs
   - Microsoft Bot Framework
   createdDate: 9/22/2017 5:54:09 PM
+description: "Sample that shows how to build a bot for Microsoft Teams in C#."
 ---
 
 # Microsoft Teams Bot in C#
@@ -37,7 +38,8 @@ Install some sort of tunnelling service. These instructions assume you are using
 Install the Bot Emulator - click on "Bot Framework Emulator (Mac and Windows)": https://docs.botframework.com/en-us/downloads/#navtitle  
     * NOTE: make sure to pin the emulator to your task bar because it can sometimes be difficult to find again 
 
-## Steps to see the bot running in the Bot Emulator<br>
+## Steps to see the bot running in the Bot Emulator
+
 NOTE: Teams does not work nor render things exactly like the Bot Emulator, but it is a quick way to see if your bot is running and functioning correctly.
 
 1. Open the template-bot-master-csharp.sln solution with Visual Studio
@@ -105,20 +107,20 @@ Congratulations!!! You can now chat with the bot in the Bot Emulator!
 Congratulations!!! You have just created and sideloaded your first Microsoft Teams app! Try adding a configurable tab, at-mentioning your bot by its registered name, or viewing your static tabs.<br><br>
 NOTE: Most of this sample app's functionality will now work. The only limitations are the authentication examples because your app is not registered with AAD nor Visual Studio Team Services.
 
-# Overview
+## Overview
 
 This project is meant to help a Teams developer in two ways.  First, it is meant to show many examples of how an app can integrate into Teams.  Second, it is meant to give a set of patterns, templates, and tools that can be used as a starting point for creating a larger, scalable, more enterprise level bot to work within Teams.  Although this project focuses on creating a robust bot, it does include simples examples of tabs as well as examples of how a bot can give links into these tabs.
 
-# What it is
+## What it is
 
 At a high level, this project is written in C#, built to run a .Net, and uses the BotFramework to handle the bot's requests and responses. This project is designed to be run in Visual Studio using its debugger in order to leverage breakpoints. Most directories will hold a README file which will describe what the files within that directory do.
 The easiest way to get started is to follow the steps listed in the "Steps to get started running the Bot Emulator". Once this is complete and running, the easiest way to add your own content is to create a new dialog in src/dialogs by copying one from src/dialogs/examples, change it accordingly, and then instantiate it with the others in the RootDialog.cs.
 
-# General Architecture
+## General Architecture
 
 Most code files that need to be compile reside in the src directory. Most files outside of the src directory are static files used for either configuration or for providing static resources to tabs, e.g. images and html.
 
-# Files and Directories
+## Files and Directories
 
 * **manifest**<br><br>
 This directory holds the skeleton of a manifest.json file that can be altered in order sideload this application into a team.
@@ -138,7 +140,7 @@ This directory holds utility functions for the project.
 * **web.config**<br><br>
 This file is a configuration file that can be used to update the config keys globally used in Application.
 
-# Contributing
+## Contributing
 
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a
 Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us
