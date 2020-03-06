@@ -102,7 +102,7 @@ Congratulations!!! You can now chat with the bot in the Bot Emulator!
 		
     * Save the file and zip this file and the bot_blue.png file (located next to it) together to create a manifest.zip file
 
-6. Once complete, sideload your zipped manifest to a team as described here (open in a new browser tab): https://msdn.microsoft.com/en-us/microsoft-teams/sideload
+6. Once complete, sideload your zipped manifest to a team as described here (open in a new browser tab): https://docs.microsoft.com/en-us/microsoftteams/platform/concepts/deploy-and-publish/apps-upload
 
 Congratulations!!! You have just created and sideloaded your first Microsoft Teams app! Try adding a configurable tab, at-mentioning your bot by its registered name, or viewing your static tabs.<br><br>
 NOTE: Most of this sample app's functionality will now work. The only limitations are the authentication examples because your app is not registered with AAD nor Visual Studio Team Services.
