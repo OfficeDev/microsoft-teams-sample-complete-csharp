@@ -14,6 +14,8 @@ extensions:
 description: "Sample that shows how to build a bot for Microsoft Teams in C#."
 ---
 
+#### **NOTE:** This repository is now archived. Its contents have moved [here](https://github.com/OfficeDev/Microsoft-Teams-Samples/tree/main/samples/app-complete-sample/csharp).
+
 # Microsoft Teams Bot in C#
 
 Sample that shows how to build a bot for Microsoft Teams in C#.
